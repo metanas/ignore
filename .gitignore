@@ -1,0 +1,22 @@
+# Flags
+# remove sharp char if you want to add flags to gitignore
+# /upload/flags/*
+
+# If you want to ignore install file use following lines [on development mode]
+# /upload/backup.install/*
+# /upload/install/*
+system/storage/cache/*
+!system/storage/cache/index.html
+system/storage/vendor
+/tests/phpunit/vendor/*
+/tests/phpunit/composer.lock
+/tests/phpunit/bootstrap.php
+composer.lock
+config.php
+admin/config.php
+system/storage/logs/*
+image/cache/catalog
+# IDE Project files
+/.idea
+/vendor/
+image/cache

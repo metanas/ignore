@@ -1,0 +1,116 @@
+{{ header }}
+<div id="information-contact" class="container">
+    <div class="row">{{ column_left }}
+        {% if column_left and column_right %}
+            {% set class = 'col-sm-6' %}
+        {% elseif column_left or column_right %}
+            {% set class = 'col-sm-9' %}
+        {% else %}
+            {% set class = 'col-sm-12' %}
+        {% endif %}
+        <div id="content" class="{{ class }}">{{ content_top }}
+            <div class="container" align="center">
+                <h1 class="marg-top">Bonjour, comment pouvons-nous vous aider? </h1>
+                <div style="margin-top: 70px">
+                    <div class="col-md-3 col-sm-6 col-xs-12" align="center">
+                        <a href="{{ Return_and_refund }}">
+                            <img src="catalog/view/theme/default/image/Return and refund.png" alt="Return and refund"
+                                 width="100" height="100">
+                            <p>Retour et remboursement</p>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <a href="{{ shipping_and_delivery }}">
+                            <img src="catalog/view/theme/default/image/shipping and delivery.png" width="100"
+                                 height="100">
+                            <p>Expédition et livraison</p>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <a href="{{ payment }}">
+                            <img src="catalog/view/theme/default/image/payment.png" width="100" height="100">
+                            <p>Paiment</p>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <a href="{{ Voucher }}">
+                            <img src="catalog/view/theme/default/image/Voucher.png" width="100" height="100">
+                            <p>Bons de réduction</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-12" style="margin-top: 70px">
+                    <h2> Contactez-nous! </h2>
+                </div>
+
+                <div class="col-md-12" style="margin-top: 70px">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <img src="catalog/view/theme/default/image/phone-number.png" width="100" height="100">
+                        <p>{{ telephone }}</p>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12 ">
+                        <img src="catalog/view/theme/default/image/Whatsaap-number.png" width="100" height="100">
+                        <p>{{ telephone }}</p>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <img src="catalog/view/theme/default/image/mail.png" width="100" height="100">
+                        <p>INFO@ZALARK.COM</p>
+                    </div>
+                </div>
+                <div class="col-md-12 marge-top" align="center" style="margin-top: 35px;margin-bottom: 70px">
+                    <p> Lundi-Vendredi 09:00/13:00 / 13:00-19:00 Samedi 09:00-13:00</p>
+                </div>
+
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <div style="padding-right: 80px;padding-left: 80px;">
+                        <div class="form-group required">
+                            <div class="col-sm-12">
+                                <input type="text" name="name" value="{{ name }}" id="input-name"
+                                       placeholder="{{ entry_name }}" class="form-control input-zalark"
+                                       style="border-color: #ff1b5a"/>
+                                {% if error_name %}
+                                    <div class="text-danger">{{ error_name }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <div class="col-sm-12">
+                                <input type="text" name="phone" value="{{ phone }}" id="input-phone"
+                                       placeholder="{{ entry_phone }}" class="form-control input-zalark"
+                                       style="border-color: #ff1b5a"/>
+                                {% if error_phone %}
+                                    <div class="text-danger">{{ error_phone }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <div class="col-sm-12">
+                                <input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}"
+                                       id="input-email" class="form-control input-zalark"
+                                       style="border-color: #ff1b5a"/>
+                                {% if error_email %}
+                                    <div class="text-danger">{{ error_email }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <div class="col-sm-12">
+                            <textarea name="enquiry" rows="10" id="input-enquiry" placeholder="{{ entry_enquiry }}"
+                                      class="form-control input-zalark"
+                                      style="border-color: #ff1b5a">{{ enquiry }}</textarea>
+                                {% if error_enquiry %}
+                                    <div class="text-danger">{{ error_enquiry }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {{ captcha }}
+                        <div class="col-md-2" style="float: right;padding: 0;">
+                            <button type="submit" class="zalark-button" style="margin-top: 5px;">{{ button_submit }}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {{ content_bottom }}</div>
+        {{ column_right }}</div>
+</div>
+{{ footer }}

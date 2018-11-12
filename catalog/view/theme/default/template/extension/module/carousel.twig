@@ -1,0 +1,92 @@
+{% if products %}
+    <div class="container">
+        <div class="row">
+
+            <h2 class="text-capitalize" style="margin-bottom:30px; ">{{ heading_title }}</h2>
+            <div class="swiper-viewport">
+                <div id="carousel{{ module }}" class="swiper-container">
+                    <div class="swiper-wrapper">
+                        {% for product in products %}
+                            <div class="product-layout col-lg-3 col-md-3 col-sm-4 col-xs-4 swiper-slide">
+                                <span id="product-id" style="display: none">{{ product.product_id }}</span>
+                                <a href="{{ product.href }}">
+                                    <div class="product-thumb transition">
+                                        <div class="image">
+                                            <img src="{{ product.thumb }}"
+                                                 alt="{{ product.name }}"
+                                                 title="{{ product.name }}"
+                                                 class="img-responsive"
+                                                 style="width: 100%"
+                                            />
+                                        </div>
+                                        {% if product.stock %}
+                                            <span class="product-status">
+                                                Out of Stock
+                                            </span>
+                                        {% endif %}
+                                        <div class="caption">
+                                            <div class="desctip col-sm-12 col-xs-12">
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-6 text-left">
+                                                        <div class="text-left">
+                                                            <a href="{{ product.href }}" class="text-capitalize"
+                                                               style="font-weight: bold">{{ product.manufacturer }}</a>
+                                                        </div>
+                                                        <div class="ShoesName text-left">
+                                                            <a href="{{ product.href }}">{{ product.name }}</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6 text-right">
+                                                        <div {% if product.special %} class="price-old" {% endif %}>
+                                                            {{ product.price }}
+                                                        </div>
+                                                        {% if product.special %}
+                                                            <div class="price-new text-right">{{ product.special }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="col-sm-12 same">
+                                                        {#<p>Disponible en plusieurs tailles</p>#}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div><img src="{{ product.favorite }}" class="favorite"
+                                          title="ajouter au favoris">
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="swiper-pagination carousel"></div>
+                <div class="swiper-pager">
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div align="center" style="margin-bottom: 30px">
+        <div style="width: 300px;height: 40px">
+            <a href="{{ category_link }}">
+                <button type="button" class="discover text-capitalize">Découvrir</button>
+            </a>
+        </div>
+    </div>
+{% endif %}
+<script type="text/javascript"><!--
+    $('#carousel{{ module }}').swiper({
+        mode: 'horizontal',
+        slidesPerView: ($(window).width() > 1170) ? 5 : 2,
+        pagination: '.carousel{{ module }}',
+        paginationClickable: true,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        autoplay: 2500,
+        loop: false,
+        paginationType: 'custom'
+    });
+
+    carousel.push($('#carousel{{ module }}'))
+    --></script>

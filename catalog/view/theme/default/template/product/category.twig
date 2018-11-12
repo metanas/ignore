@@ -1,0 +1,266 @@
+<div id="product-category" class="container">
+    <div class="row">{{ column_left }}
+        {% if column_left and column_right %}
+            {% set class = 'col-sm-6' %}
+        {% elseif column_left or column_right %}
+            {% set class = 'col-sm-9' %}
+        {% else %}
+            {% set class = 'col-sm-12' %}
+        {% endif %}
+        <div id="content" class="{{ class }}">
+            {{ content_top }}
+            <div class="slide-bar-button visible-xs-inline" onclick="openSlide()" style="cursor: pointer">
+                <i class="fa fa-align-justify" style="font-size: 24px"></i>
+            </div>
+            <h2 style="display: inline">{{ heading_title }}</h2>
+            {% if thumb or description %}
+                <div class="row">
+                    {% if thumb %}
+                        <div class="col-sm-12"><img src="{{ thumb }}" alt="{{ heading_title }}"
+                                                    title="{{ heading_title }}" class="img-responsive"/></div>
+                    {% endif %}
+                    {% if description %}
+                        <div class="col-sm-12">{{ description }}</div>
+                    {% endif %}</div>
+            {% endif %}
+            <hr>
+            {% if products %}
+                <div class="row" style="position: relative; z-index: 2;margin-bottom: 15px">
+                    <div style="height: 35px; z-index: 2;position: relative">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="margin-bottom: 10px">
+                            <div class="dropdownFilter" style="z-index: 99;">
+                                <div class="filter-filter">
+                                    {{ text_filter_marque }}<i class="fa fa-angle-down"
+                                                               style="float: right; padding: 8px"></i>
+                                </div>
+                                <div class="dropdown-filter">
+                                    <div id="search" class="field input-group stylish-input-group input-append">
+                                        <input class="field-input-filter"
+                                               placeholder="{{ text_search }}" name="manufacture" value="{{ search }}">
+                                        <span class="input-group-addon" style="border: none">
+                                            <button id="sub" type="button">
+                                                <img class="terms" src="catalog/view/theme/default/image/loupe.png">
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div id="manufacture" class="ScrollStyle">
+                                        {% for manufacture in products_manufacture %}
+                                            <label class="check_filter check-manufacture"
+                                                   style="display: block">{{ manufacture }}
+                                                <input class="checkbox" type="checkbox" name="manufacture[]"
+                                                       value="{{ manufacture }}" {% if manufacture in filter.manufacture %} checked {% endif %}>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        {% endfor %}
+                                    </div>
+                                    <div>
+                                        <button type="button" class="filter-done discover text-uppercase"
+                                                name="manufacture">{{ text_close }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="margin-bottom: 10px">
+                            <div class="dropdownFilter"
+                                 style="z-index: 99">
+                                <div class="filter-filter">
+                                    {{ text_filter_color }}<i class="fa fa-angle-down"
+                                                              style="float: right; padding: 8px"></i>
+                                </div>
+                                <div class="dropdown-filter">
+                                    <div id="search" class="field input-group stylish-input-group input-append">
+                                        <input class="field-input-filter"
+                                               placeholder="{{ text_search }}" name="color" value="{{ search }}">
+                                        <span class="input-group-addon" style="border: none">
+                                            <button id="sub" type="button">
+                                                <img class="terms" src="catalog/view/theme/default/image/loupe.png">
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div id="color" class="ScrollStyle">
+                                        {% for color in products_color %}
+                                            <label class="check_filter check-color"
+                                                   style="display: block">{{ color }}
+                                                <input class="checkbox" type="checkbox" name="color[]"
+                                                       value="{{ color }}" {% if color in filter.color %} checked {% endif %}>
+                                                <span class="checkmark checkradio"
+                                                      style="background-color: {{ color.color_hex }};"></span>
+                                            </label>
+                                        {% endfor %}
+                                    </div>
+                                    <div>
+                                        <button type="button" class="filter-done discover text-uppercase"
+                                                name="color">{{ text_close }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="margin-bottom: 10px">
+                            <div class="dropdownFilter"
+                                 style="z-index: 98;">
+                                <div class="filter-filter">
+                                    {{ text_filter_price }}<i class="fa fa-angle-down"
+                                                              style="float: right; padding: 8px"></i>
+                                </div>
+                                <div class="dropdown-filter">
+                                    <div class="col-md-12">
+                                        <input id="ex12c" type="range" style="width: 100%"/>
+                                    </div>
+                                    <div class="row">
+                                        <div id="price" class="container-fluid" style="width: 100%;padding: 0">
+                                            <span id="min-price"
+                                                  class="col-md-6 text-left">{{ price_min }} {{ currency }}</span>
+                                            <span id="max-price"
+                                                  class="col-md-6 text-right">{{ price_max }} {{ currency }}</span>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 10px">
+                                        <label class="promos check_filter">{{ text_Promo }}
+                                            <input type="checkbox"
+                                                   name="special[]"
+                                                   value="special" {% if filter.special %} checked {% endif %}>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="filter-done discover text-uppercase"
+                                                name="price">{{ text_close }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="margin-bottom: 10px">
+                            <div class="dropdownFilter"
+                                 style="z-index: 98;">
+                                <div class="filter-filter">
+                                    {{ text_filter_size }}<i class="fa fa-angle-down"
+                                                             style="float: right; padding: 8px"></i>
+                                </div>
+                                <div class="dropdown-filter">
+                                    <div id="search" class="field input-group stylish-input-group input-append">
+                                        <input class="field-input-filter"
+                                               placeholder="{{ text_search }}" name="color" value="{{ search }}">
+                                        <span class="input-group-addon" style="border: none">
+                                            <button id="sub" type="button">
+                                                <img class="terms" src="catalog/view/theme/default/image/loupe.png">
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div id="size" class="ScrollStyle">
+                                        {% for size in products_size %}
+                                            <label class="check_filter check-color"
+                                                   style="display: block">{{ size }}
+                                                <input class="checkbox" type="checkbox" name="size[]"
+                                                       value="{{ size }}" {% if size in filter.size %} checked {% endif %}>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        {% endfor %}
+                                    </div>
+                                    <div>
+                                        <button type="button" class="filter-done discover text-uppercase"
+                                                name="color">{{ text_close }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 filter-content">
+
+                    </div>
+                    <div style="position:relative; z-index: 1; margin-top: 30px;">
+                        <div class="product-count col-md-6 col-xs-6" style="color: #9da7af">
+                            {{ product_total }} articles
+                        </div>
+                        <div class="col-md-6 col-xs-6" align="right">
+                            <span class="hidden-sm hidden-xs" style="color: #9da7af">
+                                {{ text_sort }}
+                            </span>
+                            <select id="input-sort" class="selectpicker"
+                                    onchange="location = this.value;">
+                                {% for sorts in sorts %}
+                                    {% if sorts.value == '%s-%s'|format(sort, order) %}
+                                        <option value="{{ sorts.href }}" selected="selected">{{ sorts.text }}</option>
+                                    {% else %}
+                                        <option value="{{ sorts.href }}">{{ sorts.text }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <i class="fa fa-angle-down" style="position: absolute; right: 20px;top: 3px;"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-container row">
+                    {% for product in products %}
+                        <div class="product-layout col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <span id="product-id" style="display: none">{{ product.product_id }}</span>
+                            <a href="{{ product.href }}">
+                                <div class="product-thumb transition">
+                                    <div class="image">
+                                        <img src="{{ product.thumb }}"
+                                             alt="{{ product.name }}"
+                                             title="{{ product.name }}"
+                                             class="img-responsive"
+                                             style="width: 100%"
+                                        />
+                                    </div>
+                                    {% if product.stock %}
+                                        <span class="product-status">
+                                            Out of Stock
+                                        </span>
+                                    {% endif %}
+                                    <div class="caption">
+                                        <div class="desctip col-sm-12 col-xs-12">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6 col-xs-4 text-left">
+                                                    <div class="text-left">
+                                                        <a href="{{ product.href }}" class="text-capitalize"
+                                                           style="font-weight: bold">{{ product.manufacturer }}</a>
+                                                    </div>
+                                                    <div class="ShoesName text-left">
+                                                        <a href="{{ product.href }}">{{ product.name }}</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6 col-xs-8 text-right">
+                                                    <div {% if product.special %} class="price-old" {% endif %}>
+                                                        {{ product.price }}
+                                                    </div>
+                                                    {% if product.special %}
+                                                        <div class="price-new text-right">{{ product.special }}</div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-sm-12 col-xs-12 hidden-xs same">
+                                                    {#<p>Disponible en plusieurs tailles</p>#}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <span>
+                                <img src="{{ product.favorite }}" class="favorite"
+                                     title="ajouter au favoris">
+                            </span>
+                        </div>
+                    {% endfor %}
+                    <div class="row col-sm-12" style="margin: 30px 0 30px 0">
+                        <div class="col-sm-6 text-center pagination">{{ pagination }}</div>
+                        {#<div class="col-sm-12 text-center ">{{ results }}</div>#}
+                    </div>
+                </div>
+            {% endif %}
+            {% if not categories and not products %}
+                <p>{{ text_no_results }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        $('#column-left').removeClass('hidden-xs');
+        $("#ex12c").slider({
+            id: "slider12c",
+            min: {{ price_min }},
+            max: {{ price_max }},
+            range: true,
+            value: [{{ price_min }}, {{ price_max }}]
+        });
+    </script>
+</div>

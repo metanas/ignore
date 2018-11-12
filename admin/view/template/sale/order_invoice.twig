@@ -1,0 +1,132 @@
+<page>
+    <page_header></page_header>
+    {% for order in orders %}
+        <table style="width: 100%;vertical-align: bottom">
+            <tr style="width: 100%">
+                <td style="width: 30%">
+                    <img src="view/image/logo.png" style="width: 100%">
+                </td>
+                <td style="text-align: right;width: 70%;">
+                    {% if order.invoice_no %}
+                        <b>{{ text_invoice_no }}</b> {{ order.invoice_no }}<br/>
+                    {% endif %}
+
+                    <b>{{ text_order_id }}</b> {{ order.order_id }}<br/>
+                    <b>{{ text_date_added }}</b> {{ order.date_added }}
+                </td>
+            </tr>
+        </table>
+
+        <table style="margin-top: 10mm">
+            <tr>
+                <th><h2>Bonjour, {{ order.customer }}</h2></th>
+            </tr>
+            <tr>
+                <td>
+                    Merci pour votre commande, Nous vous enverrons bientot un e-mail avec un lien pour suivre votre
+                    colis une fois que nous l'aurons envoyee.
+                </td>
+            </tr>
+        </table>
+
+        <table style="margin-top: 5mm">
+            {% if order.shipping_method %}
+                <tr>
+                    <th>{{ text_shipping_method }}:</th>
+                    <td>{{ order.shipping_method }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <th>{{ text_payment_method }}:</th>
+                <td>{{ order.payment_method }}</td>
+            </tr>
+        </table>
+
+        <table style="width: 100%;margin-top: 5mm;">
+            <tr style="width:100%;">
+                <th style="width: 48%;border : 1px solid black;background-color: #ff1b5a;color: whitesmoke;padding: 4px">
+                    {{ text_shipping_address }}
+                </th>
+                <td style="width: 4%">
+
+                </td>
+                <th style="width: 48%;border : 1px solid black;background-color: #ff1b5a;color: whitesmoke;padding: 4px">
+                    {{ text_payment_address }}
+                </th>
+            </tr>
+            <tr style="width: 100%;">
+                <td style="width: 48%;border-bottom : 1px;border-left:1px;border-right: 1px;padding-left: 4px">
+                    {% if order.shipping_address %}
+                        <div>{{ order.shipping_address }}</div>
+                        {{ text_telephone }}: {{ order.store_telephone }}
+                    {% endif %}
+                </td>
+                <td style="width: 4%">
+
+                </td>
+                <td style="width: 48%;border-bottom : 1px;border-left:1px;border-right: 1px;padding-left: 4px">
+                    {% if order.payment_address %}
+                        <div>{{ order.payment_address }}</div>
+                        <b>{{ text_telephone }}</b> {{ order.store_telephone }}
+                    {% else %}
+                        <div>{{ order.shipping_address }}</div>
+                        {{ text_telephone }}: {{ order.store_telephone }}
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <th><h3>{{ text_order_detail }}</h3></th>
+            </tr>
+        </table>
+
+        <table style="width: 100%">
+            <tr style="width: 100%">
+                <th style="width: 20%;">{{ column_product }}</th>
+                <th style="width: 20%;text-align: right">{{ column_model }}</th>
+                <th style="width: 20%;text-align: right"><b>{{ column_quantity }}</b></th>
+                <th style="width: 20%;text-align: right"><b>{{ column_price }}</b></th>
+                <th style="width: 20%;text-align: right"><b>{{ column_total }}</b></th>
+            </tr>
+            <tr style="width: 100%;">
+                <td colspan="5" style="border-top: 1px"></td>
+            </tr>
+            {% for product in order.product %}
+                <tr style="width: 100%">
+                    <td style="width: 20%">{{ product.name }}
+                        {% for option in product.option %}
+                            <br/>
+                            &nbsp;
+                            <small> - {{ option.name }}: {{ option.value }}</small>
+                        {% endfor %}</td>
+                    <td style="width: 20%;text-align: right">{{ product.model }}</td>
+                    <td style="width: 20%;text-align: right">{{ product.quantity }}</td>
+                    <td style="width: 20%;text-align: right">{{ product.price }}</td>
+                    <td style="width: 20%;text-align: right">{{ product.total }}</td>
+                </tr>
+            {% endfor %}
+            <tr style="width: 100%;">
+                <td colspan="5" style="border-bottom: 1px"></td>
+            </tr>
+            {% for total in order.total %}
+                <tr>
+                    <td style="text-align: right" colspan="4"><b>{{ total.title }}</b></td>
+                    <td style="text-align: right">{{ total.text }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
+    <page_footer>
+        <table style="width: 100%; border-top: 3px solid #ff1b5a;">
+            <tr>
+                <td style="width: 100%;text-align: center">
+                    Si vous avez besoin de plus d'informations ou d'aide au sujet de votre commande, nous vous suggerons
+                    de contacter notre service client <br>
+                    Nous esperons vous revoir bientot. Zalark.com
+                </td>
+            </tr>
+        </table>
+    </page_footer>
+</page>

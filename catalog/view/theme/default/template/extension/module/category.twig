@@ -1,0 +1,56 @@
+<div id="slidebar" class="slide-bar">
+    <a href="javascript:void(0)" onclick="closeSlide()" class="closebtn visible-xs">&times;</a>
+    {% for category in categories %}
+        {% if category.category_id == category_id %}
+            <div><a href="{{ category.href }}" class="actif">{{ category.name }}</a></div>
+            {% if category.children %}
+                {% for child in category.children %}
+                    {% if child.category_id == child_id %}
+                        <div class="category-filter">
+                            <a class="actif"
+                               onclick="changePath(this,'{{ category.category_id }}_{{ child.category_id }}')">&nbsp;&nbsp;&nbsp;{{ child.name }}</a>
+                            {% for sub in child.children %}
+                                <div class="category-filter" style="margin-left: 10px">
+                                    <a onclick="changePath(this,'{{ category.category_id }}_{{ child.category_id }}_{{ sub.category_id }}')">&nbsp;&nbsp;&nbsp;{{ sub.name }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="category-filter">
+                            <span onclick="changePath(this,'{{ category.category_id }}_{{ child.category_id }}')">&nbsp;&nbsp;&nbsp;{{ child.name }}</span>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {#{% else %}#}
+            {#<div><a href="{{ category.href }}">{{ category.name }}</a></div>#}
+        {% endif %}
+    {% endfor %}
+</div>
+<script>
+    $(document).scroll(function () {
+        checkOffset();
+    });
+
+    function checkOffset() {
+        if ($(window).width() > 790) {
+            if ($("#content").offset().top >= $(document).scrollTop()) {
+                $(".slide-bar").css({"position": "absolute"});
+            }
+            else if ($(".pagination").offset().top + $(".pagination").height() - $(".slide-bar").height() <= $(document).scrollTop()) {
+                $(".slide-bar").css({"position": "absolute"});
+                $(".slide-bar").offset({"top": $(".pagination").offset().top + $(".pagination").height() - $(".groupe_list").height()})
+            }
+            else {
+                $(".slide-bar").css({"position": "fixed", "top": "0"});
+            }
+        }
+    }
+
+    function changePath(self, path) {
+        $('.actif').removeClass('actif');
+        self.classList.add('actif');
+        updateQueryStringParam("path", path);
+        filterGenerator();
+    }
+</script>

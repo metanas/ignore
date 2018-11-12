@@ -1,0 +1,222 @@
+<div class="row">
+    {% if logged %}
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown cart" align="center">
+            <a href="{{ account }}">
+                <img src="catalog/view/theme/default/image/user.png" width="25" height="25">
+                <p class="cart-para">{{ text_profile }}</p>
+            </a>
+            <div class="dropdown-menu hidden-xs" style="width: 200px;">
+                <div style="font-size: 13px; line-height: 2">
+                    <div><a href="{{ account }}">Apercu de mon Compte</a></div>
+                    <div><a href="{{ order }}">Mes commandes</a></div>
+                    <div><a href="{{ return }}">Renvoyer un article</a></div>
+                    <div><a href="{{ contact }}">Aide</a></div>
+                    <hr>
+                    {{ logout }}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown cart" align="center">
+            <a href="{{ action_login }}">
+                <img src="catalog/view/theme/default/image/user.png" width="25" height="25">
+                <p class="cart-para">{{ text_login }}</p>
+            </a>
+            <div class="dropdown-menu hidden-xs" style="padding: 10px; width: 200px;border-radius: 0;margin-left: -80px;">
+                <button class="zalark-button" id="myBtn2"
+                        style="font-size: 14px; font-weight: bold;margin-bottom: 0;margin-top: 0">SE
+                    CONNECTER
+                </button>
+                <a href="{{ action_login }}"><p class="inscription" style="font-size: 11px">nouveau client? creez un
+                        compte</p></a>
+                <hr style="margin-top: 0;margin-bottom: 0">
+                <div style="font-size: 13px; line-height: 2">
+                    <div><a href="{{ account }}">Apercu de mon Compte</a></div>
+                    <div><a href="{{ order }}">Mes commandes</a></div>
+                    <div><a href="{{ return }}">Renvoyer un article</a></div>
+                    <div><a href="{{ contact }}">Aide</a></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-md">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body" align="center" style="padding-right: 15%;padding-left: 15%">
+                        <h1><img src="catalog/view/theme/default/image/user.png" width="30" height="30">
+                            Connectez-vous</h1>
+                        <p>Bienvenue sur Zalark, votre compagnon mode. Reinventez votre dressing</p>
+                        <form action="{{ action_login }}" method="post" enctype="multipart/form-data">
+                            <div align="left">
+                                <div class="form-group">
+                                    <label class="control-label" for="input-email">{{ entry_email }}</label>
+                                    <input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}"
+                                           id="input-email" class="form-control input-zalark"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="input-password">{{ entry_password }}</label>
+                                    <input type="password" name="password" value=""
+                                           placeholder="{{ entry_password }}" id="input-password"
+                                           class="form-control input-zalark"/>
+                                </div>
+                                <button class="zalark-button">SE CONNECTER</button>
+                            </div>
+                            <a href="{{ forgotten }}" style="text-decoration: underline">{{ text_forgotten }}</a>
+                        </form>
+                    </div>
+                    <div class="modal-footer"
+                         style="background-color: #eeeeee; padding-right: 15%;padding-left: 15%;text-align: center">
+                        <h3>{{ text_new_customer }}</h3>
+                        <a href="{{ action_login }}">
+                            <button type="submit" class="zalark-button-border-dark">{{ text_register }}</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $("#myBtn2").click(function () {
+                $("#myModal").modal();
+            })
+        </script>
+    {% endif %}
+    <div class="cart col-lg-4 col-md-4 col-sm-4 col-xs-4" align="center">
+        <a href="{{ wishlist }}">
+            <img id="favorite" src="image/favorite.png" width="25" height="25">
+            <p class="cart-para text-capitalize">{{ text_wishlist }}</p>
+            <span id="favorite-cart"
+                  class="quantity" {% if not favorite_Total %} style="display: none" {% endif %}>{{ favorite_Total }}</span>
+        </a>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown cart" align="center">
+        <a href="{{ cart }}">
+            <img src="catalog/view/theme/default/image/checkout.png"
+                 width="25" height="25">
+            <p class="cart-para">{{ text_cart }}</p>
+        </a>
+        <span id="checkout"
+              class="quantity" {% if count_products is same as(0) %} style="display: none" {% endif %}>{{ count_products }}</span>
+        <div id="cart-dropdown" class="dropdown-menu pull-right hidden-xs">
+            <h4 class="text-center text-uppercase">{{ text_cart }}</h4>
+            {% if products or vouchers %}
+                <div class="col-md-12 scrollStyle" style="padding: 0;">
+                    {% for product in products %}
+                        <div>
+                            {% if product.thumb %}
+                                <div class="col-md-3">
+                                    <a href="{{ product.href }}"><img
+                                                src="{{ product.thumb }}" alt="{{ product.name }}"
+                                                title="{{ product.name }}" class="img-thumbnail"/></a>
+                                </div>
+                            {% endif %}
+                            <div class="col-md-9">
+                                <div class="col-md-6" style="padding: 0;">
+                                    <div class="col-md-12" style="padding: 0;">
+                                        {{ product.model }}
+                                    </div>
+                                    <div class="col-md-12" style="padding: 0">
+                                        <a href="{{ product.href }}">{{ product.name }}</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="padding: 0">
+                                    <div class="col-md-12 text-right" style="padding: 0;">
+                                        <b {% if product.old_price is not null %} class="price-new" {% endif %}>{{ product.price }}</b>
+                                    </div>
+                                    {% if product.old_price is not null %}
+                                        <div class="col-md-12 text-right" style="padding: 0;">
+                                            <small class="price-old">{{ product.old_price }}</small>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                {% if product.option %}
+                                    {% for option in product.option %}
+                                        <div class="col-md-12"
+                                             style="padding: 0;">{{ option.name }} : {{ option.value }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                                {% if product.recurring %} <br/>
+                                    -
+                                    <small>{{ text_recurring }} {{ product.recurring }}</small>
+                                {% endif %}
+                                <div class="col-md-12" style="padding: 0;">Quantite : {{ product.quantity }}</div>
+                                <div class="col-md-12 text-center" style="padding: 0;">
+                                    <span class="pointer" onclick="wishlist.add('{{ product.product_id }}');">Deplacer vers mes preferes</span>
+                                    |
+                                    <span class="pointer"
+                                          onclick="cart.remove('{{ product.cart_id }}');">Supprimer</span>
+                                </div>
+                            </div>
+                            {% if product is not same as(products|last) %}
+                                <hr class="col-md-11">
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    {% for voucher in vouchers %}
+                        <tr>
+                            <td class="text-center"></td>
+                            <td class="text-left">{{ voucher.description }}</td>
+                            <td class="text-right">xY 1</td>
+                            <td class="text-right">{{ voucher.amount }}</td>
+                            <td class="text-center text-danger">
+                                <button type="button" onclick="voucher.remove('{{ voucher.key }}');"
+                                        title="{{ button_remove }}" class="btn btn-danger btn-xs"><i
+                                            class="fa fa-times"></i></button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </div>
+                <div class="col-md-12" style="margin-top: 10px;">
+                    <hr style="box-shadow: 0 -5px 5px -5px #333;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-6 text-left" style="padding: 0">
+                            <strong>Livraison</strong></div>
+                            <div class="col-md-6 text-right" style="padding: 0">Gratuit</div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-6 text-left" style="padding: 0">
+                                <strong>Total(TVA Include)</strong></div>
+                            <div class="col-md-6 text-right" style="padding: 0"><b>{{ totals }}</b></div>
+                        </div>
+                    </div>
+                    {#{% for total in totals %}#}
+                        {#<div class="row">#}
+                            {#<div class="col-md-12">#}
+                                {#<div class="col-md-6 text-left" style="padding: 0">#}
+                                    {#<strong>{{ total.title }}</strong></div>#}
+                                {#<div class="col-md-6 text-right" style="padding: 0">{{ total.text }}</div>#}
+                            {#</div>#}
+                        {#</div>#}
+                    {#{% endfor %}#}
+                    <div style="margin-top: 10px">
+                        <a href="{{ checkout }}">
+                            <button type="button" class="zalark-button text-uppercase">
+                                {{ text_checkout }}
+                            </button>
+                        </a>
+                    </div>
+                    <div class="text-center text-uppercase">
+                        <a href="{{ cart }}"><b><u>{{ text_cart }}</u></b></a>
+                    </div>
+                </div>
+            {% else %}
+                <li>
+                    <p class="text-center">{{ text_no_results }}</p>
+                </li>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script> $(function () {
+        $(".dropdown").hover(
+            function () {
+                $('.dropdown-menu', this).stop(true, true).fadeIn("fast");
+                $(this).toggleClass('open');
+            },
+            function () {
+                $('.dropdown-menu', this).stop(true, true).fadeOut("fast");
+                $(this).toggleClass('');
+            });
+    });
+</script>

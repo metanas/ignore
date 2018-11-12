@@ -1,0 +1,62 @@
+<div class="container">
+    <h1>{{ heading_title }}</h1>
+    <div class="row">
+        {% for product in products %}
+            <div class="product-layout col-lg-3 col-md-3 col-sm-4 col-xs-4" >
+                <div class="product-thumb transition">
+                    <div class="image">
+                        <a href="{{ product.href }}">
+                            <img src="{{ product.thumb }}"
+                                 alt="{{ product.name }}"
+                                 title="{{ product.name }}"
+                                 class="img-responsive"
+                                 /></a>
+                    </div>
+                    <div class="caption">
+                        <div class="desctip col-sm-12 col-xs-12">
+                            <h4 class="SheosName"><a href="{{ product.href }}">{{ product.name }}</a></h4>
+                            {% if product.price %}
+                                {% if not product.special %}
+                                    <p class="SheosPrice">{{ product.price }}</p>
+                                {% else %}
+                                    <span class="price-new SheosPrice">{{ product.special }}</span><br>
+                                    <span class="price-old SheosPrice">{{ product.price }}</span>
+                                {% endif %}
+                            {% endif %}
+                            <div class="same">
+                                {% if product.simulate %}
+                                    <img class="smallSame img-default" src="{{ product.thumb }}">
+                                    {% for same in product.simulate %}
+                                        <img class="smallSame" src="{{ same.popup }}">
+                                    {% else %}
+                                        <p>Disponible en plusieurs tailles</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<script> $(function () {
+        $(".product-layout").hover(
+            function () {
+                $('.same', this).show(200)
+            }, function () {
+                $('.same', this).hide(200)
+            })
+    });
+    $(function () {
+        $(".smallSame").hover(
+            function () {
+                $(this).css('border', '1px solid black');
+                this.parentNode.parentNode.parentNode.parentNode.children[0].children[0].children[0].src = this.src;
+            }, function () {
+                $(this).css('border', 'none');
+                this.parentNode.parentNode.parentNode.parentNode.children[0].children[0].children[0].src = this.parentNode.children[0].src;
+            });
+    });
+</script>
+

@@ -1,0 +1,227 @@
+<div id="title" class="container" align="center">
+    <h1 id="title-checkout">Se Connecter</h1>
+    <hr style="border-top: 3px solid #eee">
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <h3>{{ text_login_customer }}</h3>
+        <hr>
+        <div id="login-field">
+            <div class="form-group">
+                <label class="control-label" for="input-email">{{ entry_email_address }}</label>
+                <input type="text" name="email" value="" placeholder="{{ entry_email }}" id="sign-email"
+                       class="form-control input-zalark"/>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="input-password">{{ entry_password }}</label>
+                <input type="password" name="password" value="" placeholder="{{ entry_password }}"
+                       id="sign-password"
+                       class="form-control input-zalark"/>
+            </div>
+        </div>
+        <input type="button" value="{{ button_login }}" id="button-login" data-loading-text="{{ text_loading }}"
+               class="zalark-button"/>
+        <div align="center">
+            <a href="{{ forgotten }}"><u>
+                    <b>
+                        {{ text_forgotten }}
+                    </b>
+                </u>
+            </a></div>
+    </div>
+    <div class="col-sm-6">
+        <h3>{{ text_new_customer }}</h3>
+        <hr>
+        <div id="sign-up-field" style="display: none">
+            <div class="form-group">
+                <label class="control-label" for="input-firstname">{{ entry_firstname }}</label>
+                <input type="text" name="firstname" value="" placeholder="{{ entry_firstname }}" id="input-name"
+                       class="form-control input-zalark"/>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="input-lastname">{{ entry_lastname }}</label>
+                <input type="text" name="lastname" value="" placeholder="{{ entry_lastname }}" id="input-lastname"
+                       class="form-control input-zalark"/>
+            </div>
+            <label class="control-label" for="input-lastname">{{ entry_birthday }}</label>
+            <div class="form-group">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4" style="padding: 0">
+                    <select name="birthday[]" class="select-zalark">
+                        <option value="0" selected>Select Jour:</option>
+                        {% for i in 1..31 %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <i class="fa fa-angle-down"
+                       style="position: absolute;padding: 13px;cursor: pointer;right: 0;top: 0;"></i>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4"><select name="birthday[]" class="select-zalark">
+                        <option value="0" selected>Select Mois:</option>
+                        {{ entry_month }}
+                    </select>
+                    <i class="fa fa-angle-down"
+                       style="position: absolute;padding: 13px;cursor: pointer;right: 15px;top: 0;"></i></div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4" style="padding: 0">
+                    <select name="birthday[]" class="select-zalark">
+                        <option value="0" selected>Select Annee:</option>
+                        {% for i in 2000..1900 %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <i class="fa fa-angle-down"
+                       style="position: absolute;padding: 13px;cursor: pointer;right: 0;top: 0;"></i>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 54px">
+                <label class="control-label" for="input-email">{{ entry_email_address }}</label>
+                <input type="text" name="email" value="" placeholder="{{ entry_email }}" id="input-email"
+                       class="form-control input-zalark"/>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" for="input-password">{{ entry_password }}</label>
+                <input type="password" name="password" value="" placeholder="{{ entry_password }}"
+                       id="input-password"
+                       class="form-control input-zalark"/>
+                <span class="description">{{ text_description_password }}</span>
+            </div>
+            <div class="form-group">
+                <div>
+                    <label class="control-label" for="input-firstname">{{ entry_sex }}</label>
+                </div>
+                <label class="check_filter" style="display: inline">{{ entry_female }}
+                    <input type="radio" name="sex" value="{{ entry_female }}">
+                    <span class="checkmark checkradio"></span>
+                </label>
+                <label class="check_filter" style="display: inline; margin-left: 10px">{{ entry_male }}
+                    <input type="radio" name="sex" value="{{ entry_male }}">
+                    <span class="checkmark checkradio"></span>
+                </label>
+            </div>
+            <div class="form-group" style="margin-top: 30px">
+                <label class="check_filter">{{ text_newsletter }}
+                    <input type="checkbox" name="newsletter" value="Agree">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+        <input type="button" value="{{ button_continue }}" id="button-register"
+               data-loading-text="{{ text_loading }}" class="zalark-button-border"/>
+        <div>
+            <p class="condition-general">{{ text_condition_general }} <a href=""><u><b>{{ text_condition }}</b></u></a>
+                et <a href=""><u><b>{{ text_politic }}</b></u></a> de Zalark.
+        </div>
+    </div>
+</div>
+<div class="container" align="center">
+    <img class="pay-image" src="catalog/view/theme/default/image/paypal.png">
+    <img class="pay-image" src="catalog/view/theme/default/image/visa.png">
+    <img class="pay-image" src="catalog/view/theme/default/image/mastercard.png">
+    <img class="pay-image" src="catalog/view/theme/default/image/livraison.png">
+</div>
+<script>
+    // Login
+    $('#collapse-checkout-option').on('click', '#button-login', 'click', function () {
+
+        if ($('#login-field').css("display") === 'none') {
+            $('#login-field').show(300);
+            $('#sign-up-field').hide(300);
+            return;
+        }
+
+        // if (stringChecker.email($('#collapse-checkout-option #login-field input[name=\'email\']').val()) === false) {
+        //     $('#collapse-checkout-option #login-field input[name=\'email\']').focus();
+        //     return;
+        // }
+        //
+        // if (stringChecker.password($('#collapse-checkout-option #login-field input[name=\'password\']').val()) === false) {
+        //     $('#collapse-checkout-option #login-field input[name=\'password\']').focus();
+        //     return;
+        // }
+        $.ajax({
+            url: 'index.php?route=checkout/login/save&language={{ language }}',
+            type: 'post',
+            data: $('#collapse-checkout-option #login-field :input'),
+            dataType: 'json',
+            beforeSend: function () {
+                $('#button-login').button('loading');
+            },
+            complete: function () {
+                $('#button-login').button('reset');
+            },
+            success: function (json) {
+                if (json['session']) {
+                    step.next();
+                }
+                $('.alert-dismissible, .text-danger').remove();
+                $('.form-group').removeClass('has-error');
+                if (json['redirect']) {
+
+                } else if (json['error']) {
+                    // $('#collapse-checkout-option .panel-body').prepend('<div class="alert alert-danger alert-dismissible" ><i class="fa fa-exclamation-circle"></i> '
+                    //     + json['error']['warning']
+                    //     + '<button type = "button" class="close" data-dismiss="alert" > & times; <button> <div>');
+                    // Highlight any found errors
+                    $('#collapse-checkout-option #login-field input[name=\'email\']').parent().addClass('has-error');
+                    $('#collapse-checkout-option #login-field input[name=\'password\']').parent().addClass('has-error');
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    });
+
+    // Register
+    $('#collapse-checkout-option').on('click', '#button-register', function () {
+        if ($('#sign-up-field').css("display") === 'none') {
+            $('#sign-up-field').show(300);
+            $('#login-field').hide(300);
+            return;
+        }
+
+        $.ajax({
+            url: 'index.php?route=checkout/register/save&language={{ language }}',
+            type: 'post',
+            data: $('#collapse-checkout-option #sign-up-field input[type=\'text\'], #collapse-checkout-option #sign-up-field input[type=\'radio\'], #collapse-checkout-option #sign-up-field input[type=\'password\'], #collapse-checkout-option #sign-up-field input[type=\'checkbox\']'),
+            dataType: 'json',
+            beforeSend: function () {
+                $('#button-register').button('loading');
+            },
+            complete: function () {
+                $('#button-register').button('reset');
+            },
+            success: function (json) {
+                if (json['success']) {
+                    step.next();
+                }
+                //     $('.alert-dismissible, .text-danger').remove();
+                //     $('.form-group').removeClass('has-error');
+                //
+                //     if (json['redirect']) {
+                //         location = json['redirect'];
+                //     } else if (json['error']) {
+                //         $('#button-register').button('reset');
+                //
+                //         if (json['error']['warning']) {
+                //             $('#collapse-payment-address .panel-body').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                //         }
+                //
+                //         for (i in json['error']) {
+                //             var element = $('#input-payment-' + i.replace('_', '-'));
+                //
+                //             if ($(element).parent().hasClass('input-group')) {
+                //                 $(element).parent().after('<div class="text-danger">' + json['error'][i] + '</div>');
+                //             } else {
+                //                 $(element).after('<div class="text-danger">' + json['error'][i] + '</div>');
+                //             }
+                //         }
+                //     }
+            },
+            error: function () {
+            }
+        });
+    });
+
+</script>

@@ -1,0 +1,819 @@
+<div id="title" class="container" align="center">
+    <h1 id="title-checkout">Adresse</h1>
+    <hr style="border-top: 3px solid #eee">
+</div>
+<div class="col-sm-6" align="center">
+    <div class="address-selection" id="domicile" style="border-color: #ff1b5e; margin-bottom: 12px">
+        <img src="image/house.png" height="100">
+        <p>Domicile</p>
+    </div>
+</div>
+<div class="col-sm-6" align="center">
+    <div class="address-selection" id="retrait">
+        <img src="image/location.png" height="100">
+        <p>Point de retrait Amana</p>
+    </div>
+</div>
+<div class="col-sm-12" id="domicile-content" style="margin-top: 30px">
+    <div class="col-md-6">
+        <h4>ADRESSE DE LIVRAISON</h4>
+        <hr>
+        <div class="col-md-12" id="container-address">
+            <div class="row">
+                {% for address in addresses %}
+                    <div class="col-sm-12 address-form">
+                        <div class="form-group">
+                            <label class="check_filter">
+                                <input type="radio" class="checkbox" name="address"
+                                       value="{{ address.address_id }}" {% if address_id == address.address_id %} checked="checked" {% endif %}>
+                                {{ address.address }}
+                                <span class="checkmark checkradio"></span>
+                            </label>
+                        </div>
+                        <i class="edit-address fa fa-pencil"></i>
+                        <i class="delete-address fa fa-close"></i>
+                        <hr>
+                    </div>
+                {% endfor %}
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="check_filter">
+                            <input id="add-new-address" type="radio" class="checkbox" name="address" value="Add">Ajouter
+                            une
+                            nouvelle adresse
+                            <span class="checkmark checkradio"></span>
+                        </label>
+                    </div>
+
+                    <div id="add-address-field" class="form-group"
+                         style="display: {% if addresses %} none {% else %} block {% endif %}">
+                        <div class="form-group">
+                            <label class="check_filter" style="display: inline">
+                                <input type="radio" class="checkbox" name="sex" value="man">mr
+                                <span class="checkmark checkradio"></span>
+                            </label>
+                            <label class="check_filter" style="display: inline;margin-left: 10px">
+                                <input type="radio" class="checkbox" name="sex" value="woman">madame
+                                <span class="checkmark checkradio"></span>
+                            </label>
+                        </div>
+                        <div class="form-group" hidden>
+                            <input type="text" name="address_id" value="" id="input-address-id"
+                                   class="form-control input-zalark" hidden/>
+                        </div>
+                        <div class="form-group required">
+                            <label class="control-label" for="input-firstname">{{ entry_firstname }}</label>
+                            <input type="text" name="firstname" value="" placeholder="{{ entry_firstname }}"
+                                   id="input-name"
+                                   class="form-control input-zalark"/>
+                        </div>
+                        <div class="form-group required">
+                            <label class="control-label" for="input-lastname">{{ entry_lastname }}</label>
+                            <input type="text" name="lastname" value="" placeholder="{{ entry_lastname }}"
+                                   id="input-lastname"
+                                   class="form-control input-zalark"/>
+                        </div>
+                        <div class="form-group required">
+                            <label class="control-label" for="input-address-1">{{ entry_address_1 }}</label>
+                            <input type="text" name="address_1" value="" placeholder="{{ entry_address_1 }}"
+                                   id="input-address-1"
+                                   class="form-control input-zalark"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-address">{{ entry_address_2 }}</label>
+                            <input type="text" name="address_2" value="" placeholder="{{ entry_address_2 }}"
+                                   id="input-address-2"
+                                   class="form-control input-zalark"/>
+                        </div>
+                        <div class="form-group required">
+                            <label class="control-label" for="input-postcode">{{ entry_postcode }}</label>
+                            <input type="text" name="postcode" value="" placeholder="{{ entry_postcode }}"
+                                   id="input-postcode"
+                                   class="form-control input-zalark"/>
+                        </div>
+                        <div class="form-group required">
+                            <label class="control-label" for="input-city">{{ entry_city }}</label>
+                            <input type="text" name="city" value="" placeholder="{{ entry_city }}" id="input-city"
+                                   class="form-control input-zalark"/>
+                        </div>
+                        <div class="form-group required">
+                            <label class="control-label" for="input-telephone">{{ entry_telephone }}</label>
+                            <input type="text" name="telephone" value="" placeholder="{{ entry_telephone }}"
+                                   id="input-telephone"
+                                   class="form-control input-zalark"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="input-country">Pays</label>
+                            <select class="select-zalark" name="country">
+                                <option value="Maroc" selected>Maroc</option>
+                            </select>
+                            <i class="fa fa-angle-down"
+                               style="position: absolute;padding: 13px;cursor: pointer;right: 0;top: 0;"></i>
+                        </div>
+                        <button id="update-address" class="zalark-button-border text-uppercase"
+                                hidden>{{ button_update_address }}</button>
+                        <button id="add-address"
+                                class="zalark-button-border text-uppercase">{{ button_save_address }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h4>ADRESSE DE FACTURATION</h4>
+        <hr>
+        <h4>Utiliser l'adresse de livraison comme adresse de facturation ?</h4>
+        <div class="col-sm-12 address-form">
+            <div class="form-group">
+                <label class="check_filter">
+                    <input type="radio" class="checkbox" name="billing"
+                           value="1" {% if not billing_address %} checked {% endif %}>{{ text_yes }}
+                    <span class="checkmark checkradio"></span>
+                </label>
+            </div>
+        </div>
+        <div class="col-sm-12 address-form">
+            <div class="form-group">
+                <label class="check_filter">
+                    <input type="radio" class="checkbox" name="billing"
+                           value="0" {% if billing_address %} checked {% endif %}>{{ text_no }}
+                    <span class="checkmark checkradio"></span>
+                </label>
+            </div>
+        </div>
+        <div class="col-md-12" id="container-billing" {% if not billing_address %} style="display: none" {% endif %}>
+            <div class="form-group">
+                <div class="form-group">
+                    <label class="check_filter" style="display: inline">
+                        <input type="radio" class="checkbox" name="sex" value="man">mr
+                        <span class="checkmark checkradio"></span>
+                    </label>
+                    <label class="check_filter" style="display: inline;margin-left: 10px">
+                        <input type="radio" class="checkbox" name="sex" value="woman">madame
+                        <span class="checkmark checkradio"></span>
+                    </label>
+                </div>
+                <div class="form-group required">
+                    <label class="control-label" for="input-firstname">{{ entry_firstname }}</label>
+                    <input type="text" name="firstname" value="{{ billing_address.firstname }}"
+                           placeholder="{{ entry_firstname }}" id="input-name"
+                           class="form-control input-zalark"/>
+                </div>
+                <div class="form-group required">
+                    <label class="control-label" for="input-lastname">{{ entry_lastname }}</label>
+                    <input type="text" name="lastname" value="{{ billing_address.lastname }}"
+                           placeholder="{{ entry_lastname }}"
+                           id="input-lastname"
+                           class="form-control input-zalark"/>
+                </div>
+                <div class="form-group required">
+                    <label class="control-label" for="input-address-1">{{ entry_address_1 }}</label>
+                    <input type="text" name="address_1" value="{{ billing_address.address_1 }}"
+                           placeholder="{{ entry_address_1 }}"
+                           id="input-address-1"
+                           class="form-control input-zalark"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="input-address">{{ entry_address_2 }}</label>
+                    <input type="text" name="address_2" value="{{ billing_address.address_2 }}"
+                           placeholder="{{ entry_address_2 }}"
+                           id="input-address-2"
+                           class="form-control input-zalark"/>
+                </div>
+                <div class="form-group required">
+                    <label class="control-label" for="input-postcode">{{ entry_postcode }}</label>
+                    <input type="text" name="postcode" value="{{ billing_address.postcode }}"
+                           placeholder="{{ entry_postcode }}"
+                           id="input-postcode"
+                           class="form-control input-zalark"/>
+                </div>
+                <div class="form-group required">
+                    <label class="control-label" for="input-city">{{ entry_city }}</label>
+                    <input type="text" name="city" value="{{ billing_address.city }}" placeholder="{{ entry_city }}"
+                           id="input-city"
+                           class="form-control input-zalark"/>
+                </div>
+
+                <div class="form-group required">
+                    <label class="control-label" for="input-telephone">{{ entry_telephone }}</label>
+                    <input type="text" name="telephone" value="{{ billing_address.telephone }}"
+                           placeholder="{{ entry_telephone }}"
+                           id="input-telephone"
+                           class="form-control input-zalark"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="input-country">Pays</label>
+                    <select class="select-zalark" name="country">
+                        <option value="Maroc" selected>Maroc</option>
+                    </select>
+                    <i class="fa fa-angle-down"
+                       style="position: absolute;padding: 13px;cursor: pointer;right: 0;top: 0;"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-xs-12" align="center">
+            <button id="save-address" class="zalark-button">{{ button_continue }}</button>
+        </div>
+    </div>
+
+</div>
+<div class="col-sm-12" id="retrait-content">
+
+</div>
+<script>
+
+    $("#container-address").on("mouseenter", '.address-form', function () {
+        if (!isMobile.any()) {
+            $(".delete-address", this).show();
+            $(".edit-address", this).animate({
+                marginTop: "70px"
+            }, 100)
+        }
+    });
+
+    $("#container-address").on('mouseleave', '.address-form', function () {
+        $(".delete-address", this).hide();
+        $(".edit-address", this).animate({
+            marginTop: "0"
+        }, 100)
+    });
+
+    $("#container-address").on('change', 'input:radio[name="address"]', function () {
+        if ($(this).val() === "Add") {
+            refactorForm();
+            $("#add-address-field").show(200);
+        } else {
+            $("#add-address-field").hide(200);
+        }
+    });
+
+    function refactorForm() {
+        $('input[name="address_id"]').val('');
+        $('input[name="firstname"]').val('');
+        $('input[name="lastname"]').val('');
+        $('input[name="address_1"]').val('');
+        $('input[name="address_2"]').val('');
+        $('input[name="city"]').val('');
+        $('input[name="postcode"]').val('');
+        $('input[name="telephone"]').val('');
+        $('#update-address').hide();
+        $('#add-address').show();
+        $('#add-address-field').hide(200)
+    }
+
+    $('#update-address').on('click', function () {
+        $.ajax({
+            url: 'index.php?route=checkout/shipping_address/update',
+            type: 'post',
+            data: $('#add-address-field input[type="text"], #add-address-field input[type="radio"]:checked, #add-address-field select'),
+            dataType: 'json',
+            beforeSend: function () {
+                $('body').loading({message: "chargement.."});
+            },
+            complete: function () {
+                $('body').loading('stop');
+            },
+            success: function (json) {
+                if (json['success']) {
+                    let result = json['result'];
+                    $('.address-form :input[value="' + result['address_id'] + '"]').parents('.address-form').remove();
+                    setAddress(result);
+                    refactorForm();
+                    $('html, body').animate({scrollTop: 0}, 'slow');
+
+                }
+            },
+            error: function (d, r, e) {
+                console.log(d, r, e);
+            }
+        })
+    });
+
+    $("#container-address").on("click", ".edit-address", function () {
+        var id = $(this).prev().children('label').children('input').val();
+        $.ajax({
+            url: "index.php?route=checkout/shipping_address/info",
+            type: "POST",
+            data: {"address_id": id},
+            beforeSend: function () {
+                $('body').loading({message: "chargement.."});
+            },
+            complete: function () {
+                $('body').loading('stop');
+            },
+            success: function (json) {
+                if (json['result'] !== false) {
+                    let result = json['result'];
+                    $('input[name="address_id"]').val(result['address_id']);
+                    $('input[name="firstname"]').val(result['firstname']);
+                    $('input[name="lastname"]').val(result['lastname']);
+                    $('input[name="address_1"]').val(result['address_1']);
+                    $('input[name="address_2"]').val(result['address_2']);
+                    $('input[name="city"]').val(result['city']);
+                    $('input[name="postcode"]').val(result['postcode']);
+                    $('input[name="telephone"]').val(result['telephone']);
+                    $('#update-address').show();
+                    $('#add-address').hide();
+                    $('#add-address-field').show(200);
+
+                    $('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 'slow');
+
+                }
+            }
+        })
+    });
+
+    var ob;
+    $("#container-address").on("click", ".delete-address", function () {
+        ob = $(this).parent(".address-form");
+        $.ajax({
+            url: "index.php?route=checkout/shipping_address/delete",
+            type: "POST",
+            data: {"address_id": ob[0].children[0].children[0].children[0].value},
+            beforeSend: function () {
+                $('body').loading({message: "chargement.."});
+            },
+            complete: function () {
+                $('body').loading('stop');
+            },
+            success: function (json) {
+                if (json['redirect']) {
+                    location = json['redirect'];
+                } else if (json['success']) {
+                    ob.remove();
+                }
+            },
+            error: function (d, w, r) {
+                console.log(d, w, r)
+            }
+        })
+    });
+
+    $("#save-address").on("click", function () {
+        if ($("#container-address .form-group input[name='address']:checked").length === 0) {
+            return;
+        }
+        $.ajax({
+            url: "index.php?route=checkout/shipping_address/save",
+            type: "post",
+            data: $("#container-address .form-group input[name='address']:checked, input[name='billing']:checked , #container-billing input[type=\"text\"], #add-address-field select"),
+            dataType: "json",
+            beforeSend: function () {
+                $('body').loading({message: "chargement.."});
+            },
+            complete: function () {
+                $('body').loading('stop');
+            },
+            success: function (json) {
+                if (json['redirect']) {
+                    location = json['redirect'];
+                } else if (json['not_found']) {
+
+                } else if (json['not_selected']) {
+
+                } else if (json['success']) {
+                    step.next();
+                }
+            },
+            error: function (r, df, d) {
+                console.log(r, df, d);
+            }
+
+        });
+    });
+
+    $("#domicile").on("click", function () {
+        $("#domicile").css("border-color", "#ff1b5e");
+        $("#retrait").css("border-color", "#e7e7e7");
+        $("#domicile-content").show();
+        $("#retrait-content").hide();
+    });
+
+    $("#retrait").on("click", function () {
+        $("#retrait").css("border-color", "#ff1b5e");
+        $("#domicile").css("border-color", "#e7e7e7");
+        $("#domicile-content").hide();
+        $("#retrait-content").show();
+    });
+
+    function setAddress(json) {
+        if (json) {
+            html = "<div class=\"col-sm-12 address-form\">";
+            html += "<div class=\"form-group\">";
+            html += "<label class=\"check_filter\">";
+            html += "<input type=\"radio\" class=\"checkbox\" name=\"address\" value='" + json['address_id'] + "' checked><b>" + json['firstname'] + " " + json['lastname'];
+            html += "</b><br>" + json['address_1'] + " " + json['address_2'] + "<br>" + json['postcode'] + " ";
+            html += json['city'] + "<br> Maroc <br> T: " + json['telephone'];
+            html += "<span class=\"checkmark checkradio\"></span>";
+            html += "</label></div>";
+            html += "<span class=\"edit-address\"><i class=\"fa fa-pencil\"></i></span>";
+            html += "<span class=\"delete-address\"><i class=\"fa fa-close\"></i></span>";
+            html += "<hr></div>";
+
+            $('#container-address').prepend(html);
+
+            refactorForm();
+        }
+    }
+
+    $("#add-address").on("click", function () {
+        if ($('#input-name').val().length === 0) {
+            $('#input-name').focus();
+            return;
+        }
+        if ($('#input-lastname').val().length === 0) {
+            $('#input-lastname').focus();
+            return;
+        }
+        if ($('#input-address-1').val().length === 0) {
+            $('#input-address-1').focus();
+            return;
+        }
+        if ($('#input-city').val() === 0) {
+            $('#input-city').focus();
+            return;
+        }
+        if ($('#input-postcode').val().length === 0) {
+            $('#input-postcode').focus();
+            return;
+        }
+
+        $.ajax({
+            url: 'index.php?route=checkout/shipping_address/add',
+            type: 'post',
+            data: $('#add-address-field input[type="text"], #add-address-field input[type="radio"]:checked, #add-address-field select'),
+            dataType: 'json',
+            beforeSend: function () {
+                $('body').loading({message: "chargement.."});
+            },
+            complete: function () {
+                $('body').loading('stop');
+            },
+            success: function (json) {
+                setAddress(json);
+            },
+            error: function (d, r, e) {
+                console.log(d, r, e);
+            }
+        })
+    });
+
+    $('input:radio[name="billing"]').on('change', function () {
+        if ($('input:radio[name="billing"]:checked').val() === "1") {
+            $('#container-billing').hide(100)
+        } else {
+            $('#container-billing').show(100)
+        }
+    })
+</script>
+
+
+{#<form class="form-horizontal">#}
+  {#{% if addresses %}#}
+  {#<div class="radio">#}
+    {#<label>#}
+      {#<input type="radio" name="shipping_address" value="existing" checked="checked" />#}
+      {#{{ text_address_existing }}</label>#}
+  {#</div>#}
+  {#<div id="shipping-existing">#}
+    {#<select name="address_id" class="form-control">#}
+     {#{% for address in addresses %}#}
+      {#{% if address.address_id == address_id %}#}
+      {#<option value="{{ address.address_id }}" selected="selected">{{ address.firstname }} {{ address.lastname }}, {{ address.address_1 }}, {{ address.city }}, {{ address.zone }}, {{ address.country }}</option>#}
+      {#{% else %}#}
+      {#<option value="{{ address.address_id }}">{{ address.firstname }} {{ address.lastname }}, {{ address.address_1 }}, {{ address.city }}, {{ address.zone }}, {{ address.country }}</option>#}
+      {#{% endif %}#}
+      {#{% endfor %}#}
+    {#</select>#}
+  {#</div>#}
+  {#<div class="radio">#}
+    {#<label>#}
+      {#<input type="radio" name="shipping_address" value="new" />#}
+      {#{{ text_address_new }}</label>#}
+  {#</div>#}
+  {#{% endif %}#}
+  {#<br />#}
+  {#<div id="shipping-new" style="display: {% if addresses %}none{% else %}block{% endif %};">#}
+    {#<div class="form-group required">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-firstname">{{ entry_firstname }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<input type="text" name="firstname" value="" placeholder="{{ entry_firstname }}" id="input-shipping-firstname" class="form-control" />#}
+      {#</div>#}
+    {#</div>#}
+    {#<div class="form-group required">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-lastname">{{ entry_lastname }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<input type="text" name="lastname" value="" placeholder="{{ entry_lastname }}" id="input-shipping-lastname" class="form-control" />#}
+      {#</div>#}
+    {#</div>#}
+    {#<div class="form-group">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-company">{{ entry_company }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<input type="text" name="company" value="" placeholder="{{ entry_company }}" id="input-shipping-company" class="form-control" />#}
+      {#</div>#}
+    {#</div>#}
+    {#<div class="form-group required">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-address-1">{{ entry_address_1 }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<input type="text" name="address_1" value="" placeholder="{{ entry_address_1 }}" id="input-shipping-address-1" class="form-control" />#}
+      {#</div>#}
+    {#</div>#}
+    {#<div class="form-group">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-address-2">{{ entry_address_2 }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<input type="text" name="address_2" value="" placeholder="{{ entry_address_2 }}" id="input-shipping-address-2" class="form-control" />#}
+      {#</div>#}
+    {#</div>#}
+    {#<div class="form-group required">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-city">{{ entry_city }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<input type="text" name="city" value="" placeholder="{{ entry_city }}" id="input-shipping-city" class="form-control" />#}
+      {#</div>#}
+    {#</div>#}
+    {#<div class="form-group required">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-postcode">{{ entry_postcode }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<input type="text" name="postcode" value="{{ postcode }}" placeholder="{{ entry_postcode }}" id="input-shipping-postcode" class="form-control" />#}
+      {#</div>#}
+    {#</div>#}
+    {#<div class="form-group required">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-country">{{ entry_country }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<select name="country_id" id="input-shipping-country" class="form-control">#}
+          {#<option value="">{{ text_select }}</option>#}
+          {#{% for country in countries %}#}
+          {#{% if country.country_id == country_id %}#}
+          {#<option value="{{ country.country_id }}" selected="selected">{{ country.name }}</option>#}
+          {#{% else %}#}
+          {#<option value="{{ country.country_id }}">{{ country.name }}</option>#}
+           {#{% endif %}#}
+           {#{% endfor %}#}
+        {#</select>#}
+      {#</div>#}
+    {#</div>#}
+    {#<div class="form-group required">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-zone">{{ entry_zone }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<select name="zone_id" id="input-shipping-zone" class="form-control">#}
+        {#</select>#}
+      {#</div>#}
+    {#</div>#}
+   {#{% for custom_field in custom_fields %}#}
+    {#{% if custom_field.type == 'select' %}#}
+    {#<div class="form-group{% if custom_field.required %} required {% endif %} custom-field" data-sort="{{ custom_field.sort_order }}">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<select name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" id="input-shipping-custom-field{{ custom_field.custom_field_id }}" class="form-control">#}
+          {#<option value="">{{ text_select }}</option>#}
+          {#{% for custom_field_value in custom_field.custom_field_value %}#}
+          {#<option value="{{ custom_field_value.custom_field_value_id }}">{{ custom_field_value.name }}</option>#}
+          {#{% endfor %}#}
+        {#</select>#}
+      {#</div>#}
+    {#</div>#}
+    {#{% endif %}#}
+    {#{% if custom_field.type == 'radio' %}#}
+    {#<div class="form-group{% if custom_field.required %} required {% endif %} custom-field" data-sort="{{ custom_field.sort_order }}">#}
+      {#<label class="col-sm-2 control-label">{{ custom_field.name }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<div id="input-shipping-custom-field{{ custom_field.custom_field_id }}">#}
+          {#{% for custom_field_value in custom_field.custom_field_value %}#}
+          {#<div class="radio">#}
+            {#<label>#}
+              {#<input type="radio" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ custom_field_value.custom_field_value_id }}" />#}
+              {#{{ custom_field_value.name }}</label>#}
+          {#</div>#}
+          {#{% endfor %}#}
+        {#</div>#}
+      {#</div>#}
+    {#</div>#}
+    {#{% endif %}#}
+    {#{% if custom_field.type == 'checkbox' %}#}
+    {#<div class="form-group{% if custom_field.required %} required {% endif %} custom-field" data-sort="{{ custom_field.sort_order }}">#}
+      {#<label class="col-sm-2 control-label">{{ custom_field.name }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<div id="input-shipping-custom-field{{ custom_field.custom_field_id }}">#}
+          {#{% for custom_field_value in custom_field.custom_field_value %}#}
+          {#<div class="checkbox">#}
+            {#<label>#}
+              {#<input type="checkbox" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}][]" value="{{ custom_field_value.custom_field_value_id }}" />#}
+              {#{{ custom_field_value.name }}</label>#}
+          {#</div>#}
+          {#{% endfor %}#}
+        {#</div>#}
+      {#</div>#}
+    {#</div>#}
+    {#{% endif %}#}
+    {#{% if custom_field.type == 'text' %}#}
+    {#<div class="form-group{% if custom_field.required %} required {% endif %} custom-field" data-sort="{{ custom_field.sort_order }}">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<input type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ custom_field.value }}" placeholder="{{ custom_field.name }}" id="input-shipping-custom-field{{ custom_field.custom_field_id }}" class="form-control" />#}
+      {#</div>#}
+    {#</div>#}
+    {#{% endif %}#}
+    {#{% if custom_field.type == 'textarea' %}#}
+    {#<div class="form-group{% if custom_field.required %} required {% endif %} custom-field" data-sort="{{ custom_field.sort_order }}">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<textarea name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" rows="5" placeholder="{{ custom_field.name }}" id="input-shipping-custom-field{{ custom_field.custom_field_id }}" class="form-control">{{ custom_field.value }}</textarea>#}
+      {#</div>#}
+    {#</div>#}
+    {#{% endif %}#}
+    {#{% if custom_field.type == 'file' %}#}
+    {#<div class="form-group{% if custom_field.required %} required {% endif %} custom-field" data-sort="{{ custom_field.sort_order }}">#}
+      {#<label class="col-sm-2 control-label">{{ custom_field.name }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<button type="button" id="button-shipping-custom-field{{ custom_field.custom_field_id }}" data-loading-text="{{ text_loading }}" class="btn btn-default"><i class="fa fa-upload"></i> {{ button_upload }}</button>#}
+        {#<input type="hidden" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="" id="input-shipping-custom-field{{ custom_field.custom_field_id }}" />#}
+      {#</div>#}
+    {#</div>#}
+    {#{% endif %}#}
+    {#{% if custom_field.type == 'date' %}#}
+    {#<div class="form-group{% if custom_field.required %} required {% endif %} custom-field" data-sort="{{ custom_field.sort_order }}">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<div class="input-group date">#}
+          {#<input type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ custom_field.value }}" placeholder="{{ custom_field.name }}" data-date-format="YYYY-MM-DD" id="input-shipping-custom-field{{ custom_field.custom_field_id }}" class="form-control" />#}
+          {#<div class="input-group-btn">#}
+          {#<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>#}
+          {#</div></div>#}
+      {#</div>#}
+    {#</div>#}
+    {#{% endif %}#}
+    {#{% if custom_field.type == 'time' %}#}
+    {#<div class="form-group{% if custom_field.required %} required {% endif %} custom-field" data-sort="{{ custom_field.sort_order }}">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<div class="input-group time">#}
+          {#<input type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ custom_field.value }}" placeholder="{{ custom_field.name }}" data-date-format="HH:mm" id="input-shipping-custom-field{{ custom_field.custom_field_id }}" class="form-control" />#}
+          {#<div class="input-group-btn">#}
+          {#<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>#}
+          {#</div></div>#}
+      {#</div>#}
+    {#</div>#}
+    {#{% endif %}#}
+    {#{% if custom_field.type == 'time' %}#}
+    {#<div class="form-group{% if custom_field.required %} required {% endif %} custom-field" data-sort="{{ custom_field.sort_order }}">#}
+      {#<label class="col-sm-2 control-label" for="input-shipping-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>#}
+      {#<div class="col-sm-10">#}
+        {#<div class="input-group datetime">#}
+          {#<input type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ custom_field.value }}" placeholder="{{ custom_field.name }}" data-date-format="YYYY-MM-DD HH:mm" id="input-shipping-custom-field{{ custom_field.custom_field_id }}" class="form-control" />#}
+          {#<div class="input-group-btn">#}
+          {#<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>#}
+          {#</div></div>#}
+      {#</div>#}
+    {#</div>#}
+    {#{% endif %}#}
+    {#{% endfor %}#}
+  {#</div>#}
+  {#<div class="buttons clearfix">#}
+    {#<div class="pull-right">#}
+      {#<input type="button" value="{{ button_continue }}" id="button-shipping-address" data-loading-text="{{ text_loading }}" class="btn btn-primary" />#}
+    {#</div>#}
+  {#</div>#}
+{#</form>#}
+{#<script type="text/javascript"><!--#}
+{#$('input[name=\'shipping_address\']').on('change', function() {#}
+	{#if (this.value == 'new') {#}
+		{#$('#shipping-existing').hide();#}
+		{#$('#shipping-new').show();#}
+	{#} else {#}
+		{#$('#shipping-existing').show();#}
+		{#$('#shipping-new').hide();#}
+	{#}#}
+{#});#}
+{#//--></script>#}
+{#<script type="text/javascript"><!--#}
+{#$('#collapse-shipping-address .form-group[data-sort]').detach().each(function() {#}
+	{#if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#collapse-shipping-address .form-group').length-2) {#}
+		{#$('#collapse-shipping-address .form-group').eq(parseInt($(this).attr('data-sort'))+2).before(this);#}
+	{#}#}
+
+	{#if ($(this).attr('data-sort') > $('#collapse-shipping-address .form-group').length-2) {#}
+		{#$('#collapse-shipping-address .form-group:last').after(this);#}
+	{#}#}
+
+	{#if ($(this).attr('data-sort') == $('#collapse-shipping-address .form-group').length-2) {#}
+		{#$('#collapse-shipping-address .form-group:last').after(this);#}
+	{#}#}
+
+	{#if ($(this).attr('data-sort') < -$('#collapse-shipping-address .form-group').length-2) {#}
+		{#$('#collapse-shipping-address .form-group:first').before(this);#}
+	{#}#}
+{#});#}
+{#//--></script>#}
+{#<script type="text/javascript"><!--#}
+{#$('#collapse-shipping-address button[id^=\'button-shipping-custom-field\']').on('click', function() {#}
+	{#var element = this;#}
+
+	{#$('#form-upload').remove();#}
+
+	{#$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');#}
+
+	{#$('#form-upload input[name=\'file\']').trigger('click');#}
+
+	{#if (typeof timer != 'undefined') {#}
+    	{#clearInterval(timer);#}
+	{#}#}
+
+	{#timer = setInterval(function() {#}
+		{#if ($('#form-upload input[name=\'file\']').val() != '') {#}
+			{#clearInterval(timer);#}
+
+			{#$.ajax({#}
+				{#url: 'index.php?route=tool/upload&language={{ language }}',#}
+				{#type: 'post',#}
+				{#dataType: 'json',#}
+				{#data: new FormData($('#form-upload')[0]),#}
+				{#cache: false,#}
+				{#contentType: false,#}
+				{#processData: false,#}
+				{#beforeSend: function() {#}
+					{#$(element).button('loading');#}
+				{#},#}
+				{#complete: function() {#}
+					{#$(element).button('reset');#}
+				{#},#}
+				{#success: function(json) {#}
+					{#$(element).parent().find('.text-danger').remove();#}
+
+					{#if (json['error']) {#}
+						{#$(element).parent().find('input[name^=\'custom_field\']').after('<div class="text-danger">' + json['error'] + '</div>');#}
+					{#}#}
+
+					{#if (json['success']) {#}
+						{#alert(json['success']);#}
+
+						{#$(element).parent().find('input[name^=\'custom_field\']').val(json['code']);#}
+					{#}#}
+				{#},#}
+				{#error: function(xhr, ajaxOptions, thrownError) {#}
+					{#alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);#}
+				{#}#}
+			{#});#}
+		{#}#}
+	{#}, 500);#}
+{#});#}
+{#//--></script>#}
+{#<script type="text/javascript"><!--#}
+{#$('.date').datetimepicker({#}
+	{#locale: '{{ datepicker }}',#}
+	{#pickTime: false#}
+{#});#}
+
+{#$('.time').datetimepicker({#}
+	{#locale: '{{ datepicker }}',#}
+	{#pickDate: false#}
+{#});#}
+
+{#$('.datetime').datetimepicker({#}
+	{#locale: '{{ datepicker }}',#}
+	{#pickDate: true,#}
+	{#pickTime: true#}
+{#});#}
+{#//--></script>#}
+{#<script type="text/javascript"><!--#}
+{#$('#collapse-shipping-address select[name=\'country_id\']').on('change', function() {#}
+	{#$.ajax({#}
+		{#url: 'index.php?route=checkout/checkout/country&language={{ language }}&country_id=' + this.value,#}
+		{#dataType: 'json',#}
+		{#beforeSend: function() {#}
+			{#$('#collapse-shipping-address select[name=\'country_id\']').prop('disabled', true);#}
+		{#},#}
+		{#complete: function() {#}
+			{#$('#collapse-shipping-address select[name=\'country_id\']').prop('disabled', false);#}
+		{#},#}
+		{#success: function(json) {#}
+			{#if (json['postcode_required'] == '1') {#}
+				{#$('#collapse-shipping-address input[name=\'postcode\']').parent().parent().addClass('required');#}
+			{#} else {#}
+				{#$('#collapse-shipping-address input[name=\'postcode\']').parent().parent().removeClass('required');#}
+			{#}#}
+
+			{#html = '<option value="">{{ text_select }}</option>';#}
+
+			{#if (json['zone'] && json['zone'] != '') {#}
+				{#for (i = 0; i < json['zone'].length; i++) {#}
+					{#html += '<option value="' + json['zone'][i]['zone_id'] + '"';#}
+
+					{#if (json['zone'][i]['zone_id'] == '{{ zone_id }}') {#}
+						{#html += ' selected="selected"';#}
+					{#}#}
+
+					{#html += '>' + json['zone'][i]['name'] + '</option>';#}
+				{#}#}
+			{#} else {#}
+				{#html += '<option value="0" selected="selected">{{ text_none }}</option>';#}
+			{#}#}
+
+			{#$('#collapse-shipping-address select[name=\'zone_id\']').html(html);#}
+		{#},#}
+		{#error: function(xhr, ajaxOptions, thrownError) {#}
+			{#alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);#}
+		{#}#}
+	{#});#}
+{#});#}
+
+{#$('#collapse-shipping-address select[name=\'country_id\']').trigger('change');#}
+{#//--></script>#}

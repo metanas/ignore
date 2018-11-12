@@ -1,0 +1,63 @@
+<div id="account-address">
+    {% if success %}
+        <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}</div>
+    {% endif %}
+    {% if error_warning %}
+        <div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+    {% endif %}
+    <div class="row">
+        <div id="content" class="col-sm-12">{{ content_top }}
+            {% if addresses or billing_addresses %}
+                <h2>{{ text_address_book }}</h2>
+                <div class="col-lg-offset-2 col-sm-8">
+                    <div class="row">
+                        <h3>Address de livraison</h3>
+                        <hr>
+                        <div>
+                            {% for result in addresses %}
+                                <div class="col-lg-12">
+                                    <div class="text-left">{{ result.address }}
+                                        <span class="text-right">
+                                        <a href="{{ result.delete }}" class="edit-address fa fa-close"></a>&nbsp;
+                                        <a href="{{ result.update }}" class="edit-address fa fa-edit"
+                                           style="top:auto"></a>
+                                    </span>
+                                    </div>
+                                    <hr>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="buttons clearfix">
+                        <div class="pull-right"><a href="{{ add }}" class="zalark-button"
+                                                   style="padding: 8px 8px 8px 8px;">{{ button_new_address }}</a></div>
+                    </div>
+                </div>
+
+                {#<div class="col-sm-6">#}
+                {#<div class="row">#}
+                {#<h3>address de facturation</h3>#}
+                {#<hr>#}
+                {#<div class="table-responsive">#}
+                {#{% for result in billing_addresses %}#}
+                {#<div class="col-lg-12">#}
+                {#<div class="text-left">{{ result.address }}#}
+                {#<span class="text-right">#}
+                {#<a href="{{ result.delete }}" class="edit-address fa fa-close"></a>&nbsp;#}
+                {#<a href="{{ result.update }}" class="edit-address fa fa-edit"#}
+                {#style="top:auto"></a>#}
+                {#</span>#}
+                {#</div>#}
+                {#<hr>#}
+                {#</div>#}
+                {#{% endfor %}#}
+                {#</div>#}
+                {#</div>#}
+                {#</div>#}
+            {% else %}
+                <p>{{ text_no_results }}</p>
+            {% endif %}
+
+            {{ content_bottom }}</div>
+        {{ column_right }}</div>
+</div>

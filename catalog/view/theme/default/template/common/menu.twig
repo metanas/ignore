@@ -1,0 +1,6 @@
+{% if categories %}
+    {% set category = categories|first %}
+        <a href="{{ category.href }}"
+           class="menu-default {{ category.isActive }}"><span
+                    class="subline">{{ category.name }}</span></a>
+{% endif %}

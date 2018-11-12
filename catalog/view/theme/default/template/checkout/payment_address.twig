@@ -1,0 +1,114 @@
+<div id="title" class="container" align="center">
+    <h1 id="title-checkout">Paiement</h1>
+    <hr style="border-top: 3px solid #eee">
+</div>
+<div class="col-sm-8">
+    <h4>MOYEN DE PAIEMENT</h4>
+    <hr>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row">
+            <div class="form-group col-sm-10 col-xs-8">
+                <label class="check_filter">Carte bancaire <span style="color: darkgrey">(gratuit)</span>
+                    <input type="radio" class="checkbox" name="payment"
+                           value="20" {% if payment_method == "20" %} checked="checked" {% endif %}>
+                    <span class="checkmark checkradio"></span>
+                </label>
+            </div>
+            <div class="col-sm-2 col-xs-4">
+                <div class="row">
+                    <div class="col-sm-6 col-xs-6">
+                        <img class="img-responsive" src="catalog/view/theme/default/image/master2.png">
+                    </div>
+                    <div class="col-sm-6 col-xs-6">
+                        <img class="img-responsive" src="catalog/view/theme/default/image/visa2.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#<div class="form-group col-sm-9">#}
+    {#<label class="check_filter">Paypal <span style="color: darkgrey">(gratuit)</span>#}
+    {#<input type="radio" class="checkbox" name="payment"#}
+    {#value="01" {% if payment_method == "01" %} checked="checked" {% endif %}>#}
+    {#<span class="checkmark checkradio"></span>#}
+    {#</label>#}
+    {#</div>#}
+    {#<span style="float: right">#}
+    {#<img class="pay-checkout" src="catalog/view/theme/default/image/paypal.png">#}
+    {#</span>#}
+    <div class="col-sm-12 col-xs-12">
+        <div class="row">
+            <div class="form-group col-sm-11 col-xs-10">
+                <label class="check_filter">Paiment a la livraison <span style="color: darkgrey">(gratuit)</span>
+                    <input type="radio" class="checkbox" name="payment"
+                           value="17" {% if payment_method == "17" %} checked="checked" {% endif %}>
+                    <span class="checkmark checkradio"></span>
+                </label>
+            </div>
+            <div class="col-sm-1 col-xs-2">
+                <img class="img-responsive" src="catalog/view/theme/default/image/livraison2.png">
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+    <h4>CODE PROMO & CARTE CADEAU (facultatif)</h4>
+    <hr>
+    <p>Code promo: selectionnez votre moyen de paiement et entrez votre code a l'etape suivante.</p>
+    <div id="c_cart_layout_right" class="col-md-12" style="background-color: lightgrey;padding-bottom: 12px"
+         align="center">
+        <div class="row">
+            <div class="col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-sm-6 col-xs-6 text-left checkout-text"><b>Livraison</b></div>
+                    <div class="col-sm-6 col-xs-6 text-right checkout-text"><b>gratuite</b></div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row" style="margin-bottom: 12px">
+            <div class="col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-sm-6 col-xs-6 text-left checkout-text"><b>Total </b><span
+                                style="font-size: 12px">(TVA incluse)</span>
+                    </div>
+                    <div class="col-sm-6 col-xs-6 text-right checkout-text"><b>{{ total }} {{ currency }}</b></div>
+                </div>
+            </div>
+        </div>
+        <button class="col-sm-12 zalark-button">Commander</button>
+        <div class="col-sm-12" style="margin-top: 12px">vous pourrez verifier et confirmer votre command a la prochaine
+            etape.
+        </div>
+    </div>
+</div>
+<script>
+    $(".zalark-button").on("click", function () {
+        var selected = $('input[name="payment"]:checked');
+        if (selected.length === 0) {
+            return;
+        }
+        $.ajax({
+            url: "index.php?route=checkout/payment_address/save",
+            type: "post",
+            data: {"payment_method": selected.val()},
+            dataType: "json",
+            success: function (json) {
+                console.log(json);
+                if (json['redirect']) {
+                    location = json['redirect'];
+                } else if (json['not_found']) {
+
+                } else if (json['not_selected']) {
+
+                } else if (json['success']) {
+                    step.next();
+                }
+            },
+            error: function (d, f, e) {
+                console.log(d, f, e);
+            }
+        })
+    });
+</script>

@@ -1,0 +1,37 @@
+{{ header }}
+<div id="account-account" class="container">
+    {% if success %}
+        <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}</div>
+    {% endif %}
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <div id="slidebar" class="slide-bar">
+                <a href="javascript:void(0)" class="closebtn visible-xs">&times;</a>
+                <h2>{{ text_my_account }}</h2>
+                <div style="line-height: 25px">
+                    <div><a href="{{ edit }}">{{ text_my_account }}</a></div>
+                    <div><a href="{{ order }}">{{ text_my_orders }}</a></div>
+                    <div><a href="{{ address }}">{{ text_address }}</a></div>
+                    <div><a href="{{ return }}">{{ text_return }}</a></div>
+                    <div><a href="{{ wishlist }}">{{ text_wishlist }}</a></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+            <div id="slide-bar-button" class="fa fa-align-justify visible-xs" style="font-size: 20px"></div>
+            {{ content }}
+        </div>
+    </div>
+
+</div>
+<script>
+    $('body').on('click', '#slide-bar-button', function () {
+        document.getElementById("slidebar").style.width = "100%";
+    });
+
+    /* Close/hide the sidenav */
+    $('body').on('click', '.closebtn', function () {
+        document.getElementById("slidebar").style.width = "0";
+    });
+</script>
+{{ footer }}
