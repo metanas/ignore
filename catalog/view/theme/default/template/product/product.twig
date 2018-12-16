@@ -58,33 +58,34 @@
                 <div class="{{ class }}">
                     {% if manufacturer_img %}
                         <img src="{{ manufacturer_img }}">
-                        <h4>{{ heading_title }}</h4>
+                        <div style="font-weight: bold; margin-top: 29px;">{{ manufacturer_name }}</div>
                     {% else %}
-                        <h1>{{ heading_title }}</h1>
+                        <h3>{{ manufacturer_name }}</h3>
                     {% endif %}
+                    <h3 style="margin-top: 12px;">{{ heading_title }}</h3>
                     <ul class="list-unstyled">
-                        <li><h3>{{ model }}</h3></li>
                         {% if reward %}
                             <li>{{ text_reward }} {{ reward }}</li>
                         {% endif %}
-                        {% if stock %}
-                        <li>{{ text_stock }} {{ stock }}</li>
-                        {% endif %}
+
+
                     </ul>
                     {% if price %}
                         <ul class="list-unstyled">
                             {% if not special %}
                                 <li>
-                                    <h4 id="price_tag" class="prix-product-page">{{ price }}</h4>
+                                    <h4 id="price_tag" class="prix-product-page">{{ price }} <span class="description">TVA incluse</span>
+                                    </h4>
                                 </li>
                             {% else %}
                                 <li>
                                     <span class="price-old">{{ price }}</span>
-                                    <span class="description">TTC incluse</span>
+                                    <span class="price-new">{{ discount }} % de réduction</span>
                                 </li>
                                 <li>
-                                    <h2>{{ special }}<span class="description"> TTC incluse</span></h2>
-
+                                    <h3 class="price-new">{{ special }}<span
+                                                class="description"> TVA incluse</span>
+                                    </h3>
                                 </li>
                             {% endif %}
                             {% if discounts %}
@@ -95,16 +96,25 @@
                                     <li>{{ discount.quantity }}{{ text_discount }}{{ discount.price }}</li>
                                 {% endfor %}
                             {% endif %}
-                            <li>Couleur : <b id="color_text">{{ color }}</b></li>
+
                         </ul>
                     {% endif %}
+                    {% if stock %}
+                        <div style="margin-bottom: 20px;"><span class="product-stock"> {{ stock }} </span></div>
+                    {% endif %}
+
+                    <div style="margin-top: 20px;">Couleur : <b id="color_text">{{ color }}</b></div>
 
                     <div id="samecolor">
-                        <a><img id="main_thumb" style="width:74px; border-bottom: 2px black solid" src="{{ thumb }}"
-                                alt="{{ popup }}"/></a>
+                        {% if product_similar|length > 0 %}
+                            <a><img id="main_thumb" style="width:74px; border-bottom: 2px black solid" src="{{ thumb }}"
+                                    alt="{{ popup }}"/></a>
+                        {% endif %}
+
                         {% for similar in product_similar %}
                             <a href="{{ similar.href }}"><img class="similar_img" src="{{ similar.image }}"
-                                                              alt="{{ similar.popup }}" data-color="{{ similar.color }}"
+                                                              alt="{{ similar.popup }}"
+                                                              data-color="{{ similar.color }}"
                                                               data-price="{{ similar.price }}"/></a>
                         {% endfor %}
                     </div>
@@ -115,7 +125,7 @@
                             {% for option in options %}
                                 {% if option.type == 'size' %}
                                     <div class="form-group {% if option.required %} required {% endif %}">
-                                        <label class="control-label"
+                                        <label class="control-label text-uppercase"
                                                for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
                                         <div class="col-sm-12 col-xs-12" style="margin-bottom: 12px">
                                             <div class="row">
@@ -260,7 +270,8 @@
                         <div class="form-group">
                             <button type="button" data-toggle="tooltip" class="btn btn-default btn-wish wish-list"
                                     title="{{ button_wishlist }}" onclick="wishlist.add('{{ product_id }}');"
-                            ><img src="image/favorite.png" width="12" height="13" id="fav-button"> Ajouter à mes
+                            ><img src="image/favorite.png" width="12" height="13" id="fav-button"
+                                  style="margin-right: 5px; margin-top: -5px;"> Ajouter à mes
                                 préférés
                             </button>
                             <br/>
@@ -272,35 +283,45 @@
                         {% if minimum > 1 %}
                             <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_minimum }}</div>
                         {% endif %}</div>
-
-
                 </div>
             </div>
-            {% if attribute_groups %}
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 attribute">
-                    <div class="col-md-5 col-sm-12 col-xs-12 col-md-push-7 col-lg-push-7" align="center"><img
-                                src="{{ popup }}" alt="{{ heading_title }}" class="img-responsive"/></div>
-                    <div class="col-md-7 col-sm-12 col-xs-12 col-md-pull-5 col-lg-pull-5">
-                        <div class="h3 zalark-title">DESCRIPTION</div>
-                        {% for attribute_group in attribute_groups %}
-                            <h4 class="text-uppercase">{{ attribute_group.name }}</h4>
-                            {% for attribute in attribute_group.attribute %}
-                                <p><b>{{ attribute.name }}:</b> {{ attribute.text }}</p>
-                            {% endfor %}
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
-            {% if tags %}
-                <p>{{ text_tags }}
-                    {% for i in 0..tags|length %}
-                        {% if i < (tags|length - 1) %}<a href="{{ tags[i].href }}">{{ tags[i].tag }}</a>,
-                        {% else %}<a href="{{ tags[i].href }}">{{ tags[i].tag }}</a>{% endif %}
-                    {% endfor %}</p>
-            {% endif %}
-            {{ content_bottom }}</div>
-        {{ column_right }}</div>
+        </div>
+    </div>
 </div>
+
+<div class="container-fluid attribute">
+    {% if attribute_groups %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                <div class="col-md-5 col-sm-12 col-xs-12 col-md-push-7 col-lg-push-7" align="center"><img
+                            src="{{ popup }}" alt="{{ heading_title }}" class="img-responsive"/></div>
+                <div class="col-md-7 col-sm-12 col-xs-12 col-md-pull-5 col-lg-pull-5">
+                    <div class="h3 zalark-title">DESCRIPTION</div>
+                    {% for attribute_group in attribute_groups %}
+                        <h4 class="text-uppercase">{{ attribute_group.name }}</h4>
+                        {% for attribute in attribute_group.attribute %}
+                            <p><b>{{ attribute.name }}:</b> {{ attribute.text }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% if tags %}
+    <p>{{ text_tags }}
+        {% for i in 0..tags|length %}
+            {% if i < (tags|length - 1) %}<a href="{{ tags[i].href }}">{{ tags[i].tag }}</a>,
+            {% else %}<a href="{{ tags[i].href }}">{{ tags[i].tag }}</a>{% endif %}
+        {% endfor %}</p>
+{% endif %}
+    {{ content_bottom }}
+            {{ column_right }}
+
+
 <script type="text/javascript"><!--
     $('select[name=\'recurring_id\'], input[name="quantity"]').change(function () {
         $.ajax({
@@ -509,31 +530,33 @@
 </script>
 <script>
     // Galery
-    $('document').ready(function () {
-        img = $('#main_img');
-        $('.product-image img').each(
-            function (index, elm) {
-                elm.onmouseover = function (e) {
-                    img[0].src = elm.alt;
-                    link = img[0].src.replace("cache/", "").split("-");
-                    link[link.length - 1] = "-.png";
-                    link = link.join("-").replace("--", "");
-                    $('.previous-hover').zoom({url: link});
-                };
+    if (!isMobile.any()) {
+        $('document').ready(function () {
+                img = $('#main_img');
+                $('.product-image img').each(
+                    function (index, elm) {
+                        elm.onmouseover = function (e) {
+                            img[0].src = elm.alt;
+                            link = img[0].src.replace("cache/", "").split("-");
+                            link[link.length - 1] = "-.png";
+                            link = link.join("-").replace("--", "");
+                            $('.previous-hover').zoom({url: link});
+                        };
+                    }
+                );
+
+
+                link = img[0].src.replace("cache/", "").split("-");
+                link[link.length - 1] = "-.png";
+                link = link.join("-").replace("--", "");
+                $('.previous-hover').zoom({url: link});
+
+
             }
-        );
-
-
-        link = img[0].src.replace("cache/", "").split("-");
-        link[link.length - 1] = "-.png";
-        link = link.join("-").replace("--", "");
-        $('.previous-hover').zoom({url: link});
-
-
-    });
+        )
+    }
 </script>
 <script>
-
     var img = $('#main_img');
     var main_thumb = $('#main_thumb');
     var default_src = img[0].src;
@@ -566,5 +589,6 @@
                 $('.previous-hover').zoom({url: link});
             }
         });
+
 </script>
 {{ footer }}

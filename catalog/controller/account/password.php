@@ -20,7 +20,7 @@ class ControllerAccountPassword extends Controller {
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
-			$this->response->redirect($this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language'))));
+			$this->response->redirect($this->url->link('account/edit', array('language' => $this->config->get('config_language'))));
 		}
 
 		$data['action'] = $this->url->link('account/password', 'language=' . $this->config->get('config_language'));
@@ -37,7 +37,7 @@ class ControllerAccountPassword extends Controller {
 			$data['confirm'] = '';
 		}
 
-		$data['back'] = $this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language')));
+		$data['back'] = $this->url->link('account/edit', array('language' => $this->config->get('config_language')));
 
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');

@@ -34,19 +34,19 @@
                                                                style="float: right; padding: 8px"></i>
                                 </div>
                                 <div class="dropdown-filter">
-                                    <div id="search" class="field input-group stylish-input-group input-append">
-                                        <input class="field-input-filter"
-                                               placeholder="{{ text_search }}" name="manufacture" value="{{ search }}">
-                                        <span class="input-group-addon" style="border: none">
-                                            <button id="sub" type="button">
-                                                <img class="terms" src="catalog/view/theme/default/image/loupe.png">
-                                            </button>
-                                        </span>
-                                    </div>
+                                    {#<div id="search" class="field input-group stylish-input-group input-append">#}
+                                    {#<input class="field-input-filter"#}
+                                    {#placeholder="{{ text_search }}" name="manufacture" value="{{ search }}">#}
+                                    {#<span class="input-group-addon" style="border: none">#}
+                                    {#<button id="sub" type="button">#}
+                                    {#<img class="terms" src="catalog/view/theme/default/image/loupe.png">#}
+                                    {#</button>#}
+                                    {#</span>#}
+                                    {#</div>#}
                                     <div id="manufacture" class="ScrollStyle">
                                         {% for manufacture in products_manufacture %}
                                             <label class="check_filter check-manufacture"
-                                                   style="display: block">{{ manufacture }}
+                                                   style="display: block; font-size: 14px;">{{ manufacture }}
                                                 <input class="checkbox" type="checkbox" name="manufacture[]"
                                                        value="{{ manufacture }}" {% if manufacture in filter.manufacture %} checked {% endif %}>
                                                 <span class="checkmark"></span>
@@ -68,23 +68,23 @@
                                                               style="float: right; padding: 8px"></i>
                                 </div>
                                 <div class="dropdown-filter">
-                                    <div id="search" class="field input-group stylish-input-group input-append">
-                                        <input class="field-input-filter"
-                                               placeholder="{{ text_search }}" name="color" value="{{ search }}">
-                                        <span class="input-group-addon" style="border: none">
-                                            <button id="sub" type="button">
-                                                <img class="terms" src="catalog/view/theme/default/image/loupe.png">
-                                            </button>
-                                        </span>
-                                    </div>
+                                    {#<div id="search" class="field input-group stylish-input-group input-append">#}
+                                    {#<input class="field-input-filter"#}
+                                    {#placeholder="{{ text_search }}" name="color" value="{{ search }}">#}
+                                    {#<span class="input-group-addon" style="border: none">#}
+                                    {#<button id="sub" type="button">#}
+                                    {#<img class="terms" src="catalog/view/theme/default/image/loupe.png">#}
+                                    {#</button>#}
+                                    {#</span>#}
+                                    {#</div>#}
                                     <div id="color" class="ScrollStyle">
                                         {% for color in products_color %}
                                             <label class="check_filter check-color"
-                                                   style="display: block">{{ color }}
+                                                   style="display: block">{{ color|split("$")|first }}
                                                 <input class="checkbox" type="checkbox" name="color[]"
-                                                       value="{{ color }}" {% if color in filter.color %} checked {% endif %}>
+                                                       value="{{ color|split("$")|first }}" {% if color|split("$")|first in filter.color %} checked {% endif %}>
                                                 <span class="checkmark checkradio"
-                                                      style="background-color: {{ color.color_hex }};"></span>
+                                                      style='background-color: {{ color|split("$")|last }};'></span>
                                             </label>
                                         {% endfor %}
                                     </div>
@@ -137,15 +137,15 @@
                                                              style="float: right; padding: 8px"></i>
                                 </div>
                                 <div class="dropdown-filter">
-                                    <div id="search" class="field input-group stylish-input-group input-append">
-                                        <input class="field-input-filter"
-                                               placeholder="{{ text_search }}" name="color" value="{{ search }}">
-                                        <span class="input-group-addon" style="border: none">
-                                            <button id="sub" type="button">
-                                                <img class="terms" src="catalog/view/theme/default/image/loupe.png">
-                                            </button>
-                                        </span>
-                                    </div>
+                                    {#<div id="search" class="field input-group stylish-input-group input-append">#}
+                                    {#<input class="field-input-filter"#}
+                                    {#placeholder="{{ text_search }}" name="color" value="{{ search }}">#}
+                                    {#<span class="input-group-addon" style="border: none">#}
+                                    {#<button id="sub" type="button">#}
+                                    {#<img class="terms" src="catalog/view/theme/default/image/loupe.png">#}
+                                    {#</button>#}
+                                    {#</span>#}
+                                    {#</div>#}
                                     <div id="size" class="ScrollStyle">
                                         {% for size in products_size %}
                                             <label class="check_filter check-color"
@@ -200,24 +200,29 @@
                                              alt="{{ product.name }}"
                                              title="{{ product.name }}"
                                              class="img-responsive"
-                                             style="width: 100%"
                                         />
                                     </div>
                                     {% if product.stock %}
-                                        <span class="product-status">
-                                            Out of Stock
-                                        </span>
+                                        <span class="product-status product-stock">
+                                                Out of Stock
+                                            </span>
+                                    {% else %}
+                                        {% if product.discount %}
+                                            <span class="product-status product-discount">
+                                                    - {{ product.discount }} %
+                                                </span>
+                                        {% endif %}
                                     {% endif %}
                                     <div class="caption">
                                         <div class="desctip col-sm-12 col-xs-12">
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-6 col-xs-4 text-left">
+                                                <div class="col-md-6 col-sm-6 col-xs-4">
                                                     <div class="text-left">
-                                                        <a href="{{ product.href }}" class="text-capitalize"
-                                                           style="font-weight: bold">{{ product.manufacturer }}</a>
+                                                        <a href="{{ product.href }}" class="text-capitalize ShoesName"
+                                                            ><b>{{ product.manufacturer }}</b></a>
                                                     </div>
                                                     <div class="ShoesName text-left">
-                                                        <a href="{{ product.href }}">{{ product.name }}</a>
+                                                        <a href="{{ product.href }}" class="ShoesName">{{ product.name }}</a>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-6 col-xs-8 text-right">
@@ -242,8 +247,8 @@
                             </span>
                         </div>
                     {% endfor %}
-                    <div class="row col-sm-12" style="margin: 30px 0 30px 0">
-                        <div class="col-sm-6 text-center pagination">{{ pagination }}</div>
+                    <div class="col-sm-offset-4 col-sm-6">
+                        <div class="text-center pagination">{{ pagination }}</div>
                         {#<div class="col-sm-12 text-center ">{{ results }}</div>#}
                     </div>
                 </div>
@@ -255,6 +260,7 @@
     </div>
     <script>
         $('#column-left').removeClass('hidden-xs');
+        {% if price_max %}
         $("#ex12c").slider({
             id: "slider12c",
             min: {{ price_min }},
@@ -262,5 +268,6 @@
             range: true,
             value: [{{ price_min }}, {{ price_max }}]
         });
+        {% endif %}
     </script>
 </div>

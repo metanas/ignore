@@ -1,7 +1,7 @@
 <?php
 class ModelLocalisationZone extends Model {
 	public function addZone($data) {
-		$this->db->query("INSERT INTO " . DB_PREFIX . "zone SET status = '" . (int)$data['status'] . "', name = '" . $this->db->escape((string)$data['name']) . "', code = '" . $this->db->escape((string)$data['code']) . "', country_id = '" . (int)$data['country_id'] . "'");
+		$this->db->query("INSERT INTO " . DB_PREFIX . "zone SET status = '" . (int)$data['status'] . "', name = '" . $this->db->escape((string)$data['name']) . "', country_id = '" . (int)$data['country_id'] . "'");
 
 		$this->cache->delete('zone');
 		
@@ -9,7 +9,7 @@ class ModelLocalisationZone extends Model {
 	}
 
 	public function editZone($zone_id, $data) {
-		$this->db->query("UPDATE " . DB_PREFIX . "zone SET status = '" . (int)$data['status'] . "', name = '" . $this->db->escape((string)$data['name']) . "', code = '" . $this->db->escape((string)$data['code']) . "', country_id = '" . (int)$data['country_id'] . "' WHERE zone_id = '" . (int)$zone_id . "'");
+		$this->db->query("UPDATE " . DB_PREFIX . "zone SET status = '" . (int)$data['status'] . "', name = '" . $this->db->escape((string)$data['name']) . "', country_id = '" . (int)$data['country_id'] . "' WHERE zone_id = '" . (int)$zone_id . "'");
 
 		$this->cache->delete('zone');
 	}
@@ -32,7 +32,6 @@ class ModelLocalisationZone extends Model {
 		$sort_data = array(
 			'c.name',
 			'z.name',
-			'z.code'
 		);
 
 		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {

@@ -1,4 +1,5 @@
-<div id="account-order">
+{{ header }}
+<div id="account-order" class="container">
   <div class="row">{{ column_left }}
     {% if column_left and column_right %}
     {% set class = 'col-sm-6' %}
@@ -8,31 +9,29 @@
     {% set class = 'col-sm-12' %}
     {% endif %}
     <div id="content" class="{{ class }}">{{ content_top }}
-      <h1>{{ heading_title }}</h1>
+      <h3 style="margin-bottom: 38px;" onclick="openSlide()"><span class="fa fa-align-justify visible-xs-inline" style="font-size: inherit"></span> {{ heading_title }}</h3>
       {% if orders %}
       <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-          <thead>
+        <table class="table  table-hover">
+          <thead style="background-color: RGB(254,248,250);">
             <tr>
-              <td class="text-right">{{ column_order_id }}</td>
-              <td class="text-left">{{ column_customer }}</td>
-              <td class="text-right">{{ column_product }}</td>
-              <td class="text-left">{{ column_status }}</td>
-              <td class="text-right">{{ column_total }}</td>
-              <td class="text-left">{{ column_date_added }}</td>
+              <th class="text-center text-capitalize" >{{ column_order_id }}</th>
+              <th class="text-center text-capitalize">{{ column_product }}</th>
+              <th class="text-center text-capitalize">{{ column_status }}</th>
+              <th class="text-center text-capitalize">{{ column_total }}</th>
+              <th class="text-center text-capitalize">{{ column_date_added }}</th>
               <td></td>
             </tr>
           </thead>
           <tbody>
            {% for order in orders %}
             <tr>
-              <td class="text-right">#{{ order.order_id }}</td>
-              <td class="text-left">{{ order.name }}</td>
-              <td class="text-right">{{ order.products }}</td>
-              <td class="text-left">{{ order.status }}</td>
-              <td class="text-right">{{ order.total }}</td>
-              <td class="text-left">{{ order.date_added }}</td>
-              <td class="text-right"><a href="{{ order.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
+              <td class="text-center">#{{ order.order_id }}</td>
+              <td class="text-center">{{ order.products }}</td>
+              <td class="text-center">{{ order.status }}</td>
+              <td class="text-center">{{ order.total }}</td>
+              <td class="text-center">{{ order.date_added }}</td>
+              <td class="text-right"><a href="{{ order.view }}" data-toggle="tooltip" title="{{ button_view }}" ><i class="fa fa-arrow-circle-o-right" style="font-size: 20px"></i></a></td>
             </tr>
             {% endfor %}
           </tbody>
@@ -45,9 +44,14 @@
       {% else %}
       <p>{{ text_no_results }}</p>
       {% endif %}
-      <div class="buttons clearfix">
-        <div class="pull-right"><a href="{{ continue }}" class="zalark-button" style="padding: 10px">{{ button_continue }}</a></div>
-      </div>
+
       {{ content_bottom }}</div>
     {{ column_right }}</div>
 </div>
+<script>
+    $('#column-left').removeClass('hidden-xs');
+    function openSlide() {
+        $("#slidebar").css({"width": "100%"});
+    }
+</script>
+{{ footer }}

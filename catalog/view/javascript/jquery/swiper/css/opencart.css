@@ -13,6 +13,8 @@
 .titleSlide{
 	font-weight: bold;
 	margin-bottom: 30px;
+    font-size: 27px;
+    margin-left: 15px;
 }
 /* OpenCart Code */
 .swiper-container {

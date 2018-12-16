@@ -1,10 +1,15 @@
-<div class="row">
-    <h2 class="titleSlide">{{ banners[0].title }}</h2>
+<div class="row slide-show-image">
+
+    {% if banners.title %}
+        <div class="titleSlide">{{ banners.title }}</div>
+    {% endif %}
     {#<div class="swiper-viewport">#}
     {#<div id="slideshow{{ module }}" class="swiper-container">#}
     {#<div class="swiper-wrapper"> #}
-    {% set banner = banners|first %}
+
     {#<div class="swiper-slide text-center">#}
+    {% set banner = banners|first %}
+
     {% if banner.link %}
         <a href="{{ banner.link }}">
             <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive"/></a>

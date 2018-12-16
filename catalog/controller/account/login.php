@@ -7,7 +7,7 @@ class ControllerAccountLogin extends Controller
     public function index()
     {
         if ($this->customer->isLogged()) {
-            $this->response->redirect($this->url->link('account/account', array('action' => 'edit', 'language', $this->config->get('config_language'))));
+            $this->response->redirect($this->url->link('account/edit', array('language', $this->config->get('config_language'))));
         }
 
         $this->load->language('account/register');
@@ -18,9 +18,6 @@ class ControllerAccountLogin extends Controller
         $this->load->model('account/customer');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-            // Unset guest
-            unset($this->session->data['guest']);
-
             // Default Shipping Address
             $this->load->model('account/address');
 
@@ -62,6 +59,60 @@ class ControllerAccountLogin extends Controller
             $data['error_warning'] = $this->error['warning'];
         } else {
             $data['error_warning'] = '';
+        }
+
+        if (isset($this->error['firstname'])) {
+            $data['error_firstname'] = $this->error['firstname'];
+        } else {
+            $data['error_firstname'] = '';
+        }
+
+        if (isset($this->error['lastname'])) {
+            $data['error_lastname'] = $this->error['lastname'];
+        } else {
+            $data['error_lastname'] = '';
+        }
+
+        if (isset($this->error['day'])) {
+            $data['error_day'] = $this->error['day'];
+        } else {
+            $data['error_day'] = '';
+        }
+
+        if (isset($this->error['month'])) {
+            $data['error_month'] = $this->error['month'];
+        } else {
+            $data['error_month'] = '';
+        }
+
+        if (isset($this->error['year'])) {
+            $data['error_year'] = $this->error['year'];
+        } else {
+            $data['error_year'] = '';
+        }
+
+        if (isset($this->error['year'])) {
+            $data['error_year'] = $this->error['year'];
+        } else {
+            $data['error_year'] = '';
+        }
+
+        if (isset($this->error['email'])) {
+            $data['error_email_register'] = $this->error['email'];
+        } else {
+            $data['error_email_register'] = '';
+        }
+
+        if (isset($this->error['password'])) {
+            $data['error_password_register'] = $this->error['password'];
+        } else {
+            $data['error_password_register'] = '';
+        }
+
+        if (isset($this->error['sex'])) {
+            $data['error_sex'] = $this->error['sex'];
+        } else {
+            $data['error_sex'] = '';
         }
 
         $data['action_register'] = $this->url->link('account/register', 'language=' . $this->config->get('config_language'));
@@ -190,7 +241,7 @@ class ControllerAccountLogin extends Controller
 
             $this->model_account_customer->editToken($email, '');
 
-            $this->response->redirect($this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language'))));
+            $this->response->redirect($this->url->link('account/edit', array('language' => $this->config->get('config_language'))));
         } else {
             $this->session->data['error'] = $this->language->get('error_login');
 
@@ -198,5 +249,44 @@ class ControllerAccountLogin extends Controller
 
             $this->response->redirect($this->url->link('account/login', 'language=' . $this->config->get('config_language')));
         }
+    }
+
+    public function verify(){
+        $this->load->language('account/login');
+
+        if (isset($this->request->get['email'])) {
+            $email = $this->request->get['email'];
+        } else {
+            $email = '';
+        }
+
+        if (isset($this->request->get['login_token'])) {
+            $token = $this->request->get['login_token'];
+        } else {
+            $token = '';
+        }
+
+        // Login override for admin users
+        $this->customer->logout();
+
+        $this->load->model('account/customer');
+
+        $customer_info = $this->model_account_customer->getCustomerByEmail($email);
+
+        if ($customer_info && $customer_info['token'] && $customer_info['token'] == $token) {
+
+            $this->model_account_customer->editToken($email, '');
+
+            $this->model_account_customer->editStatus($email);
+
+            $this->response->redirect($this->url->link('account/login', array('language' => $this->config->get('config_language'))));
+        }else {
+            $this->session->data['error'] = $this->language->get('error_approved');
+
+            $this->model_account_customer->editToken($email, '');
+
+            $this->response->redirect($this->url->link('account/login', 'language=' . $this->config->get('config_language')));
+        }
+
     }
 }

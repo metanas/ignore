@@ -1,4 +1,5 @@
-<div id="account-address">
+{{ header }}
+<div id="account-address" class="container">
     {% if success %}
         <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}</div>
     {% endif %}
@@ -6,13 +7,21 @@
         <div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
     {% endif %}
     <div class="row">
-        <div id="content" class="col-sm-12">{{ content_top }}
+        {{ column_left }}
+        {% if column_left and column_right %}
+            {% set class = 'col-sm-6' %}
+        {% elseif column_left or column_right %}
+            {% set class = 'col-sm-9' %}
+        {% else %}
+            {% set class = 'col-sm-12' %}
+        {% endif %}
+        <div id="content" class="{{ class }}">{{ content_top }}
+            <h3 style="margin-bottom: 38px;" onclick="openSlide()"><span class="fa fa-align-justify visible-xs-inline" style="font-size: inherit"></span> {{ text_address_book }}</h3>
             {% if addresses or billing_addresses %}
-                <h2>{{ text_address_book }}</h2>
                 <div class="col-lg-offset-2 col-sm-8">
                     <div class="row">
-                        <h3>Address de livraison</h3>
-                        <hr>
+                        <div style="font-size: 14px; background-color: RGB(254,248,250); font-weight: bold; padding-top: 7px; padding-bottom: 7px;">Mes adresses de livraisons enregistrées </div>
+                        <hr style="margin-top: 0px;">
                         <div>
                             {% for result in addresses %}
                                 <div class="col-lg-12">
@@ -29,8 +38,8 @@
                         </div>
                     </div>
                     <div class="buttons clearfix">
-                        <div class="pull-right"><a href="{{ add }}" class="zalark-button"
-                                                   style="padding: 8px 8px 8px 8px;">{{ button_new_address }}</a></div>
+                        <div   class="pull-right"><a href="{{ add }}" class="zalark-button"
+                                                   style="padding: 10px 10px 10px 10px;font-size: 14px;" >{{ button_new_address }}</a></div>
                     </div>
                 </div>
 
@@ -61,3 +70,10 @@
             {{ content_bottom }}</div>
         {{ column_right }}</div>
 </div>
+<script>
+    $('#column-left').removeClass('hidden-xs');
+    function openSlide() {
+        $("#slidebar").css({"width": "100%"});
+    }
+</script>
+{{ footer }}

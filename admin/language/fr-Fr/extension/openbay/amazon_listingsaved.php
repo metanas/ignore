@@ -13,6 +13,7 @@ $_['text_complete']       = 'Listings uploaded';
 // Column
 $_['column_name']         = 'Name';
 $_['column_model']        = 'Model';
+$_['column_manufacturer'] = 'Fabricant';
 $_['column_sku']          = 'SKU';
 $_['column_amazon_sku']   = 'Amazon item SKU';
 $_['column_action']       = 'Action';

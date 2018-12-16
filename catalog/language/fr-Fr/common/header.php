@@ -17,5 +17,5 @@ $_['text_transaction']   ='Transactions';
 $_['text_download']      ='Téléchargements';
 $_['text_logout']        ='Connectez - Out';
 $_['text_checkout']      ='Check-out';
-$_['text_search']        ='Chercher';
+$_['text_search']        ='Rechercher';
 $_['text_all']           ='Montre tout';

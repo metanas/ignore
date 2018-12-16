@@ -81,7 +81,6 @@ class ControllerAccountWishList extends Controller
                     'product_id' => $product_info['product_id'],
                     'thumb' => $image,
                     'name' => $product_info['name'],
-                    'model' => $product_info['model'],
                     'stock' => $stock,
                     'price' => $price,
                     'special' => $special,

@@ -1574,7 +1574,6 @@ class ControllerMarketplaceOpenbay extends Controller {
 				'markets'   => $markets,
 				'product_id' => $result['product_id'],
 				'name'       => $result['name'],
-				'model'      => $result['model'],
 				'price'      => $result['price'],
 				'special'    => $special,
 				'image'      => $image,

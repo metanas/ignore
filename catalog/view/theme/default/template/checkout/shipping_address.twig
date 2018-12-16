@@ -248,14 +248,15 @@
     });
 
     function refactorForm() {
-        $('input[name="address_id"]').val('');
-        $('input[name="firstname"]').val('');
-        $('input[name="lastname"]').val('');
-        $('input[name="address_1"]').val('');
-        $('input[name="address_2"]').val('');
-        $('input[name="city"]').val('');
-        $('input[name="postcode"]').val('');
-        $('input[name="telephone"]').val('');
+        $('#add-address-field input[name="address_id"]').val('');
+        $('#add-address-field input[name="firstname"]').val('');
+        $('#add-address-field input[name="lastname"]').val('');
+        $('#add-address-field input[name="address_1"]').val('');
+        $('#add-address-field input[name="address_2"]').val('');
+        $('#add-address-field input[name="city"]').val('');
+        $('#add-address-field input[name="postcode"]').val('');
+        $('#add-address-field input[name="telephone"]').val('');
+        $(".text-danger").remove();
         $('#update-address').hide();
         $('#add-address').show();
         $('#add-address-field').hide(200)
@@ -274,13 +275,19 @@
                 $('body').loading('stop');
             },
             success: function (json) {
+                $(".text-danger").remove();
                 if (json['success']) {
                     let result = json['result'];
                     $('.address-form :input[value="' + result['address_id'] + '"]').parents('.address-form').remove();
                     setAddress(result);
                     refactorForm();
                     $('html, body').animate({scrollTop: 0}, 'slow');
-
+                }
+                else if(json['error']){
+                    $.map(json['error'], function (value, key) {
+                        $("#add-address-field input[name='" + key + "']").after('<span class="text-danger">' + value + '</span>');
+                        $("#add-address-field input[name='" + key + "']").addClass("has-error");
+                    })
                 }
             },
             error: function (d, r, e) {
@@ -304,20 +311,28 @@
             success: function (json) {
                 if (json['result'] !== false) {
                     let result = json['result'];
-                    $('input[name="address_id"]').val(result['address_id']);
-                    $('input[name="firstname"]').val(result['firstname']);
-                    $('input[name="lastname"]').val(result['lastname']);
-                    $('input[name="address_1"]').val(result['address_1']);
-                    $('input[name="address_2"]').val(result['address_2']);
-                    $('input[name="city"]').val(result['city']);
-                    $('input[name="postcode"]').val(result['postcode']);
-                    $('input[name="telephone"]').val(result['telephone']);
+                    $(".text-danger").remove();
+                    $('#add-address-field input[name="address_id"]').val(result['address_id']);
+                    $('#add-address-field input[name="firstname"]').val(result['firstname']);
+                    $('#add-address-field input[name="lastname"]').val(result['lastname']);
+                    $('#add-address-field input[name="address_1"]').val(result['address_1']);
+                    $('#add-address-field input[name="address_2"]').val(result['address_2']);
+                    $('#add-address-field input[name="city"]').val(result['city']);
+                    $('#add-address-field input[name="postcode"]').val(result['postcode']);
+                    $('#add-address-field input[name="telephone"]').val(result['telephone']);
                     $('#update-address').show();
                     $('#add-address').hide();
                     $('#add-address-field').show(200);
 
                     $('html, body').animate({scrollTop: $(window).scrollTop() + $(window).height()}, 'slow');
 
+                }
+
+                if(json['error']){
+                    $.map(json['error'], function (value, key) {
+                        $("#add-address-field input[name='" + key + "']").after('<span class="text-danger">' + value + '</span>');
+                        $("#add-address-field input[name='" + key + "']").addClass("has-error");
+                    })
                 }
             }
         })
@@ -365,14 +380,19 @@
                 $('body').loading('stop');
             },
             success: function (json) {
+                $(".text-danger").remove();
                 if (json['redirect']) {
                     location = json['redirect'];
-                } else if (json['not_found']) {
-
                 } else if (json['not_selected']) {
 
                 } else if (json['success']) {
                     step.next();
+                }else if(json['error']){
+                    $.map(json['error'], function (value, key) {
+                        $("#container-billing input[name='" + key + "']").after('<span class="text-danger">' + value + '</span>');
+                        $("#container-billing input[name='" + key + "']").addClass("has-error");
+                    })
+
                 }
             },
             error: function (r, df, d) {
@@ -403,7 +423,7 @@
             html += "<label class=\"check_filter\">";
             html += "<input type=\"radio\" class=\"checkbox\" name=\"address\" value='" + json['address_id'] + "' checked><b>" + json['firstname'] + " " + json['lastname'];
             html += "</b><br>" + json['address_1'] + " " + json['address_2'] + "<br>" + json['postcode'] + " ";
-            html += json['city'] + "<br> Maroc <br> T: " + json['telephone'];
+            html += json['city'] + "<br> Maroc <br> Tel: " + json['telephone'];
             html += "<span class=\"checkmark checkradio\"></span>";
             html += "</label></div>";
             html += "<span class=\"edit-address\"><i class=\"fa fa-pencil\"></i></span>";
@@ -417,26 +437,26 @@
     }
 
     $("#add-address").on("click", function () {
-        if ($('#input-name').val().length === 0) {
-            $('#input-name').focus();
-            return;
-        }
-        if ($('#input-lastname').val().length === 0) {
-            $('#input-lastname').focus();
-            return;
-        }
-        if ($('#input-address-1').val().length === 0) {
-            $('#input-address-1').focus();
-            return;
-        }
-        if ($('#input-city').val() === 0) {
-            $('#input-city').focus();
-            return;
-        }
-        if ($('#input-postcode').val().length === 0) {
-            $('#input-postcode').focus();
-            return;
-        }
+        // if ($('#input-name').val().length === 0) {
+        //     $('#input-name').focus();
+        //     return;
+        // }
+        // if ($('#input-lastname').val().length === 0) {
+        //     $('#input-lastname').focus();
+        //     return;
+        // }
+        // if ($('#input-address-1').val().length === 0) {
+        //     $('#input-address-1').focus();
+        //     return;
+        // }
+        // if ($('#input-city').val() === 0) {
+        //     $('#input-city').focus();
+        //     return;
+        // }
+        // if ($('#input-postcode').val().length === 0) {
+        //     $('#input-postcode').focus();
+        //     return;
+        // }
 
         $.ajax({
             url: 'index.php?route=checkout/shipping_address/add',
@@ -450,7 +470,15 @@
                 $('body').loading('stop');
             },
             success: function (json) {
-                setAddress(json);
+                $(".text-danger").remove();
+                if(json['success'])
+                    setAddress(json);
+                else if (json['error']){
+                    $.map(json['error'], function (value, key) {
+                        $("#add-address-field input[name='" + key + "']").after('<span class="text-danger">' + value + '</span>');
+                        $("#add-address-field input[name='" + key + "']").addClass("has-error");
+                    })
+                }
             },
             error: function (d, r, e) {
                 console.log(d, r, e);

@@ -410,13 +410,13 @@ class ControllerCommonColumnLeft extends Controller {
 			// Localisation
 			$localisation = array();
 			
-			if ($this->user->hasPermission('access', 'localisation/location')) {
-				$localisation[] = array(
-					'name'	   => $this->language->get('text_location'),
-					'href'     => $this->url->link('localisation/location', 'user_token=' . $this->session->data['user_token']),
-					'children' => array()		
-				);	
-			}
+//			if ($this->user->hasPermission('access', 'localisation/location')) {
+//				$localisation[] = array(
+//					'name'	   => $this->language->get('text_location'),
+//					'href'     => $this->url->link('localisation/location', 'user_token=' . $this->session->data['user_token']),
+//					'children' => array()
+//				);
+//			}
 			
 			if ($this->user->hasPermission('access', 'localisation/language')) {
 				$localisation[] = array(
@@ -501,13 +501,13 @@ class ControllerCommonColumnLeft extends Controller {
 				);
 			}
 			
-			if ($this->user->hasPermission('access', 'localisation/geo_zone')) {
-				$localisation[] = array(
-					'name'	   => $this->language->get('text_geo_zone'),
-					'href'     => $this->url->link('localisation/geo_zone', 'user_token=' . $this->session->data['user_token']),
-					'children' => array()
-				);
-			}
+//			if ($this->user->hasPermission('access', 'localisation/geo_zone')) {
+//				$localisation[] = array(
+//					'name'	   => $this->language->get('text_geo_zone'),
+//					'href'     => $this->url->link('localisation/geo_zone', 'user_token=' . $this->session->data['user_token']),
+//					'children' => array()
+//				);
+//			}
 			
 			// Tax		
 			$tax = array();
@@ -544,13 +544,13 @@ class ControllerCommonColumnLeft extends Controller {
 				);
 			}
 			
-			if ($this->user->hasPermission('access', 'localisation/weight_class')) {
-				$localisation[] = array(
-					'name'	   => $this->language->get('text_weight_class'),
-					'href'     => $this->url->link('localisation/weight_class', 'user_token=' . $this->session->data['user_token']),
-					'children' => array()
-				);
-			}
+//			if ($this->user->hasPermission('access', 'localisation/weight_class')) {
+//				$localisation[] = array(
+//					'name'	   => $this->language->get('text_weight_class'),
+//					'href'     => $this->url->link('localisation/weight_class', 'user_token=' . $this->session->data['user_token']),
+//					'children' => array()
+//				);
+//			}
 			
 			if ($localisation) {																
 				$system[] = array(

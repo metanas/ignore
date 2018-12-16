@@ -44,33 +44,31 @@
 
         <table style="width: 100%;margin-top: 5mm;">
             <tr style="width:100%;">
-                <th style="width: 48%;border : 1px solid black;background-color: #ff1b5a;color: whitesmoke;padding: 4px">
+                <th style="width: 48%;border : 1px solid #ff1b5a;background-color: #ff1b5a;color: whitesmoke;padding: 4px">
                     {{ text_shipping_address }}
                 </th>
                 <td style="width: 4%">
 
                 </td>
-                <th style="width: 48%;border : 1px solid black;background-color: #ff1b5a;color: whitesmoke;padding: 4px">
+                <th style="width: 48%;border : 1px solid #ff1b5a;background-color: #ff1b5a;color: whitesmoke;padding: 4px">
                     {{ text_payment_address }}
                 </th>
             </tr>
             <tr style="width: 100%;">
-                <td style="width: 48%;border-bottom : 1px;border-left:1px;border-right: 1px;padding-left: 4px">
+                <td style="width: 48%;border-bottom : 1px solid #ff1b5a;border-left:1px solid #ff1b5a;border-right: 1px solid #ff1b5a;padding-left: 4px">
                     {% if order.shipping_address %}
-                        <div>{{ order.shipping_address }}</div>
-                        {{ text_telephone }}: {{ order.store_telephone }}
+                        <div style="line-height: 1.5">{{ order.shipping_address }}
+                        </div>
                     {% endif %}
                 </td>
                 <td style="width: 4%">
 
                 </td>
-                <td style="width: 48%;border-bottom : 1px;border-left:1px;border-right: 1px;padding-left: 4px">
-                    {% if order.payment_address %}
-                        <div>{{ order.payment_address }}</div>
-                        <b>{{ text_telephone }}</b> {{ order.store_telephone }}
+                <td style="width: 48%;border-bottom : 1px solid #ff1b5a;border-left:1px #ff1b5a;border-right: 1px #ff1b5a;padding-left: 4px">
+                    {% if order.billing_address %}
+                        <div style="line-height: 1.5">{{ order.billing_address }}</div>
                     {% else %}
-                        <div>{{ order.shipping_address }}</div>
-                        {{ text_telephone }}: {{ order.store_telephone }}
+                        <div style="line-height: 1.5">{{ order.shipping_address }}</div>
                     {% endif %}
                 </td>
             </tr>
@@ -85,13 +83,14 @@
         <table style="width: 100%">
             <tr style="width: 100%">
                 <th style="width: 20%;">{{ column_product }}</th>
-                <th style="width: 20%;text-align: right">{{ column_model }}</th>
-                <th style="width: 20%;text-align: right"><b>{{ column_quantity }}</b></th>
+                <th style="width: 20%;text-align: left">{{ column_manufacturer }}</th>
+                <th style="width: 20%;text-align: left">{{ column_ref }}</th>
+                <th style="width: 20%;text-align: center"><b>{{ column_quantity }}</b></th>
                 <th style="width: 20%;text-align: right"><b>{{ column_price }}</b></th>
                 <th style="width: 20%;text-align: right"><b>{{ column_total }}</b></th>
             </tr>
             <tr style="width: 100%;">
-                <td colspan="5" style="border-top: 1px"></td>
+                <td colspan="5" style="border-top: 1px #A7A7A7"></td>
             </tr>
             {% for product in order.product %}
                 <tr style="width: 100%">
@@ -101,18 +100,23 @@
                             &nbsp;
                             <small> - {{ option.name }}: {{ option.value }}</small>
                         {% endfor %}</td>
-                    <td style="width: 20%;text-align: right">{{ product.model }}</td>
-                    <td style="width: 20%;text-align: right">{{ product.quantity }}</td>
+                    <td style="width: 20%;text-align: left">{{ product.manufacturer }}</td>
+                    <td style="width: 20%;text-align: left">{{ product.ref }}</td>
+                    <td style="width: 20%;text-align: center">{{ product.quantity }}</td>
                     <td style="width: 20%;text-align: right">{{ product.price }}</td>
                     <td style="width: 20%;text-align: right">{{ product.total }}</td>
                 </tr>
             {% endfor %}
             <tr style="width: 100%;">
-                <td colspan="5" style="border-bottom: 1px"></td>
+                <td colspan="5" style="border-bottom: 1px #A7A7A7;"></td>
+            </tr>
+            <tr style="height: 10px">
+                <td style="text-align: right;" colspan="4"><b>Frais de livraison</b><span style="color: #A7A7A7; font-size: 11px;" > (TVA Incluse)</span></td>
+                <td style="text-align: right;">Gratuit</td>
             </tr>
             {% for total in order.total %}
-                <tr>
-                    <td style="text-align: right" colspan="4"><b>{{ total.title }}</b></td>
+                <tr style="line-height: 1.5">
+                    <td style="text-align: right" colspan="4"><b>{{ total.title }}</b><span style="color: #A7A7A7; font-size: 11px;" > (TVA Incluse)</span></td>
                     <td style="text-align: right">{{ total.text }}</td>
                 </tr>
             {% endfor %}
@@ -124,7 +128,7 @@
                 <td style="width: 100%;text-align: center">
                     Si vous avez besoin de plus d'informations ou d'aide au sujet de votre commande, nous vous suggerons
                     de contacter notre service client <br>
-                    Nous esperons vous revoir bientot. Zalark.com
+                    Nous esperons vous revoir bientot. <a href="zalark.com">Zalark.com</a>
                 </td>
             </tr>
         </table>

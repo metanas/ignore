@@ -20,8 +20,9 @@ class ControllerCheckoutSuccess extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		if ($this->customer->isLogged()) {
-			$data['text_message'] = sprintf($this->language->get('text_customer'), $this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language'))), $this->url->link('account/order', 'language=' . $this->config->get('config_language')), $this->url->link('account/download', 'language=' . $this->config->get('config_language')), $this->url->link('information/contact', 'language=' . $this->config->get('config_language')));
-		} else {
+            $data['text_customer'] = sprintf($this->language->get('text_customer'), $this->customer->getFirstName());
+            $data['text_message'] = sprintf($this->language->get('text_message'), $this->url->link('account/order', 'language=' . $this->config->get('config_language')));
+        } else {
 			$data['text_message'] = sprintf($this->language->get('text_guest'), $this->url->link('information/contact', 'language=' . $this->config->get('config_language')));
 		}
 

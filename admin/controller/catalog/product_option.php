@@ -248,6 +248,8 @@ class ControllerCatalogProductOption extends Controller {
 			$data['product_options'][] = array(
 				'product_option_id' => $result['product_option_id'],
 				'product'           => $result['product'],
+				'ref'               => $result['ref'],
+				'manufacturer'      => $result['manufacturer'],
 				'option'            => $result['option'],
 				'type'              => $this->language->get('text_' . $result['type']),
 				'sort_order'        => $result['sort_order'],

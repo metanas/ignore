@@ -46,7 +46,7 @@ class ControllerExtensionFeedGoogleBase extends Controller {
 							$output .= '  <g:image_link></g:image_link>';
 						}
 
-						$output .= '  <g:model_number>' . $product['model'] . '</g:model_number>';
+						$output .= '  <g:model_number>' . $product['manufacturer'] . '</g:model_number>';
 
 						if ($product['mpn']) {
 							$output .= '  <g:mpn><![CDATA[' . $product['mpn'] . ']]></g:mpn>' ;

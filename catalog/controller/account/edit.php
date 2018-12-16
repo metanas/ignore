@@ -82,7 +82,15 @@ class ControllerAccountEdit extends Controller
 
         $data['language'] = $this->config->get('config_language');
 
-        return $this->load->view('account/edit', $data);
+        $data['column_left'] = $this->load->controller('common/column_left');
+        $data['column_right'] = $this->load->controller('common/column_right');
+        $data['content_top'] = $this->load->controller('common/content_top');
+        $data['content_bottom'] = $this->load->controller('common/content_bottom');
+
+        $data['footer'] = $this->load->controller('common/footer');
+        $data['header'] = $this->load->controller('common/header');
+
+        $this->response->setOutput($this->load->view('account/edit', $data));
     }
 
     public function edit_info()
@@ -100,19 +108,19 @@ class ControllerAccountEdit extends Controller
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->session->data['redirect'] = $this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language')));
+            $this->session->data['redirect'] = $this->url->link('account/edit', array('language' => $this->config->get('config_language')));
         } else {
             $this->session->data['error'] = $this->error;
         }
 
-        $this->response->redirect($this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language'))));
+        $this->response->redirect($this->url->link('account/edit', array('language' => $this->config->get('config_language'))));
     }
 
     public function edit_password()
     {
 
         if (!$this->customer->isLogged()) {
-            $this->session->data['redirect'] = $this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language')));
+            $this->session->data['redirect'] = $this->url->link('account/edit', array('language' => $this->config->get('config_language')));
 
             $this->response->redirect($this->url->link('account/login', 'language=' . $this->config->get('config_language')));
         }
@@ -124,17 +132,17 @@ class ControllerAccountEdit extends Controller
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language'))));
+            $this->response->redirect($this->url->link('account/edit', array('language' => $this->config->get('config_language'))));
         } else {
             $this->session->data['error'] = $this->error;
         }
 
-        $this->response->redirect($this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language'))));
+        $this->response->redirect($this->url->link('account/edit', array('language' => $this->config->get('config_language'))));
     }
 
     public function edit_email(){
         if (!$this->customer->isLogged()) {
-            $this->session->data['redirect'] = $this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language')));
+            $this->session->data['redirect'] = $this->url->link('account/edit', array('language' => $this->config->get('config_language')));
 
             $this->response->redirect($this->url->link('account/login', 'language=' . $this->config->get('config_language')));
         }
@@ -146,12 +154,12 @@ class ControllerAccountEdit extends Controller
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language'))));
+            $this->response->redirect($this->url->link('account/edit', array('language' => $this->config->get('config_language'))));
         } else {
             $this->session->data['error'] = $this->error;
         }
 
-        $this->response->redirect($this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language'))));
+        $this->response->redirect($this->url->link('account/edit', array('language' => $this->config->get('config_language'))));
     }
 
     protected function validate_info()

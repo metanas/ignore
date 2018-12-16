@@ -22,7 +22,7 @@ class ControllerProductCategory extends Controller
         $filter = array();
 
         if (isset($this->request->get['manufacture'])) {
-            $filter['manufacture'] = explode("_", $this->request->get['manufacture']);
+            $filter['manufacture'] = explode("_",  $this->request->get['manufacture']);
         }
 
         if (isset($this->request->get['color'])) {
@@ -30,7 +30,7 @@ class ControllerProductCategory extends Controller
         }
 
         if (isset($this->request->get['size'])) {
-            $filter['size'] = explode("_", $this->request->get['size']);
+            $filter['size'] = explode("_", str_replace(".", " ", $this->request->get['size']));
         }
 
         if (isset($this->request->get['price-min'])) {
@@ -101,8 +101,6 @@ class ControllerProductCategory extends Controller
 
             $this->document->setTitle($category_info['name']);
 
-            $data['text_compare'] = sprintf($this->language->get('text_compare'), (isset($this->session->data['compare']) ? count($this->session->data['compare']) : 0));
-
             if ($category_info['image']) {
                 $data['thumb'] = $this->model_tool_image->resize($category_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_height'));
             } else {
@@ -162,6 +160,7 @@ class ControllerProductCategory extends Controller
             }
 
             $data['products'] = array();
+
             $filter_data = array(
                 'filter_category_id' => $category_id,
                 'filter_sub_category' => $this->config->get('config_product_category') ? true : false,
@@ -189,13 +188,16 @@ class ControllerProductCategory extends Controller
             foreach ($products_option as $option) {
                 $manufactures[] = $option['manufacture'];
                 $sizes[] = $option['size'];
-                $colors[] = $option['color'];
+                $colors[] = $option['color'] . "$" . $option['color_hex'];
                 $price[] = $option['price'];
             }
 
             $data['products_manufacture'] = array_unique($manufactures);
             $data['products_size'] = array_unique($sizes);
             $data['products_color'] = array_unique($colors);
+            sort($data['products_size']);
+            sort($data['products_color']);
+            sort($data['products_manufacture']);
 
 
             if (!empty($price)) {
@@ -204,6 +206,7 @@ class ControllerProductCategory extends Controller
             }
 
             $results = $this->model_catalog_product->getProducts($filter_data);
+
             foreach ($results as $result) {
                 if ($result['image']) {
                     $image = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_popup_height'));
@@ -219,10 +222,11 @@ class ControllerProductCategory extends Controller
 
                 if ((float)$result['special']) {
                     $special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+                    $discount = intval((($result['price'] - $result['special']) * 100) / $result['price']);
                 } else {
                     $special = false;
+                    $discount = false;
                 }
-
 
                 if ($this->customer->isLogged()) {
                     if ((int)$this->model_account_wishlist->isExist($result['product_id']) == true) {
@@ -250,6 +254,7 @@ class ControllerProductCategory extends Controller
                     'manufacturer' => $result['manufacturer'],
                     'name' => (strlen($result['name']) <= 12) ? $result['name'] : utf8_substr(trim(strip_tags(html_entity_decode($result['name'], ENT_QUOTES, 'UTF-8'))), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
                     'price' => $price,
+                    'discount' => $discount,
                     'stock' => $stock,
                     'special' => $special,
                     'favorite' => $favorite,
@@ -543,13 +548,16 @@ class ControllerProductCategory extends Controller
             foreach ($products_option as $option) {
                 $manufactures[] = $option['manufacture'];
                 $sizes[] = $option['size'];
-                $colors[] = $option['color'];
+                $colors[] = $option['color'] . "$" . $option['color_hex'];
                 $price[] = $option['price'];
             }
 
             $data['products_manufacture'] = array_unique($manufactures);
             $data['products_size'] = array_unique($sizes);
             $data['products_color'] = array_unique($colors);
+            sort($data['products_size']);
+            sort($data['products_color']);
+            sort($data['products_manufacture']);
 
             if (!empty($price)) {
                 $data['price_max'] = (int)max($price);

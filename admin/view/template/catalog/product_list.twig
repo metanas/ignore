@@ -39,6 +39,9 @@
             <div class="form-group">
               <label class="control-label" for="input-manufacturer">{{ entry_manufacturer }}</label> <input type="text" name="filter_manufacturer" value="{{ filter_manufacturer }}" placeholder="{{ entry_manufacturer }}" id="input-manufacturer" class="form-control"/>
             </div>
+              <div class="form-group">
+                  <label class="control-label" for="input-ref">{{ entry_ref }}</label> <input type="text" name="filter_ref" value="{{ filter_ref }}" placeholder="{{ entry_ref }}" id="input-ref" class="form-control"/>
+              </div>
             <div class="form-group">
               <label class="control-label" for="input-price">{{ entry_price }}</label> <input type="text" name="filter_price" value="{{ filter_price }}" placeholder="{{ entry_price }}" id="input-price" class="form-control"/>
             </div>
@@ -99,7 +102,7 @@
                             {% endif %}</td>
                           <td class="text-center">{% if product.image %}<img src="{{ product.image }}" alt="{{ product.name }}" class="img-thumbnail"/>{% else %}<span class="img-thumbnail list"><i class="fa fa-camera fa-2x"></i></span>{% endif %}</td>
                             <td class="text-left">{{ product.manufacturer }}</td>
-                            <td class="text-left">ssssss{{ product.name }}</td>
+                            <td class="text-left">{{ product.name }}</td>
                             <td class="text-left">{{ product.ref }}</td>
                           <td class="text-right">{% if product.special %}<span style="text-decoration: line-through;">{{ product.price }}</span>
                               <br/>
@@ -141,11 +144,17 @@ $('#button-filter').on('click', function() {
 		url += '&filter_name=' + encodeURIComponent(filter_name);
 	}
 
-	var filter_model = $('input[name=\'filter_manufacturer\']').val();
+	var filter_manufacturer = $('input[name=\'filter_manufacturer\']').val();
 
-	if (filter_model) {
-		url += '&filter_model=' + encodeURIComponent(filter_model);
+	if (filter_manufacturer) {
+		url += '&filter_manufacturer=' + encodeURIComponent(filter_manufacturer);
 	}
+
+    var filter_ref = $('input[name=\'filter_ref\']').val();
+
+    if (filter_ref) {
+        url += '&filter_ref=' + encodeURIComponent(filter_ref);
+    }
 
 	var filter_price = $('input[name=\'filter_price\']').val();
 
@@ -213,5 +222,25 @@ $('input[name=\'filter_manufacturer\']').autocomplete({
 		$('input[name=\'filter_manufacturer\']').val(item['label']);
 	}
 });
+
+    $('input[name=\'filter_ref\']').autocomplete({
+        'source': function(request, response) {
+            $.ajax({
+                url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_ref=' + encodeURIComponent(request),
+                dataType: 'json',
+                success: function(json) {
+                    response($.map(json, function(item) {
+                        return {
+                            label: item['ref'],
+                            value: item['product_id']
+                        }
+                    }));
+                }
+            });
+        },
+        'select': function(item) {
+            $('input[name=\'filter_ref\']').val(item['label']);
+        }
+    });
 //--></script>
 {{ footer }} 

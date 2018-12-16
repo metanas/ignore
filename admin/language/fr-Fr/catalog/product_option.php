@@ -24,6 +24,8 @@ $_['text_time']          = 'Temps';
 
 // Column
 $_['column_product']     = 'Produit';
+$_['column_manufacturer']= 'Fabricant';
+$_['column_ref']         = 'Reference';
 $_['column_option']      = 'Option';
 $_['column_type']        = 'Type';
 $_['column_sort_order']  = 'Ordere';

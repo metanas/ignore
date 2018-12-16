@@ -6,7 +6,7 @@ class ControllerCheckoutConfirm extends Controller
     {
         $redirect = '';
 
-        $format = '<b>{firstname} {lastname}</b>' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . "T: {telephone}" . "\n" . '{country}';
+        $format = '<b>{firstname} {lastname}</b>' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . "Tel: {telephone}" . "\n" . '{country}';
 
         $find = array(
             '{firstname}',
@@ -14,8 +14,8 @@ class ControllerCheckoutConfirm extends Controller
             '{address_1}',
             '{address_2}',
             '{city}',
-            '{telephone}',
             '{postcode}',
+            '{telephone}',
             '{country}'
         );
 
@@ -493,12 +493,12 @@ class ControllerCheckoutConfirm extends Controller
             $data['products'][] = array(
                 'cart_id' => $product['cart_id'],
                 'name' => $product['name'],
-                'model' => $product['model'],
+                'manufacturer' => $product['manufacturer'],
                 'image' => $this->model_tool_image->resize($product['image'], 100, 200),
                 'quantity' => $product['quantity'],
                 'option' => $option_data,
                 'color' => $product['color'],
-                'price' => $this->currency->format($product['price'], $this->session->data['currency'])
+                'price' => $this->currency->format($product['price']*$product['quantity'], $this->session->data['currency'])
             );
         }
 
@@ -663,7 +663,8 @@ class ControllerCheckoutConfirm extends Controller
             $order_data['products'][] = array(
                 'product_id' => $product['product_id'],
                 'name' => $product['name'],
-                'model' => $product['model'],
+                'manufacturer' => $product['manufacturer'],
+                'ref' => $product['ref'],
                 'option' => $option_data,
                 'quantity' => $product['quantity'],
                 'price' => $product['price'],
