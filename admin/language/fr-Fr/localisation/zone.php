@@ -4,7 +4,7 @@ $_['heading_title']          = 'Zones';
 
 // Text
 $_['text_success']           = 'Succès: vous avez modifié des zones!';
-$_['text_list']              = 'Liste des zones';
+$_['text_list']              = 'Liste des Villes';
 $_['text_add']               = 'Ajouter une zone';
 $_['text_edit']              = 'Modifier la zone';
 
@@ -15,8 +15,7 @@ $_['column_country']         = 'Pays';
 $_['column_action']          = 'Action';
 
 // Entry
-$_['entry_name']             = 'Nom de la zone';
-$_['entry_code']             = 'Code de zone';
+$_['entry_name']             = 'Nom de la ville';
 $_['entry_country']          = 'Pays';
 $_['entry_status']           = 'Status';
 

@@ -4,7 +4,7 @@ class ModelCatalogProduct extends Model
 {
     public function addProduct($data)
     {
-        $this->db->query("INSERT INTO " . DB_PREFIX . "product SET model = '" . $this->db->escape((string)$data['model']) . "', name = '" . $this->db->escape((string)$data['name']) . "', ref = '" . $this->db->escape($data['prefix_ref'] . "-" . $data['ref']) . "', color = '" . $this->db->escape((string)$data['color']) . "', color_hex='" . $this->db->escape((string)$data['color_hex']) . "', minimum = '" . (int)$data['minimum'] . "', date_available = '" . $this->db->escape((string)$data['date_available']) . "', manufacturer_id = '" . (int)$data['manufacturer_id'] . "', shipping = '" . (int)$data['shipping'] . "', price = '" . (float)$data['price'] . "', status = '" . (int)$data['status'] . "', sort_order = '" . (int)$data['sort_order'] . "', date_added = NOW(), date_modified = NOW()");
+        $this->db->query("INSERT INTO " . DB_PREFIX . "product SET name = '" . $this->db->escape((string)$data['name']) . "', ref = '" . $this->db->escape($data['prefix_ref'] . "-" . $data['ref']) . "', color = '" . $this->db->escape((string)$data['color']) . "', color_hex='" . $this->db->escape((string)$data['color_hex']) . "', minimum = '" . (int)$data['minimum'] . "', date_available = '" . $this->db->escape((string)$data['date_available']) . "', manufacturer_id = '" . (int)$data['manufacturer_id'] . "', price = '" . (float)$data['price'] . "', status = '" . (int)$data['status'] . "', sort_order = '" . (int)$data['sort_order'] . "', date_added = NOW(), date_modified = NOW()");
 
         $product_id = $this->db->getLastId();
 
@@ -77,21 +77,21 @@ class ModelCatalogProduct extends Model
             }
         }
 
-        if (isset($data['product_related'])) {
-            foreach ($data['product_related'] as $related_id) {
-                $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE product_id = '" . (int)$product_id . "' AND related_id = '" . (int)$related_id . "'");
-                $this->db->query("INSERT INTO " . DB_PREFIX . "product_related SET product_id = '" . (int)$product_id . "', related_id = '" . (int)$related_id . "'");
-                $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE product_id = '" . (int)$related_id . "' AND related_id = '" . (int)$product_id . "'");
-                $this->db->query("INSERT INTO " . DB_PREFIX . "product_related SET product_id = '" . (int)$related_id . "', related_id = '" . (int)$product_id . "'");
-            }
-        }
+//        if (isset($data['product_related'])) {
+//            foreach ($data['product_related'] as $related_id) {
+//                $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE product_id = '" . (int)$product_id . "' AND related_id = '" . (int)$related_id . "'");
+//                $this->db->query("INSERT INTO " . DB_PREFIX . "product_related SET product_id = '" . (int)$product_id . "', related_id = '" . (int)$related_id . "'");
+//                $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE product_id = '" . (int)$related_id . "' AND related_id = '" . (int)$product_id . "'");
+//                $this->db->query("INSERT INTO " . DB_PREFIX . "product_related SET product_id = '" . (int)$related_id . "', related_id = '" . (int)$product_id . "'");
+//            }
+//        }
 
         if (isset($data['product_similar'])) {
             foreach ($data['product_similar'] as $similar_id) {
-                $this->db->query("DELETE FROM " . DB_PREFIX . "product_similar WHERE product_id = '" . (int)$product_id . "' AND related_id = '" . (int)$similar_id . "'");
-                $this->db->query("INSERT INTO " . DB_PREFIX . "product_similar SET product_id = '" . (int)$product_id . "', related_id = '" . (int)$similar_id . "'");
-                $this->db->query("DELETE FROM " . DB_PREFIX . "product_similar WHERE product_id = '" . (int)$similar_id . "' AND related_id = '" . (int)$product_id . "'");
-                $this->db->query("INSERT INTO " . DB_PREFIX . "product_similar SET product_id = '" . (int)$similar_id . "', related_id = '" . (int)$product_id . "'");
+                $this->db->query("DELETE FROM " . DB_PREFIX . "product_similar WHERE product_id = '" . (int)$product_id . "' AND similar_id = '" . (int)$similar_id . "'");
+                $this->db->query("INSERT INTO " . DB_PREFIX . "product_similar SET product_id = '" . (int)$product_id . "', similar_id = '" . (int)$similar_id . "'");
+                $this->db->query("DELETE FROM " . DB_PREFIX . "product_similar WHERE product_id = '" . (int)$similar_id . "' AND similar_id = '" . (int)$product_id . "'");
+                $this->db->query("INSERT INTO " . DB_PREFIX . "product_similar SET product_id = '" . (int)$similar_id . "', similar_id = '" . (int)$product_id . "'");
             }
         }
 
@@ -128,7 +128,7 @@ class ModelCatalogProduct extends Model
 
     public function editProduct($product_id, $data)
     {
-        $this->db->query("UPDATE " . DB_PREFIX . "product SET model = '" . $this->db->escape((string)$data['model']) . "', name = '" . $this->db->escape((string)$data['name']) . "', ref = '" . $this->db->escape($data['prefix_ref'] . "-" . $data['ref']) . "', color_hex = '" . $this->db->escape((string)$data['color_hex']) . "', color = '" . $this->db->escape((string)$data['color']) . "', minimum = '" . (int)$data['minimum'] . "', date_available = '" . $this->db->escape((string)$data['date_available']) . "', manufacturer_id = '" . (int)$data['manufacturer_id'] . "', shipping = '" . (int)$data['shipping'] . "', price = '" . (float)$data['price'] . "', status = '" . (int)$data['status'] . "', sort_order = '" . (int)$data['sort_order'] . "', date_modified = NOW() WHERE product_id = '" . (int)$product_id . "'");
+        $this->db->query("UPDATE " . DB_PREFIX . "product SET name = '" . $this->db->escape((string)$data['name']) . "', ref = '" . $this->db->escape($data['prefix_ref'] . "-" . $data['ref']) . "', color_hex = '" . $this->db->escape((string)$data['color_hex']) . "', color = '" . $this->db->escape((string)$data['color']) . "', minimum = '" . (int)$data['minimum'] . "', date_available = '" . $this->db->escape((string)$data['date_available']) . "', manufacturer_id = '" . (int)$data['manufacturer_id'] . "', shipping = '" . (int)$data['shipping'] . "', price = '" . (float)$data['price'] . "', status = '" . (int)$data['status'] . "', sort_order = '" . (int)$data['sort_order'] . "', date_modified = NOW() WHERE product_id = '" . (int)$product_id . "'");
 
         if (isset($data['image'])) {
             $this->db->query("UPDATE " . DB_PREFIX . "product SET image = '" . $this->db->escape((string)$data['image']) . "' WHERE product_id = '" . (int)$product_id . "'");
@@ -215,17 +215,17 @@ class ModelCatalogProduct extends Model
             }
         }
 
-        $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE product_id = '" . (int)$product_id . "'");
-        $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE related_id = '" . (int)$product_id . "'");
+//        $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE product_id = '" . (int)$product_id . "'");
+//        $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE related_id = '" . (int)$product_id . "'");
 
-        if (isset($data['product_related'])) {
-            foreach ($data['product_related'] as $related_id) {
-                $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE product_id = '" . (int)$product_id . "' AND related_id = '" . (int)$related_id . "'");
-                $this->db->query("INSERT INTO " . DB_PREFIX . "product_related SET product_id = '" . (int)$product_id . "', related_id = '" . (int)$related_id . "'");
-                $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE product_id = '" . (int)$related_id . "' AND related_id = '" . (int)$product_id . "'");
-                $this->db->query("INSERT INTO " . DB_PREFIX . "product_related SET product_id = '" . (int)$related_id . "', related_id = '" . (int)$product_id . "'");
-            }
-        }
+//        if (isset($data['product_related'])) {
+//            foreach ($data['product_related'] as $related_id) {
+//                $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE product_id = '" . (int)$product_id . "' AND related_id = '" . (int)$related_id . "'");
+//                $this->db->query("INSERT INTO " . DB_PREFIX . "product_related SET product_id = '" . (int)$product_id . "', related_id = '" . (int)$related_id . "'");
+//                $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE product_id = '" . (int)$related_id . "' AND related_id = '" . (int)$product_id . "'");
+//                $this->db->query("INSERT INTO " . DB_PREFIX . "product_related SET product_id = '" . (int)$related_id . "', related_id = '" . (int)$product_id . "'");
+//            }
+//        }
 
         $this->db->query("DELETE FROM " . DB_PREFIX . "product_similar WHERE product_id = '" . (int)$product_id . "'");
         $this->db->query("DELETE FROM " . DB_PREFIX . "product_similar WHERE similar_id = '" . (int)$product_id . "'");
@@ -323,7 +323,7 @@ class ModelCatalogProduct extends Model
         $this->db->query("DELETE FROM " . DB_PREFIX . "product_option WHERE product_id = '" . (int)$product_id . "'");
         $this->db->query("DELETE FROM " . DB_PREFIX . "product_option_value WHERE product_id = '" . (int)$product_id . "'");
         $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE product_id = '" . (int)$product_id . "'");
-        $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE related_id = '" . (int)$product_id . "'");
+//        $this->db->query("DELETE FROM " . DB_PREFIX . "product_related WHERE related_id = '" . (int)$product_id . "'");
         $this->db->query("DELETE FROM " . DB_PREFIX . "product_similar WHERE product_id = '" . (int)$product_id . "'");
         $this->db->query("DELETE FROM " . DB_PREFIX . "product_similar WHERE similar_id = '" . (int)$product_id . "'");
         $this->db->query("DELETE FROM " . DB_PREFIX . "product_reward WHERE product_id = '" . (int)$product_id . "'");
@@ -370,7 +370,18 @@ class ModelCatalogProduct extends Model
             } else {
                 $sql .= " AND";
             }
+            var_dump($this->db->escape((string)$data['filter_manufacturer']));
             $sql .= " m.name LIKE '" . $this->db->escape((string)$data['filter_manufacturer']) . "%'";
+        }
+
+        if (!empty($data['filter_ref'])) {
+            if ($first) {
+                $sql .= " WHERE";
+                $first = false;
+            } else {
+                $sql .= " AND";
+            }
+            $sql .= " p.ref LIKE '" . $this->db->escape((string)$data['filter_ref']) . "%'";
         }
 
         if (!empty($data['filter_price'])) {
@@ -398,6 +409,7 @@ class ModelCatalogProduct extends Model
         $sort_data = array(
             'p.name',
             'm.name',
+            'p.ref',
             'p.price',
             'p.status',
             'p.sort_order'
@@ -608,7 +620,7 @@ class ModelCatalogProduct extends Model
     {
         $first = true;
 
-        $sql = "SELECT COUNT(DISTINCT p.product_id) AS total FROM " . DB_PREFIX . "product p ";
+        $sql = "SELECT COUNT(DISTINCT p.product_id) AS total FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "manufacturer m on (p.manufacturer_id = m.manufacturer_id)";
 
         if (!empty($data['filter_name'])) {
             if ($first) {
@@ -620,14 +632,24 @@ class ModelCatalogProduct extends Model
             $sql .= " p.name LIKE '" . $this->db->escape((string)$data['filter_name']) . "%'";
         }
 
-        if (!empty($data['filter_model'])) {
+        if (!empty($data['filter_manufacturer'])) {
             if ($first) {
                 $sql .= " WHERE";
                 $first = false;
             } else {
                 $sql .= " AND";
             }
-            $sql .= " p.model LIKE '" . $this->db->escape((string)$data['filter_model']) . "%'";
+            $sql .= " m.name LIKE '" . $this->db->escape((string)$data['filter_manufacturer']) . "%'";
+        }
+
+        if (!empty($data['filter_ref'])) {
+            if ($first) {
+                $sql .= " WHERE";
+                $first = false;
+            } else {
+                $sql .= " AND";
+            }
+            $sql .= " p.ref LIKE '" . $this->db->escape((string)$data['filter_ref']) . "%'";
         }
 
         if (isset($data['filter_price']) && !is_null($data['filter_price'])) {

@@ -26,8 +26,8 @@ class ControllerCommonFooter extends Controller {
 		$data['voucher'] = $this->url->link('account/voucher', 'language=' . $this->config->get('config_language'));
 		$data['affiliate'] = $this->url->link('affiliate/login', 'language=' . $this->config->get('config_language'));
 		$data['special'] = $this->url->link('product/special', 'language=' . $this->config->get('config_language'));
-		$data['account'] = $this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language')));
-		$data['order'] = $this->url->link('account/account', array('action' => 'order' ,'language' => $this->config->get('config_language')));
+		$data['account'] = $this->url->link('account/edit', array('language' => $this->config->get('config_language')));
+		$data['order'] = $this->url->link('account/order', array('language' => $this->config->get('config_language')));
 		$data['wishlist'] = $this->url->link('account/wishlist', 'language=' . $this->config->get('config_language'));
 		$data['newsletter'] = $this->url->link('account/newsletter', 'language=' . $this->config->get('config_language'));
 
@@ -37,7 +37,7 @@ class ControllerCommonFooter extends Controller {
 		$data['fax'] = $this->config->get('config_fax');
 		$data['email'] = $this->config->get('config_email');
 
-		// Whos Online
+		// Who's Online
 		if ($this->config->get('config_customer_online')) {
 			$this->load->model('tool/online');
 

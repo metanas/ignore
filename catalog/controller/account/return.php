@@ -59,7 +59,7 @@ class ControllerAccountReturn extends Controller {
 
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($return_total) ? (($page - 1) * $this->config->get('theme_' . $this->config->get('config_theme') . '_product_limit')) + 1 : 0, ((($page - 1) * $this->config->get('theme_' . $this->config->get('config_theme') . '_product_limit')) > ($return_total - $this->config->get('theme_' . $this->config->get('config_theme') . '_product_limit'))) ? $return_total : ((($page - 1) * $this->config->get('theme_' . $this->config->get('config_theme') . '_product_limit')) + $this->config->get('theme_' . $this->config->get('config_theme') . '_product_limit')), $return_total, ceil($return_total / $this->config->get('theme_' . $this->config->get('config_theme') . '_product_limit')));
 
-		$data['continue'] = $this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language')));
+		$data['continue'] = $this->url->link('account/edit', array('language' => $this->config->get('config_language')));
 
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');
@@ -118,7 +118,7 @@ class ControllerAccountReturn extends Controller {
 			$data['email'] = $return_info['email'];
 			$data['telephone'] = $return_info['telephone'];
 			$data['product'] = $return_info['product'];
-			$data['model'] = $return_info['model'];
+			$data['manufacturer'] = $return_info['manufacturer'];
 			$data['quantity'] = $return_info['quantity'];
 			$data['reason'] = $return_info['reason'];
 			$data['opened'] = $return_info['opened'] ? $this->language->get('text_yes') : $this->language->get('text_no');
@@ -233,12 +233,6 @@ class ControllerAccountReturn extends Controller {
 			$data['error_product'] = '';
 		}
 
-		if (isset($this->error['model'])) {
-			$data['error_model'] = $this->error['model'];
-		} else {
-			$data['error_model'] = '';
-		}
-
 		if (isset($this->error['reason'])) {
 			$data['error_reason'] = $this->error['reason'];
 		} else {
@@ -315,14 +309,6 @@ class ControllerAccountReturn extends Controller {
 			$data['product'] = '';
 		}
 
-		if (isset($this->request->post['model'])) {
-			$data['model'] = $this->request->post['model'];
-		} elseif (!empty($product_info)) {
-			$data['model'] = $product_info['model'];
-		} else {
-			$data['model'] = '';
-		}
-
 		if (isset($this->request->post['quantity'])) {
 			$data['quantity'] = $this->request->post['quantity'];
 		} else {
@@ -378,7 +364,7 @@ class ControllerAccountReturn extends Controller {
 			$data['agree'] = false;
 		}
 
-		$data['back'] = $this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language')));
+		$data['back'] = $this->url->link('account/edit', array('language' => $this->config->get('config_language')));
 
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');
@@ -413,10 +399,6 @@ class ControllerAccountReturn extends Controller {
 
 		if ((utf8_strlen($this->request->post['product']) < 1) || (utf8_strlen($this->request->post['product']) > 255)) {
 			$this->error['product'] = $this->language->get('error_product');
-		}
-
-		if ((utf8_strlen($this->request->post['model']) < 1) || (utf8_strlen($this->request->post['model']) > 64)) {
-			$this->error['model'] = $this->language->get('error_model');
 		}
 
 		if (empty($this->request->post['return_reason_id'])) {

@@ -29,28 +29,14 @@ class ControllerCheckoutCart extends Controller
 
             $data['action'] = $this->url->link('checkout/cart/edit', 'language=' . $this->config->get('config_language'));
 
-            if ($this->config->get('config_cart_weight')) {
-                $data['weight'] = $this->weight->format($this->cart->getWeight(), $this->config->get('config_weight_class_id'), $this->language->get('decimal_point'), $this->language->get('thousand_point'));
-            } else {
-                $data['weight'] = '';
-            }
-
             $this->load->model('tool/image');
             $this->load->model('tool/upload');
-
-            $frequencies = array(
-                'day' => $this->language->get('text_day'),
-                'week' => $this->language->get('text_week'),
-                'semi_month' => $this->language->get('text_semi_month'),
-                'month' => $this->language->get('text_month'),
-                'year' => $this->language->get('text_year')
-            );
 
             $data['products'] = array();
 
             $products = $this->cart->getProducts();
 
-            $data['total_products'] = count($products);
+            $data['total_products'] = $this->cart->countProducts();
             $this->load->model('catalog/product');
 
             foreach ($products as $product) {
@@ -115,7 +101,7 @@ class ControllerCheckoutCart extends Controller
                     'cart_id' => $product['cart_id'],
                     'thumb' => $image,
                     'name' => $product['name'],
-                    'model' => $product['model'],
+                    'manufacturer' => $product['manufacturer'],
                     'color' => $product['color'],
                     'option' => $option_data,
                     'quantity' => $product['quantity'],
@@ -195,8 +181,6 @@ class ControllerCheckoutCart extends Controller
                 );
             }
 
-            $data['continue'] = $this->url->link('common/home', 'language=' . $this->config->get('config_language'));
-
             $data['checkout'] = $this->url->link('checkout/checkout', 'language=' . $this->config->get('config_language'));
 
             $this->load->model('setting/extension');
@@ -223,9 +207,14 @@ class ControllerCheckoutCart extends Controller
 
             $this->response->setOutput($this->load->view('checkout/cart', $data));
         } else {
+            $data['heading_title'] = $this->language->get("empty_title");
             $data['text_error'] = $this->language->get('text_empty');
 
-            $data['continue'] = $this->url->link('common/home', 'language=' . $this->config->get('config_language'));
+            $this->load->model("catalog/category");
+
+            $category_id = $this->model_catalog_category->getCategories(0);
+
+            $data['continue'] = $this->url->link('product/category', array("path" => $category_id[0]['category_id'], 'language' => $this->config->get('config_language')));
 
             unset($this->session->data['success']);
 
@@ -372,7 +361,7 @@ class ControllerCheckoutCart extends Controller
             $this->cart->update($this->request->post['cart_id'], $this->request->post['quantity']);
 
             $json['success'] = $this->language->get('text_remove');
-
+            $json['product_count'] = $this->cart->countProducts();
             $json['total'] = $this->currency->format($this->cart->getTotal(), $this->session->data['currency']);
 
             $prices = $this->cart->getProduct($this->request->post['cart_id']);

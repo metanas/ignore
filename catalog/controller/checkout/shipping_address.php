@@ -16,7 +16,7 @@ class ControllerCheckoutShippingAddress extends Controller
 
         $this->load->model('account/address');
 
-        $format = '<b>{firstname} {lastname}</b>' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . "T: {telephone}" . "\n" . '{country}';
+        $format = '<b>{firstname} {lastname}</b>' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . "Tel: {telephone}" . "\n" . '{country}';
 
         $find = array(
             '{firstname}',
@@ -96,14 +96,14 @@ class ControllerCheckoutShippingAddress extends Controller
             $json['redirect'] = $this->url->link('checkout/cart', 'language=' . $this->config->get('config_language'));
         }
 
-        if (!$this->validateForm()) {
+        if ($this->validate()) {
             $this->load->model('account/address');
 
             if (isset($this->request->post['shipping_address']) && $this->request->post['shipping_address'] == 'existing') {
                 if (empty($this->request->post['address_id'])) {
-                    $json['error']['warning'] = $this->language->get('error_address');
+                    $json['warning'] = $this->language->get('error_address');
                 } elseif (!in_array($this->request->post['address_id'], array_keys($this->model_account_address->getAddresses()))) {
-                    $json['error']['warning'] = $this->language->get('error_address');
+                    $json['warning'] = $this->language->get('error_address');
                 }
 
             } else {
@@ -114,6 +114,8 @@ class ControllerCheckoutShippingAddress extends Controller
                     $address_id = $this->model_account_address->addAddress($this->customer->getId(), $this->request->post);
                     $json = $this->request->post;
                     $json["address_id"] = $address_id;
+                    $json['success'] = true;
+
                     // If no default address ID set we use the last address
                     if (!$this->customer->getAddressId()) {
                         $this->load->model('account/customer');
@@ -170,7 +172,7 @@ class ControllerCheckoutShippingAddress extends Controller
             }
         }
         if (!$json) {
-            if (isset($this->request->post['billing']) && $this->request->post['billing'] == '0' && !$this->validateForm()) {
+            if (isset($this->request->post['billing']) && $this->request->post['billing'] == '0' && $this->validate()) {
                 $this->session->data['billing_address'] = array(
                     'firstname' => $this->request->post['firstname'],
                     'lastname' => $this->request->post['lastname'],
@@ -205,7 +207,7 @@ class ControllerCheckoutShippingAddress extends Controller
             $json['redirect'] = $this->url->link('checkout/checkout', 'language=' . $this->config->get('config_language'));
         }
 
-        if (filter_var((int)$this->request->post['address_id'], FILTER_VALIDATE_INT) && !$this->validateForm()) {
+        if (filter_var((int)$this->request->post['address_id'], FILTER_VALIDATE_INT) && $this->validate()) {
             $this->load->model('account/address');
 
             $this->model_account_address->editAddress($this->request->post['address_id'], $this->request->post);
@@ -213,7 +215,7 @@ class ControllerCheckoutShippingAddress extends Controller
             $json['success'] = true;
             $json['result'] = $this->request->post;
         } else {
-            $json['error'] = $this->validateForm();
+            $json['error'] = $this->error;
         }
 
         $this->response->addHeader('Content-Type: application/json');
@@ -236,7 +238,7 @@ class ControllerCheckoutShippingAddress extends Controller
         $this->response->setOutput(json_encode($json));
     }
 
-    private function validateForm()
+    private function validate()
     {
         if ((utf8_strlen(trim($this->request->post['firstname'])) < 1) || (utf8_strlen(trim($this->request->post['firstname'])) > 32)) {
             $this->error['firstname'] = $this->language->get('error_firstname');
@@ -250,7 +252,7 @@ class ControllerCheckoutShippingAddress extends Controller
             $this->error['address_1'] = $this->language->get('error_address_1');
         }
 
-        if (!is_numeric($this->request->post['postcode'])) {
+        if (!filter_var($this->request->post['postcode'], FILTER_VALIDATE_INT)) {
             $this->error['postcode'] = $this->language->get('error_postcode');
         }
 
@@ -258,7 +260,7 @@ class ControllerCheckoutShippingAddress extends Controller
             $this->error['city'] = $this->language->get('error_city');
         }
 
-        if ((utf8_strlen(trim($this->request->post['telephone'])) < 2) || (utf8_strlen(trim($this->request->post['telephone'])) > 128)) {
+        if ((utf8_strlen(trim($this->request->post['telephone'])) < 10) || (utf8_strlen(trim($this->request->post['telephone'])) > 15)) {
             $this->error['telephone'] = $this->language->get('error_telephone');
         }
 
@@ -266,6 +268,6 @@ class ControllerCheckoutShippingAddress extends Controller
             $this->error['country'] = $this->language->get('error_country');
         }
 
-        return $this->error;
+        return !$this->error;
     }
 }

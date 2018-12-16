@@ -19,7 +19,7 @@
             {% set class = 'col-sm-12' %}
         {% endif %}
         <div id="content" class="{{ class }}">{{ content_top }}
-            <h2>{{ heading_title }}</h2>
+            <h3 style="margin-bottom: 38px;" onclick="openSlide()"><span class="fa fa-align-justify visible-xs-inline" style="font-size: inherit"></span> {{ heading_title }}</h3>
             <table class="table table-hover">
                 <tbody>
                 <tr>
@@ -27,11 +27,11 @@
                         {% if invoice_no %}
                             <b>{{ text_invoice_no }}</b> {{ invoice_no }}<br/>
                         {% endif %}
-                        <b>{{ text_order_id }}</b> #{{ order_id }}<br/>
-                        <b>{{ text_date_added }}</b> {{ date_added }}</td>
+                        <b style="font-size: 14px;">{{ text_order_id }}</b> #{{ order_id }}<br/>
+                        <b style="font-size: 14px;">{{ text_date_added }}</b> {{ date_added }}</td>
                     <td class="text-left" style="width: 50%;">
-                        <b>{{ text_payment_method }}</b> {{ payment_method }}<br/>
-                        <b>{{ text_shipping_method }}</b> {{ shipping_method }}
+                        <b style="font-size: 14px;">{{ text_payment_method }}</b> {{ payment_method }}<br/>
+                        <b style="font-size: 14px;">{{ text_shipping_method }}</b> {{ shipping_method }}
                     </td>
                 </tr>
                 </tbody>
@@ -42,36 +42,35 @@
                         <div class="col-md-6 col-xs-12" style="margin-bottom: 25px">
                             <div class="col-md-12" style="border: 2px solid #ff1b5a; min-height: 105px">
                                 <div class="row" style="background-color: #ff1b5a;">
-                                    <div class="text-left"
-                                         style="color: white; font-weight: bold;">{{ text_shipping_address }}</div>
+                                    <div
+                                         style="color: white; font-weight: bold; margin-left: 15px;">{{ text_shipping_address }}</div>
                                 </div>
-                                <div class="text-left">{{ shipping_address }}</div>
+                                <div style="margin-left: 10px;">{{ shipping_address }}</div>
                             </div>
                         </div>
                         <div class="col-md-6 col-xs-12" style="margin-bottom: 25px">
                             <div class="col-md-12" style="border: 2px solid #ff1b5a; min-height: 105px">
                                 <div class="row" style="background-color: #ff1b5a;">
-                                    <div class="text-left text-capitalize"
-                                         style="color: white; font-weight: bold;">{{ text_billing_address }}</div>
+                                    <div style="color: white; font-weight: bold; margin-left: 10px;">{{ text_billing_address }}</div>
                                 </div>
-                                <div class="text-left">{{ billing_address }}</div>
+                                <div class="text-left" style="margin-left: 10px;">{{ billing_address }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <h2>{{ text_order_detail }}</h2>
+            <h3 style="font-size: 14px; margin-bottom: 27px;">Détails de la commande</h3>
             <div class="col-md-12">
                 <div class="row">
                     <div class="table-responsive">
                         <table class="table table-hover">
-                            <thead>
+                            <thead style="background-color: RGB(254,248,250)">
                             <tr>
-                                <td class="text-left">{{ column_name }}</td>
-                                <td class="text-left">{{ column_model }}</td>
-                                <td class="text-right">{{ column_quantity }}</td>
-                                <td class="text-right">{{ column_price }}</td>
-                                <td class="text-right">{{ column_total }}</td>
+                                <td style="font-size: 14px; font-weight: bold" class="text-left">{{ column_name }}</td>
+                                <td style="font-size: 14px; font-weight: bold" class="text-left">{{ column_manufacturer }}</td>
+                                <td style="font-size: 14px; font-weight: bold" class="text-right">{{ column_quantity }}</td>
+                                <td style="font-size: 14px; font-weight: bold" class="text-right">{{ column_price }}</td>
+                                <td style="font-size: 14px; font-weight: bold" class="text-right">{{ column_total }}</td>
                                 {% if products %}
                                     <td style="width: 20px;"></td>
                                 {% endif %} </tr>
@@ -79,14 +78,14 @@
                             <tbody>
                             {% for product in products %}
                                 <tr onclick="window.location='{{ product.link }}'" style="cursor: pointer">
-                                    <td class="text-left">{{ product.name }}
+                                    <td  style="font-size: 14px;" class="text-left">{{ product.name }}
                                         {% for option in product.option %} <br/>
                                             &nbsp;
                                             <small> - {{ option.name }}: {{ option.value }}</small> {% endfor %}</td>
-                                    <td class="text-left">{{ product.model }}</td>
-                                    <td class="text-right">{{ product.quantity }}</td>
-                                    <td class="text-right">{{ product.price }}</td>
-                                    <td class="text-right">{{ product.total }}</td>
+                                    <td style="font-size: 14px;" class="text-left">{{ product.manufacturer }}</td>
+                                    <td style="font-size: 14px;" class="text-right">{{ product.quantity }}</td>
+                                    <td style="font-size: 14px;" class="text-right">{{ product.price }}</td>
+                                    <td style="font-size: 14px;" class="text-right">{{ product.total }}</td>
                                     {#<td class="text-right" style="white-space: nowrap;">#}
                                     {#<a href="{{ product.return }}" data-toggle="tooltip"#}
                                     {#title="{{ button_return }}"#}
@@ -95,7 +94,7 @@
                             {% endfor %}
                             {% for voucher in vouchers %}
                                 <tr>
-                                    <td class="text-left">{{ voucher.description }}</td>
+                                    <td  style="font-size: 14px;" class="text-left">{{ voucher.description }}</td>
                                     <td class="text-left"></td>
                                     <td class="text-right">1</td>
                                     <td class="text-right">{{ voucher.amount }}</td>
@@ -106,14 +105,20 @@
                             {% endfor %}
                             </tbody>
                             <tfoot>
+                            <tr>
+                                <td colspan="3" style="border: 0"></td>
+                                <td class="text-right" style="border: 0;font-size: 14px;"><b>Frais de livraison</b><span style="color: #A7A7A7; font-size: 11px;" > (TVA Incluse)</span></td>
+                                <td class="text-right" style="border: 0;font-size: 14px;">Gratuit</td>
+                            </tr>
                             {% for total in totals %}
                                 <tr>
                                     <td colspan="3" style="border: 0"></td>
-                                    <td class="text-right" style="border: 0"><b>{{ total.title }}</b></td>
-                                    <td class="text-right" style="border: 0">{{ total.text }}</td>
+                                    <td class="text-right" style="border: 0;font-size: 14px;"><b>{{ total.title }}</b><span style="color: #A7A7A7; font-size: 11px;" > (TVA Incluse)</span></td>
+                                    <td class="text-right" style="border: 0; font-size: 14px;">{{ total.text }}</td>
                                     {% if products %}
-                                        <td style="border: 0"></td>
-                                    {% endif %} </tr>
+                                        <td style="border: 0;font-size: 14px"></td>
+                                    {% endif %}
+                                </tr>
                             {% endfor %}
                             </tfoot>
                         </table>
@@ -161,10 +166,13 @@
                     </tbody>
                 </table>
             {% endif %}
-            <div class="buttons clearfix">
-                <div class="pull-right"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
-            </div>
             {{ content_bottom }}</div>
         {{ column_right }}</div>
 </div>
+<script>
+    $('#column-left').removeClass('hidden-xs');
+    function openSlide() {
+        $("#slidebar").css({"width": "100%"});
+    }
+</script>
 {{ footer }}

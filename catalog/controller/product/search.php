@@ -162,6 +162,7 @@ class ControllerProductSearch extends Controller {
 		if (isset($this->request->get['search']) || isset($this->request->get['tag'])) {
 			$filter_data = array(
 				'filter_name'         => $search,
+				'filter_manufacturer' => $search,
 				'filter_tag'          => $tag,
 				'filter_description'  => $description,
 				'filter_category_id'  => $category_id,

@@ -23,16 +23,16 @@
                 <div class="col-sm-6">
                     <h3>{{ text_login }}</h3>
                     <hr style="margin-top: -5px">
-                    <form action="{{ action_login }}" id="login-field" method="post" enctype="multipart/form-data">
+                    <form action="{{ action_login }}" id="login-field" method="post" enctype="multipart/form-data" {% if register_field %} style="display: none" {% endif %}>
                         <div class="form-group">
-                            <label class="control-label" for="input-email">{{ entry_email }}</label>
+                            <label class="control-label" for="input-email-login">{{ entry_email }}</label>
                             <input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}"
-                                   id="input-email" class="form-control input-zalark"/>
+                                   id="input-email-login" class="form-control input-zalark"/>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="input-password">{{ entry_password }}</label>
                             <input type="password" name="password" value=""
-                                   placeholder="{{ entry_password }}" id="input-password"
+                                   placeholder="{{ entry_password }}" id="input-password-login"
                                    class="form-control input-zalark"/>
                         </div>
                         <input type="submit" value="{{ button_login }}" class="zalark-button"/>
@@ -43,77 +43,103 @@
                         {% endif %}
                     </form>
                     <button class="zalark-button-border" id="login-action"
-                            style="display: none;">{{ button_login }}</button>
+                            {% if not register_field %} style="display: none" {% endif %}>{{ button_login }}</button>
                 </div>
                 <div class="col-sm-6">
                     <h3 class="text-uppercase">{{ text_register }}</h3>
                     <hr style="margin-top: -5px">
                     <form action="{{ action_register }}" id="sign-up-field" method="post" enctype="multipart/form-data"
-                          style="display: none">
+                          {% if not register_field %} style="display: none" {% endif %}>
                         <div class="form-group">
                             <label class="control-label" for="input-firstname">{{ entry_firstname }}</label>
-                            <input type="text" name="firstname" placeholder="{{ entry_firstname }}"
+                            <input type="text" name="firstname" placeholder="{{ entry_firstname }}" value="{{ firstname }}"
                                    id="input-firstname" class="form-control input-zalark"/>
+                            {% if error_firstname %}
+                                <div class="text-danger">{{ error_firstname }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="form-group">
                             <label class="control-label" for="input-lastname">{{ entry_lastname }}</label>
-                            <input type="text" name="lastname" placeholder="{{ entry_lastname }}"
+                            <input type="text" name="lastname" placeholder="{{ entry_lastname }}" value="{{ lastname }}"
                                    id="input-lastname" class="form-control input-zalark"/>
+                            {% if error_lastname %}
+                                <div class="text-danger">{{ error_lastname }}</div>
+                            {% endif %}
                         </div>
                         <label class="control-label" for="input-lastname">{{ entry_birthday }}</label>
                         <div class="form-group">
                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4" style="padding: 0">
                                 <select name="birthday[]" class="select-zalark">
-                                    <option value="0" selected>Select Jour:</option>
+                                    <option value="0" selected>Jour:</option>
                                     {% for i in 1..31 %}
-                                        <option value="{{ i }}">{{ i }}</option>
+                                        <option value="{{ i }}" {% if day == i %} selected {% endif %}>{{ i }}</option>
                                     {% endfor %}
                                 </select>
                                 <i class="fa fa-angle-down"
                                    style="position: absolute;padding: 13px;cursor: pointer;right: 0;top: 0;"></i>
+                                {% if error_day %}
+                                    <div class="text-danger">{{ error_day }}</div>
+                                {% endif %}
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4"><select name="birthday[]" class="select-zalark">
-                                    <option class="text-capitalize" value="0" selected>Select Mois:</option>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4"><select name="birthday[]"
+                                                                                     class="select-zalark">
+                                    <option class="text-capitalize" value="0" selected>Mois:</option>
                                     {{ entry_month }}
                                 </select>
                                 <i class="fa fa-angle-down"
-                                   style="position: absolute;padding: 13px;cursor: pointer;right: 15px;top: 0;"></i></div>
+                                   style="position: absolute;padding: 13px;cursor: pointer;right: 15px;top: 0;"></i>
+                                {% if error_month %}
+                                    <div class="text-danger">{{ error_month }}</div>
+                                {% endif %}
+                            </div>
                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4" style="padding: 0">
-                                <select name="birthday[]" class="select-zalark" >
-                                    <option value="0" selected>Select Annee:</option>
-                                    {% for i in 2010..1900 %}
-                                        <option value="{{ i }}">{{ i }}</option>
+                                <select name="birthday[]" class="select-zalark">
+                                    <option value="0" selected>Année:</option>
+                                    {% for i in 2011..1900 %}
+                                        <option value="{{ i }}" {% if year == i %} selected {% endif %}>{{ i }}</option>
                                     {% endfor %}
                                 </select>
                                 <i class="fa fa-angle-down"
                                    style="position: absolute;padding: 13px;cursor: pointer;right: 0;top: 0;"></i>
+                                {% if error_year %}
+                                    <div class="text-danger">{{ error_year }}</div>
+                                {% endif %}
                             </div>
                         </div>
 
                         <div class="form-group" style="margin-top: 54px">
-                            <label class="control-label" for="input-email">{{ entry_email }}</label>
-                            <input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}"
-                                   id="input-email" class="form-control input-zalark"/>
+                            <label class="control-label" for="input-email-register">{{ entry_email }}</label>
+                            <input type="text" name="email" value="{{ email_register }}" placeholder="{{ entry_email }}"
+                                   id="input-email-register" class="form-control input-zalark"/>
+                            {% if error_email_register %}
+                                <div class="text-danger">{{ error_email_register }}</div>
+                            {% endif %}
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="input-password">{{ entry_password }}</label>
+                            <label class="control-label" for="input-password-register">{{ entry_password }}</label>
                             <input type="password" name="password" value=""
-                                   placeholder="{{ entry_password }}" id="input-password"
+                                   placeholder="{{ entry_password }}" id="input-password-register"
                                    class="form-control input-zalark"/>
+                            {% if error_password_register %}
+                                <div class="text-danger">{{ error_password_register }}</div>
+                            {% endif %}
                         </div>
                         <div class="form-group">
                             <div>
                                 <label class="control-label" id="input-sex">{{ entry_sex }}</label>
                             </div>
                             <label class="check_filter" style="display: inline">{{ entry_female }}
-                                <input type="radio" name="sex" value="{{ entry_female }}">
+                                <input type="radio" name="sex" value="{{ entry_female }}" {% if entry_female == sex %} checked {% endif %}>
                                 <span class="checkmark checkradio"></span>
                             </label>
                             <label class="check_filter" style="display: inline">{{ entry_male }}
-                                <input type="radio" name="sex" value="{{ entry_male }}">
+                                <input type="radio" name="sex" value="{{ entry_male }}" {% if entry_male == sex %} checked {% endif %}>
                                 <span class="checkmark checkradio"></span>
                             </label>
+                            {% if error_sex %}
+                                <div class="text-danger">{{ error_sex }}</div>
+                            {% endif %}
                         </div>
                         <div class="form-group" style="margin-top: 25px">
                             <label class="check_filter">{{ text_newsletter }}
@@ -123,7 +149,7 @@
                         </div>
                         <input type="submit" value="{{ button_register }}" class="zalark-button-border"/>
                     </form>
-                    <button class="zalark-button-border" id="register-action">{{ button_register }}</button>
+                    <button class="zalark-button-border" id="register-action" {% if register_field %} style="display: none" {% endif %}>{{ button_register }}</button>
                 </div>
             </div>
             {{ content_bottom }}</div>

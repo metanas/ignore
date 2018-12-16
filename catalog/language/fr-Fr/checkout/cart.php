@@ -1,6 +1,7 @@
 <?php
 // Heading
 $_['heading_title']            ='Mon panier';
+$_['empty_title']              ='Qu\'attendez-vous !';
 
 // Text
 $_['text_success']             ='Succès: vous avez ajouté <a href="%s"> %s </a> à ton <a href="%s"> chariot </a> !';
@@ -10,7 +11,7 @@ $_['text_items']               ='%s élément (s) - %s';
 $_['text_points']              ='Points de récompense: %s';
 $_['text_next']                ='Que voulez-vous faire ensuite?';
 $_['text_next_choice']         ='Choisissez si vous avez un code de réduction ou des points de récompense que vous souhaitez utiliser ou souhaitez estimer votre coût de livraison.';
-$_['text_empty']               ='Votre panier est vide!';
+$_['text_empty']               ='Commencez à remplir votre panier dès maintemant';
 $_['text_day']                 ='journée';
 $_['text_week']                ='la semaine';
 $_['text_semi_month']          ='Demi-mois';
@@ -30,6 +31,7 @@ $_['text_payment_cancel']      ='%s tous les %d %s (s) jusqu`à annulation';
 $_['column_image']             ='Image';
 $_['column_name']              ='Nom du produit';
 $_['column_model']             ='maquette';
+$_['column_manufacturer']      ='Marque';
 $_['column_quantity']          ='Quantité';
 $_['column_price']             ='Prix ​​unitaire';
 $_['column_total']             ='Total';
@@ -42,3 +44,7 @@ $_['error_minimum']            ='Le montant minimum de la commande pour %s est d
 $_['error_required']           ='%s requis!';
 $_['error_product']            ='Avertissement: Il n`y a aucun produit dans votre panier!';
 $_['error_recurring_required'] ='Sélectionnez un paiement récurrent!';
+
+// Buttons
+
+$_['button_continue']          ='Découvrir';

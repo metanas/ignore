@@ -282,7 +282,7 @@ $('input[name=\'product\']').autocomplete({
 					return {
 						label: item['name'],
 						value: item['product_id'],
-						model: item['model']
+						model: item['manufacturer']
 					}
 				}));
 			}
@@ -291,7 +291,7 @@ $('input[name=\'product\']').autocomplete({
 	'select': function(item) {
 		$('input[name=\'product\']').val(item['label']);
 		$('input[name=\'product_id\']').val(item['value']);
-		$('input[name=\'model\']').val(item['model']);
+		$('input[name=\'manufacturer\']').val(item['manufacturer']);
 	}
 });
 

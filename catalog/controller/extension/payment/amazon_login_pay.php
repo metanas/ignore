@@ -360,7 +360,7 @@ class ControllerExtensionPaymentAmazonLoginPay extends Controller {
 			$product_data[] = array(
 				'product_id' => $product['product_id'],
 				'name' => $product['name'],
-				'model' => $product['model'],
+				'manufacturer' => $product['manufacturer'],
 				'option' => $option_data,
 				'download' => $product['download'],
 				'quantity' => $product['quantity'],
@@ -472,7 +472,7 @@ class ControllerExtensionPaymentAmazonLoginPay extends Controller {
 			$data['products'][] = array(
 				'product_id' => $product['product_id'],
 				'name' => $product['name'],
-				'model' => $product['model'],
+				'manufacturer' => $product['manufacturer'],
 				'option' => $option_data,
 				'quantity' => $product['quantity'],
 				'price' => $this->currency->format($this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']),

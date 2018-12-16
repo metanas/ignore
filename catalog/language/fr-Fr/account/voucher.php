@@ -11,7 +11,7 @@ $_['text_account']     ='Compte';
 $_['text_voucher']     ='Cadeau certifié';
 $_['text_description'] ='Ce certificat-cadeau sera envoyé par courrier électronique au destinataire après que votre commande a été payée.';
 $_['text_agree']       ='Je comprends que les certificats-cadeaux ne sont pas remboursables.';
-$_['text_message']     ='  <p> Merci d`avoir acheté un certificat-cadeau! . </p> ';
+$_['text_message']     ='  <p> Merci d\'avoir acheté un certificat-cadeau! . </p> ';
 $_['text_for']         ='%s Certificat-cadeau pour %s';
 
 

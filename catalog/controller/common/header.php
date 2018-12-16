@@ -61,10 +61,10 @@ class ControllerCommonHeader extends Controller
         $data['home'] = $this->url->link('common/home', 'language=' . $this->config->get('config_language'));
         $data['wishlist'] = $this->url->link('account/wishlist', 'language=' . $this->config->get('config_language'));
         $data['logged'] = $this->customer->isLogged();
-        $data['account'] = $this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language')));
+        $data['account'] = $this->url->link('account/edit', array('language' => $this->config->get('config_language')));
         $data['register'] = $this->url->link('account/register', 'language=' . $this->config->get('config_language'));
         $data['login'] = $this->url->link('account/login', 'language=' . $this->config->get('config_language'));
-        $data['order'] = $this->url->link('account/account', array('action' => 'order', 'language' => $this->config->get('config_language')));
+        $data['order'] = $this->url->link('account/order', array('language' => $this->config->get('config_language')));
         $data['transaction'] = $this->url->link('account/transaction', 'language=' . $this->config->get('config_language'));
         $data['download'] = $this->url->link('account/download', 'language=' . $this->config->get('config_language'));
         $data['logout'] = $this->url->link('account/logout', 'language=' . $this->config->get('config_language'));

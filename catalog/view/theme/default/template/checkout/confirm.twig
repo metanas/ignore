@@ -55,7 +55,7 @@
         </div>
         <div class="col-sm-12">
             <div class="fa-option" onclick="step.next(2)" id="fac-edit"><i class="fa fa-edit"></i></div>
-            <h4>ADRESSE DE FACTURATION</h4>
+            <h4 style="margin-top: 26px;">ADRESSE DE FACTURATION</h4>
             <hr class="hr-marge">
             {% if billing_address %}
                 {{ billing_address.address }}
@@ -65,7 +65,7 @@
         </div>
         <div class="col-sm-12">
             <div class="fa-option" id="pay-edit" onclick="step.next(3)"><i class="fa fa-edit"></i></div>
-            <h4>MOYEN DE PAYEMENT</h4>
+            <h4 style="margin-top: 26px;">MOYEN DE PAYEMENT</h4>
             <hr class="hr-marge">
             {% if payment_method == '01' %}
                 <img class="pay-checkout" src="catalog/view/theme/default/image/paypal.png">
@@ -76,7 +76,7 @@
                 <img class="pay-checkout" src="catalog/view/theme/default/image/visa2.png">
             {% endif %}
         </div>
-        <div class="col-sm-12"><h4>CODE PROMO & CARTE CADEAU</h4>
+        <div class="col-sm-12"><h4 style="margin-top: 26px;">CODE PROMO & CARTE CADEAU</h4>
             <hr class="hr-marge">
             <div class="form-group">
                 <div class="coupon-field col-md-12">
@@ -91,13 +91,15 @@
             </div>
             <div id="c_cart_layout_right" class="col-md-12" style="background-color: lightgrey; border-radius: 5px">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12" style="margin-top: 20px;">
                         <div class="row">
-                            <div class="col-sm-6 col-xs-6 text-left checkout-text"><b>Livraison</b></div>
-                            <div class="col-sm-6 col-xs-6 text-right checkout-text"><b>gratuite</b></div>
+                            <div class="col-sm-6 col-xs-6 text-left checkout-text"><b style="font-size: 19px; ">Livraison</b></div>
+                            <div class="col-sm-6 col-xs-6 text-right checkout-text"><b style="font-size: 19px; ">gratuite</b></div>
                         </div>
                     </div>
+
                     <div class="col-md-12">
+                        <hr>
                         <div class="row">
                             <div class="col-sm-6 col-xs-6 text-left checkout-text"><b>Total </b><span
                                         style="font-size: 12px">(TVA incluse)</span>
@@ -123,8 +125,12 @@
                         </div>
                     {% endif %}
                 </div>
-                <button type="submit" class="col-sm-12 zalark-button" style="margin-bottom: 12px">VALIDER LE PAIEMENT
+                <button type="submit" class="col-sm-12 zalark-button" style="margin-bottom: 12px; margin-top: 10px;">Valider la commande
                 </button>
+                <div class="col-sm-12" style="margin-top: 3px; margin-bottom:12px;">
+                    <div class="text-center"> En validant votre commande, vous acceptez nos conditions générales de vente et notre politique de protection de données personnelles.</div>
+
+                </div>
             </div>
         </div>
     </div>

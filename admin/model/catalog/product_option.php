@@ -42,7 +42,7 @@ class ModelCatalogProductOption extends Model {
 	}
 
 	public function getProductOptions($data = array()) {
-		$sql = "SELECT *, p.name AS `product`, od.name AS `option`, o.type, o.sort_order FROM `" . DB_PREFIX . "product_option` po LEFT JOIN `" . DB_PREFIX . "product` p ON (po.product_id = p.product_id) LEFT JOIN `" . DB_PREFIX . "option` o ON (po.option_id = o.option_id) LEFT JOIN `" . DB_PREFIX . "option_description` od ON (o.option_id = od.option_id) WHERE od.language_id = '" . (int)$this->config->get('config_language_id') . "'";
+		$sql = "SELECT *, p.name AS `product`, od.name AS `option`, o.type,m.name as manufacturer, o.sort_order FROM `" . DB_PREFIX . "product_option` po LEFT JOIN `" . DB_PREFIX . "product` p ON (po.product_id = p.product_id) LEFT JOIN `" . DB_PREFIX . "option` o ON (po.option_id = o.option_id) LEFT JOIN `" . DB_PREFIX . "option_description` od ON (o.option_id = od.option_id) LEFT JOIN " . DB_PREFIX . "manufacturer m ON(m.manufacturer_id=p.manufacturer_id) WHERE od.language_id = '" . (int)$this->config->get('config_language_id') . "'";
 
 		if (!empty($data['filter_product_id'])) {
 			$sql .= " AND po.product_id = '" . $this->db->escape((string)$data['filter_product_id']) . "%'";
@@ -59,6 +59,7 @@ class ModelCatalogProductOption extends Model {
 		$sort_data = array(
 			'p.name',
 			'od.name',
+			'm.name',
 			'o.type',
 			'o.sort_order'
 		);

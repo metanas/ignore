@@ -9,11 +9,14 @@
             {% set class = 'col-sm-12' %}
         {% endif %}
         <div id="content" class="{{ class }}">{{ content_top }}
-            <h2>{{ text_address }}</h2>
+            <h3 style="margin-bottom: 38px;" onclick="openSlide()"><span class="fa fa-align-justify visible-xs-inline"
+                                                                         style="font-size: inherit"></span> {{ text_address }}
+            </h3>
             <form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
                 <fieldset>
                     <div class="form-group required">
-                        <label class="col-sm-2 col-xs-12 control-label" for="input-firstname">{{ entry_firstname }}</label>
+                        <label class="col-sm-2 col-xs-12 control-label"
+                               for="input-firstname">{{ entry_firstname }}</label>
                         <div class="col-sm-10 col-xs-12">
                             <input type="text" name="firstname" value="{{ firstname }}"
                                    placeholder="{{ entry_firstname }}" id="input-firstname"
@@ -23,7 +26,8 @@
                             {% endif %}</div>
                     </div>
                     <div class="form-group required">
-                        <label class="col-sm-2 col-xs-12 control-label" for="input-lastname">{{ entry_lastname }}</label>
+                        <label class="col-sm-2 col-xs-12 control-label"
+                               for="input-lastname">{{ entry_lastname }}</label>
                         <div class="col-sm-10 col-xs-12">
                             <input type="text" name="lastname" value="{{ lastname }}" placeholder="{{ entry_lastname }}"
                                    id="input-lastname" class="form-control input-zalark"/>
@@ -32,7 +36,8 @@
                             {% endif %}</div>
                     </div>
                     <div class="form-group required">
-                        <label class="col-sm-2 col-xs-12 control-label" for="input-address-1">{{ entry_address_1 }}</label>
+                        <label class="col-sm-2 col-xs-12 control-label"
+                               for="input-address-1">{{ entry_address_1 }}</label>
                         <div class="col-sm-10 col-xs-12">
                             <input type="text" name="address_1" value="{{ address_1 }}"
                                    placeholder="{{ entry_address_1 }}" id="input-address-1"
@@ -42,7 +47,8 @@
                             {% endif %}</div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 col-xs-12 control-label" for="input-address-2">{{ entry_address_2 }}</label>
+                        <label class="col-sm-2 col-xs-12 control-label"
+                               for="input-address-2">{{ entry_address_2 }}</label>
                         <div class="col-sm-10 col-xs-12">
                             <input type="text" name="address_2" value="{{ address_2 }}"
                                    placeholder="{{ entry_address_2 }}" id="input-address-2"
@@ -50,7 +56,8 @@
                         </div>
                     </div>
                     <div class="form-group required">
-                        <label class="col-sm-2 col-xs-12 control-label" for="input-postcode">{{ entry_postcode }}</label>
+                        <label class="col-sm-2 col-xs-12 control-label"
+                               for="input-postcode">{{ entry_postcode }}</label>
                         <div class="col-sm-10 col-xs-12">
                             <input type="text" name="postcode" value="{{ postcode }}" placeholder="{{ entry_postcode }}"
                                    id="input-postcode" class="form-control input-zalark"/>
@@ -59,19 +66,27 @@
                             {% endif %}</div>
                     </div>
                     <div class="form-group required">
-                        <label class="col-sm-2 col-xs-12  control-label" for="input-telephone">{{ entry_telephone }}</label>
+                        <label class="col-sm-2 col-xs-12  control-label"
+                               for="input-telephone">{{ entry_telephone }}</label>
                         <div class="col-sm-10 col-xs-12">
-                            <input type="text" name="telephone" value="{{ telephone }}" placeholder="{{ entry_telephone }}"
+                            <input type="text" name="telephone" value="{{ telephone }}"
+                                   placeholder="{{ entry_telephone }}"
                                    id="input-telephone" class="form-control input-zalark"/>
-                            {% if error_city %}
+                            {% if error_telephone %}
                                 <div class="text-danger">{{ error_telephone }}</div>
-                            {% endif %}</div>
+                            {% endif %}
+                        </div>
                     </div>
                     <div class="form-group required">
                         <label class="col-sm-2 col-xs-12  control-label" for="input-city">{{ entry_city }}</label>
                         <div class="col-sm-10 col-xs-12">
-                            <input type="text" name="city" value="{{ city }}" placeholder="{{ entry_city }}"
-                                   id="input-city" class="form-control input-zalark"/>
+                            <select name="city" class="select-zalark">
+                                {% for zone in zones %}
+                                <option value="{{ zone.name }}" {% if zone.name == city %} selected {% endif %}>{{ zone.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <i class="fa fa-angle-down"
+                               style="position: absolute;padding: 13px;cursor: pointer;right: 0;top: 0;"></i>
                             {% if error_city %}
                                 <div class="text-danger">{{ error_city }}</div>
                             {% endif %}</div>
@@ -80,7 +95,9 @@
                         <label class="col-sm-2 col-xs-12 control-label" for="input-country">{{ entry_country }}</label>
                         <div class="col-md-10 col-sm-10 col-xs-12">
                             <select name="country" class="select-zalark">
-                                <option value="Maroc" selected>Maroc</option>
+                                {% for country in countries %}
+                                <option value="{{ country.name }}" selected>{{ country.name }}</option>
+                                {% endfor %}
                             </select>
                             <i class="fa fa-angle-down"
                                style="position: absolute;padding: 13px;cursor: pointer;right: 0;top: 0;"></i>
@@ -301,10 +318,9 @@
                 </fieldset>
                 <div class="buttons clearfix">
                     <div class="pull-right">
-                        <input type="submit" value="{{ button_save }}" class="zalark-button"/>
+                        <input style="font-size: 14px;" type="submit" value="{{ button_save }}" class="zalark-button"/>
                     </div>
-                    <div class="col-sm-4 pull-left"><a href="{{ back }}" class="zalark-button-border-dark"
-                                                       style="padding: 5px 10px 5px 10px">{{ button_back }}</a></div>
+                    <div class="col-sm-4 "></div>
                 </div>
             </form>
             {{ content_bottom }}</div>
@@ -382,5 +398,11 @@
             }
         }, 500);
     });
+    $('#column-left').removeClass('hidden-xs');
+
+    function openSlide() {
+        $("#slidebar").css({"width": "100%"});
+    }
+
     //--></script>
 {{ footer }}

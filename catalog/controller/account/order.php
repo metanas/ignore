@@ -1,11 +1,11 @@
 <?php
-
+use Spipu\Html2Pdf\Html2Pdf;
 class ControllerAccountOrder extends Controller
 {
     public function index()
     {
         if (!$this->customer->isLogged()) {
-            $this->session->data['redirect'] = $this->url->link('account/account', array('action' => 'order', 'language=' . $this->config->get('config_language')));
+            $this->session->data['redirect'] = $this->url->link('account/order', array('language=' . $this->config->get('config_language')));
 
             $this->response->redirect($this->url->link('account/login', 'language=' . $this->config->get('config_language')));
         }
@@ -53,20 +53,22 @@ class ControllerAccountOrder extends Controller
         $pagination->total = $order_total;
         $pagination->page = $page;
         $pagination->limit = 10;
-        $pagination->url = $this->url->link('account/account', array('action' => 'order', 'language' => $this->config->get('config_language'), 'page' => '{page}'));
+        $pagination->url = $this->url->link('account/order', array('language' => $this->config->get('config_language'), 'page' => '{page}'));
 
         $data['pagination'] = $pagination->render();
 
         $data['results'] = sprintf($this->language->get('text_pagination'), ($order_total) ? (($page - 1) * 10) + 1 : 0, ((($page - 1) * 10) > ($order_total - 10)) ? $order_total : ((($page - 1) * 10) + 10), $order_total, ceil($order_total / 10));
 
-        $data['continue'] = $this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language')));
+        $data['continue'] = $this->url->link('account/edit', array('language' => $this->config->get('config_language')));
 
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['column_right'] = $this->load->controller('common/column_right');
         $data['content_top'] = $this->load->controller('common/content_top');
         $data['content_bottom'] = $this->load->controller('common/content_bottom');
+        $data['footer'] = $this->load->controller('common/footer');
+        $data['header'] = $this->load->controller('common/header');
 
-        return $this->load->view('account/order_list', $data);
+        $this->response->setOutput($this->load->view('account/order_list', $data));
     }
 
     public function info()
@@ -125,7 +127,7 @@ class ControllerAccountOrder extends Controller
 
             $data['payment_method'] = $order_info['payment_method'];
 
-            $format = '{firstname} {lastname}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . 'T: {telephone}' . "\n" . '{country}';
+            $format = '{firstname} {lastname}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . 'Tel: {telephone}' . "\n" . '{country}';
 
 
             $find = array(
@@ -209,8 +211,8 @@ class ControllerAccountOrder extends Controller
 
                 $data['products'][] = array(
                     'name' => $product['name'],
-                    'model' => $product['model'],
-                    'link'  => $this->url->link("product/product", array("language" => $this->config->get("config_language"), "product_id" => $product['product_id'])),
+                    'manufacturer' => $product['manufacturer'],
+                    'link' => $this->url->link("product/product", array("language" => $this->config->get("config_language"), "product_id" => $product['product_id'])),
                     'option' => $option_data,
                     'quantity' => $product['quantity'],
                     'price' => $this->currency->format($product['price'] + ($this->config->get('config_tax') ? $product['tax'] : 0), $order_info['currency_code'], $order_info['currency_value']),
@@ -257,7 +259,7 @@ class ControllerAccountOrder extends Controller
                 );
             }
 
-            $data['continue'] = $this->url->link('account/account', array('action' => 'order', 'language' => $this->config->get('config_language')));
+            $data['download'] = $this->url->link('account/order/invoice', array('order_id' => $order_id, 'language' => $this->config->get('config_language')));
 
             $data['column_left'] = $this->load->controller('common/column_left');
             $data['column_right'] = $this->load->controller('common/column_right');
@@ -332,5 +334,153 @@ class ControllerAccountOrder extends Controller
         }
 
         $this->response->redirect($this->url->link('account/order/info', 'language=' . $this->config->get('config_language') . '&order_id=' . $order_id));
+    }
+
+    public function invoice()
+    {
+
+        if (!$this->customer->isLogged()) {
+            $this->session->data['redirect'] = $this->url->link('account/order', array('language=' . $this->config->get('config_language')));
+
+            $this->response->redirect("account/login", array('language' => $this->config->get("config_language")));
+        }
+
+
+        $this->load->language('account/order');
+
+        $data['title'] = $this->language->get('text_order_detail');
+
+        if (isset($this->request->get['order_id'])) {
+            $order_id = $this->request->get['order_id'];
+
+            $this->load->model("account/order");
+
+            $order_info = $this->model_account_order->getOrder($order_id);
+
+            if ($order_info) {
+                $this->load->model('setting/setting');
+
+                $store_info = $this->model_setting_setting->getSetting('config', $order_info['store_id']);
+
+                if ($store_info) {
+                    $store_address = $store_info['config_address'];
+                    $store_email = $store_info['config_email'];
+                    $store_telephone = $store_info['config_telephone'];
+                    $store_fax = $store_info['config_fax'];
+                } else {
+                    $store_address = $this->config->get('config_address');
+                    $store_email = $this->config->get('config_email');
+                    $store_telephone = $this->config->get('config_telephone');
+                    $store_fax = $this->config->get('config_fax');
+                }
+
+                if ($order_info['invoice_no']) {
+                    $invoice_no = $order_info['invoice_prefix'] . $order_info['invoice_no'];
+                } else {
+                    $invoice_no = '';
+                }
+
+                $format = '{firstname} {lastname}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{country}';
+
+                $find = array(
+                    '{firstname}',
+                    '{lastname}',
+                    '{address_1}',
+                    '{address_2}',
+                    '{city}',
+                    '{postcode}',
+                    '{country}'
+                );
+
+                $replace = array(
+                    'firstname' => $order_info['shipping_firstname'],
+                    'lastname' => $order_info['shipping_lastname'],
+                    'address_1' => $order_info['shipping_address_1'],
+                    'address_2' => $order_info['shipping_address_2'],
+                    'city' => $order_info['shipping_city'],
+                    'postcode' => $order_info['shipping_postcode'],
+                    'country' => $order_info['shipping_country']
+                );
+
+                $shipping_address = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
+
+                $product_data = array();
+
+                $products = $this->model_account_order->getOrderProducts($order_id);
+
+                foreach ($products as $product) {
+                    $option_data = array();
+
+                    $options = $this->model_account_order->getOrderOptions($order_id, $product['order_product_id']);
+
+                    foreach ($options as $option) {
+                        if ($option['type'] != 'file') {
+                            $value = $option['value'];
+                        }
+
+                        $option_data[] = array(
+                            'name' => $option['name'],
+                            'value' => $value
+                        );
+                    }
+
+                    $product_data[] = array(
+                        'name' => $product['name'],
+                        'manufacturer' => $product['manufacturer'],
+                        'option' => $option_data,
+                        'quantity' => $product['quantity'],
+                        'price' => $this->currency->format($product['price'] + ($this->config->get('config_tax') ? $product['tax'] : 0), $order_info['currency_code'], $order_info['currency_value']),
+                        'total' => $this->currency->format($product['total'] + ($this->config->get('config_tax') ? ($product['tax'] * $product['quantity']) : 0), $order_info['currency_code'], $order_info['currency_value'])
+                    );
+                }
+
+                $voucher_data = array();
+
+                $vouchers = $this->model_account_order->getOrderVouchers($order_id);
+
+                foreach ($vouchers as $voucher) {
+                    $voucher_data[] = array(
+                        'description' => $voucher['description'],
+                        'amount' => $this->currency->format($voucher['amount'], $order_info['currency_code'], $order_info['currency_value'])
+                    );
+                }
+
+                $total_data = array();
+
+                $totals = $this->model_account_order->getOrderTotals($order_id);
+
+                foreach ($totals as $total) {
+                    $total_data[] = array(
+                        'title' => $total['title'],
+                        'text' => $this->currency->format($total['value'], $order_info['currency_code'], $order_info['currency_value'])
+                    );
+                }
+
+                $data['order'] = array(
+                    'order_id' => $order_id,
+                    'invoice_no' => $invoice_no,
+                    'customer' => $order_info['firstname'] . " " . $order_info['lastname'],
+                    'date_added' => date($this->language->get('date_format_short'), strtotime($order_info['date_added'])),
+                    'store_name' => $order_info['store_name'],
+                    'store_url' => rtrim($order_info['store_url'], '/'),
+                    'store_address' => nl2br($store_address),
+                    'store_email' => $store_email,
+                    'store_telephone' => $store_telephone,
+                    'store_fax' => $store_fax,
+                    'email' => $order_info['email'],
+                    'telephone' => $order_info['telephone'],
+                    'shipping_address' => $shipping_address,
+                    'shipping_method' => $order_info['shipping_method'],
+                    'payment_method' => $order_info['payment_method'],
+                    'product' => $product_data,
+                    'voucher' => $voucher_data,
+                    'total' => $total_data
+                );
+            }
+
+            $pdf = new Html2Pdf('P', 'A4', 'fr');
+            $pdf->writeHTML($this->load->view('account/order_invoice', $data));
+            $pdf->Output($data['order']["customer"] . "-" . $data["order"]["date_added"]. ".pdf");
+        }
     }
 }

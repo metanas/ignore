@@ -8,7 +8,7 @@ $_['text_directory']   = 'Succès: Répertoire créé!';
 $_['text_delete']      = 'Succès: Votre fichier ou votre répertoire a été supprimé!';
 
 // Entry
-$_['entry_search']     = 'Chercher..';
+$_['entry_search']     = 'Rechercher..';
 $_['entry_folder']     = 'Nom de dossier';
 
 // Error

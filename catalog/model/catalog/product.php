@@ -20,7 +20,6 @@ class ModelCatalogProduct extends Model
             return array(
                 'product_id' => $query->row['product_id'],
                 'name' => $query->row['name'],
-                'model' => $query->row['model'],
                 'color_hex' => $query->row['color_hex'],
                 'color' => $query->row['color'],
                 'quantity' => $this->getTotalQuantityProduct($query->row['product_id']),
@@ -59,9 +58,6 @@ class ModelCatalogProduct extends Model
 
             $sql .= " LEFT JOIN " . DB_PREFIX . "product p ON (p2c.product_id = p.product_id)";
 
-            if (isset($data['filter_filter']['manufacture'])) {
-                $sql .= " LEFT JOIN " . DB_PREFIX . "manufacturer m ON (p.manufacturer_id = m.manufacturer_id)";
-            }
             if (isset($data['filter_filter']['size'])) {
                 $sql .= "LEFT JOIN " . DB_PREFIX . "product_option_value pov on(pov.product_id = p.product_id) LEFT JOIN " . DB_PREFIX . "option_value_description ovd on(ovd.option_value_id = pov.option_value_id and ovd.option_id = pov.option_id)  ";
             }
@@ -69,7 +65,7 @@ class ModelCatalogProduct extends Model
             $sql .= " FROM " . DB_PREFIX . "product p";
         }
 
-        $sql .= " LEFT JOIN " . DB_PREFIX . "product_to_store p2s ON (p.product_id = p2s.product_id) WHERE p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "'";
+        $sql .= " LEFT JOIN " . DB_PREFIX . "product_to_store p2s ON (p.product_id = p2s.product_id) LEFT JOIN " . DB_PREFIX . "manufacturer m ON (p.manufacturer_id = m.manufacturer_id) WHERE p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "'";
 
         if (!empty($data['filter_category_id'])) {
             if (!empty($data['filter_sub_category'])) {
@@ -88,7 +84,7 @@ class ModelCatalogProduct extends Model
                 }
 
                 if (isset($data['filter_filter']['size'])) {
-                    $sql .= " AND ovd.name IN ('" . implode("','", $data['filter_filter']['size']) . "')";
+                    $sql .= " AND ovd.name IN ('" . implode("','", $data['filter_filter']['size']) . "') AND pov.quantity > 0";
                 }
 
                 if (isset($data['filter_filter']['price']['max'])) {
@@ -118,9 +114,18 @@ class ModelCatalogProduct extends Model
                 }
 
                 if ($implode) {
-                    $sql .= " " . implode(" AND ", $implode) . "";
+                    $sql .= " " . implode(" AND ", $implode) . " OR";
+                }
+
+                foreach ($words as $word) {
+                    $implode[] = "m.name LIKE '%" . $this->db->escape($word) . "%'";
+                }
+
+                if ($implode) {
+                    $sql .= " " . implode(" OR ", $implode) . "";
                 }
             }
+
 
             if (!empty($data['filter_tag'])) {
                 $implode = array();
@@ -128,24 +133,22 @@ class ModelCatalogProduct extends Model
                 if ($implode) {
                     $sql .= " " . implode(" AND ", $implode) . "";
                 }
+
             }
+
+            $sql .=")";
 
             if (!empty($data['filter_name'])) {
-                $sql .= " OR LCASE(p.model) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
+                $sql .= " OR LCASE(p.name) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "' OR LCASE(m.name) = '" . $this->db->escape(utf8_strtolower($data['filter_manufacturer'])) . "'";
             }
 
-            $sql .= ")";
-        }
-
-        if (!empty($data['filter_manufacturer_id'])) {
-            $sql .= " AND p.manufacturer_id = '" . (int)$data['filter_manufacturer_id'] . "'";
         }
 
         $sql .= " GROUP BY p.product_id";
 
         $sort_data = array(
             'p.name',
-            'p.model',
+            'm.name',
             'p.price',
             'rating',
             'p.sort_order',
@@ -153,7 +156,7 @@ class ModelCatalogProduct extends Model
         );
 
         if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
-            if ($data['sort'] == 'p.name' || $data['sort'] == 'p.model') {
+            if ($data['sort'] == 'p.name' || $data['sort'] == 'm.name') {
                 $sql .= " ORDER BY LCASE(" . $data['sort'] . ")";
             } elseif ($data['sort'] == 'p.price') {
                 $sql .= " ORDER BY (CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE p.price END)";
@@ -202,14 +205,14 @@ class ModelCatalogProduct extends Model
 
         $sort_data = array(
             'p.name',
-            'p.model',
+            'm.name',
             'ps.price',
             'rating',
             'p.sort_order'
         );
 
         if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
-            if ($data['sort'] == 'p.name' || $data['sort'] == 'p.model') {
+            if ($data['sort'] == 'p.name' || $data['sort'] == 'm.name') {
                 $sql .= " ORDER BY LCASE(" . $data['sort'] . ")";
             } else {
                 $sql .= " ORDER BY " . $data['sort'];
@@ -491,14 +494,10 @@ class ModelCatalogProduct extends Model
                 }
             }
 
-            if (!empty($data['filter_name'])) {
-                $sql .= " OR LCASE(p.model) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
-            }
-
             $sql .= ")";
         }
 
-        if (!empty($data['filter_manufacturer_id'])) {
+        if (isset($data['filter_manufacturer_id'])) {
             $sql .= " AND p.manufacturer_id = '" . (int)$data['filter_manufacturer_id'] . "'";
         }
 
@@ -528,9 +527,9 @@ class ModelCatalogProduct extends Model
         return $query->rows;
     }
 
-    public function getModelProduct($product_id)
+    public function getManufacturerProduct($product_id)
     {
-        $query = $this->db->query("SELECT DISTINCT model FROM " . DB_PREFIX . "product WHERE product_id = '" . (int)$product_id . "'");
+        $query = $this->db->query("SELECT DISTINCT name FROM " . DB_PREFIX . "manufacturer LEFT JOIN " . DB_PREFIX . "product p ON(p.manufacturer_id = m.manufacturer_id) WHERE p.product_id = '" . (int)$product_id . "'");
         return $query->rows;
     }
 
@@ -542,7 +541,7 @@ class ModelCatalogProduct extends Model
 
     public function getFilterProducts($filter = array())
     {
-        $sql = "SELECT DISTINCT p.color, m.name as manufacture , p.price, ovd.name as size FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_to_category ptc on (ptc.product_id=p.product_id) LEFT JOIN " . DB_PREFIX . "manufacturer m on (p.manufacturer_id = m.manufacturer_id) LEFT JOIN " . DB_PREFIX . "product_option_value pov on(pov.product_id = p.product_id) LEFT JOIN " . DB_PREFIX . "option_value_description ovd on(ovd.option_value_id = pov.option_value_id and ovd.option_id = pov.option_id) WHERE (ptc.category_id='" . $filter['category'] . "')";
+        $sql = "SELECT DISTINCT p.color, p.color_hex, m.name as manufacture , p.price, ovd.name as size FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_to_category ptc on (ptc.product_id=p.product_id) LEFT JOIN " . DB_PREFIX . "manufacturer m on (p.manufacturer_id = m.manufacturer_id) LEFT JOIN " . DB_PREFIX . "product_option_value pov on(pov.product_id = p.product_id) LEFT JOIN " . DB_PREFIX . "option_value_description ovd on(ovd.option_value_id = pov.option_value_id and ovd.option_id = pov.option_id) WHERE (ptc.category_id='" . $filter['category'] . "')";
 
         if (isset($filter['manufacture'])) {
             $sql .= " AND m.name IN ('" . implode("','", $filter['manufacture']) . "') ";

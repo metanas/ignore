@@ -39,6 +39,7 @@ $_['entry_mpn']              = 'MPN';
 $_['entry_location']         = 'Location';
 $_['entry_shipping']         = 'Requires Shipping';
 $_['entry_manufacturer']     = 'Manufacturer';
+$_['entry_ref']              = 'Reference';
 $_['entry_date_available']   = 'Date Available';
 $_['entry_quantity']         = 'Quantity';
 $_['entry_minimum']          = 'Minimum Quantity';

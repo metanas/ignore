@@ -5,7 +5,7 @@ class ControllerAccountAccount extends Controller
     public function index()
     {
         if (!$this->customer->isLogged()) {
-            $this->session->data['redirect'] = $this->url->link('account/account', array('action' => 'edit', 'language', $this->config->get('config_language')));
+            $this->session->data['redirect'] = $this->url->link('account/edit', array('language', $this->config->get('config_language')));
 
             $this->response->redirect($this->url->link('account/login', 'language=' . $this->config->get('config_language')));
         }
@@ -22,28 +22,16 @@ class ControllerAccountAccount extends Controller
             $data['success'] = '';
         }
 
-        if ($this->request->get['action'] === 'edit') {
-            $data['content'] = $this->load->controller('account/edit');
-        } elseif ($this->request->get['action'] === 'address') {
-            $data['content'] = $this->load->controller('account/address');
-        } elseif ($this->request->get['action'] === 'order') {
-//            if(isset($this->request->get['page']))
-            $data['content'] = $this->load->controller('account/order');
-        }
-
-        $data['edit'] = $this->url->link('account/account', array('action' => 'edit', 'language' => $this->config->get('config_language')));
-        $data['address'] = $this->url->link('account/account', array('action' => 'address', 'language' . $this->config->get('config_language')));
+        $data['edit'] = $this->url->link('account/edit', array('language' => $this->config->get('config_language')));
+        $data['address'] = $this->url->link('account/address', array('language' . $this->config->get('config_language')));
         $data['wishlist'] = $this->url->link('account/wishlist', 'language=' . $this->config->get('config_language'));
-        $data['order'] = $this->url->link('account/account', array('action' => 'order', 'language' => $this->config->get('config_language')));
+        $data['order'] = $this->url->link('account/order', array('language' => $this->config->get('config_language')));
         $data['return'] = $this->url->link('account/return', 'language=' . $this->config->get('config_language'));
 
 
         $data['transaction'] = $this->url->link('account/transaction', 'language=' . $this->config->get('config_language'));
         $data['newsletter'] = $this->url->link('account/newsletter', 'language=' . $this->config->get('config_language'));
         $data['recurring'] = $this->url->link('account/recurring', 'language=' . $this->config->get('config_language'));
-
-        $data['footer'] = $this->load->controller('common/footer');
-        $data['header'] = $this->load->controller('common/header');
 
         $this->response->setOutput($this->load->view('account/account', $data));
     }

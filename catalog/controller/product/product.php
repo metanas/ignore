@@ -69,8 +69,6 @@ class ControllerProductProduct extends Controller {
 				$url .= '&limit=' . $this->request->get['limit'];
 			}
 
-			$manufacturer_info = $this->model_catalog_manufacturer->getManufacturer($this->request->get['manufacturer_id']);
-
 		}
 
 		if (isset($this->request->get['search']) || isset($this->request->get['tag'])) {
@@ -130,10 +128,12 @@ class ControllerProductProduct extends Controller {
 		$data['category'] = $product_category;
 
 		$product_info = $this->model_catalog_product->getProduct($product_id);
-		$manufacturer_img = $this->model_catalog_manufacturer->getManufacturer($product_info['manufacturer_id']);
-		if(isset($manufacturer_img['image']))
-		    $data['manufacturer_img'] = $this->model_tool_image->resize($manufacturer_img['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height'));
-		
+        $manufacturer_info = $this->model_catalog_manufacturer->getManufacturer($product_info['manufacturer_id']);
+
+		if(isset($manufacturer_info['image'])) {
+            $data['manufacturer_img'] = $this->model_tool_image->resize($manufacturer_info['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_additional_height'));
+            $data['manufacturer_name'] = $manufacturer_info['name'];
+		}
 		$product_similar = $this->model_catalog_product->getSimilarProduct($product_id);
 
         $data['product_similar'] = array();
@@ -222,7 +222,6 @@ class ControllerProductProduct extends Controller {
 			$data['product_id'] = (int)$this->request->get['product_id'];
 			$data['manufacturer'] = $product_info['manufacturer'];
 			$data['manufacturers'] = $this->url->link('product/manufacturer/info', 'language=' . $this->config->get('config_language') . '&manufacturer_id=' . $product_info['manufacturer_id']);
-			$data['model'] = $product_info['model'];
 			$data['reward'] = $product_info['reward'];
 			$data['color'] = $product_info['color'];
 
@@ -265,7 +264,8 @@ class ControllerProductProduct extends Controller {
 
 			if ((float)$product_info['special']) {
 				$data['special'] = $this->currency->format($this->tax->calculate($product_info['special'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-			} else {
+                $data['discount'] = intval((($product_info['price'] - $product_info['special']) * 100) / $product_info['price']);
+            } else {
 				$data['special'] = false;
 			}
 
@@ -275,16 +275,16 @@ class ControllerProductProduct extends Controller {
 				$data['tax'] = false;
 			}
 
-			$discounts = $this->model_catalog_product->getProductDiscounts($this->request->get['product_id']);
+//			$discounts = $this->model_catalog_product->getProductDiscounts($this->request->get['product_id']);
 
-			$data['discounts'] = array();
-
-			foreach ($discounts as $discount) {
-				$data['discounts'][] = array(
-					'quantity' => $discount['quantity'],
-					'price'    => $this->currency->format($this->tax->calculate($discount['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency'])
-				);
-			}
+//			$data['discounts'] = array();
+//
+//			foreach ($discounts as $discount) {
+//				$data['discounts'][] = array(
+//					'quantity' => $discount['quantity'],
+//					'price'    => $this->currency->format($this->tax->calculate($discount['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency'])
+//				);
+//			}
 
 			$data['options'] = array();
 
@@ -348,7 +348,6 @@ class ControllerProductProduct extends Controller {
 			$data['current_link'] = ($this->request->server['HTTPS'] ? 'https://' : 'http://') . $this->request->server['HTTP_HOST'] . $this->request->server['REQUEST_URI'];
 
 			$data['attribute_groups'] = $this->model_catalog_product->getProductAttributes($this->request->get['product_id']);
-
 			$data['products'] = array();
 
 			$results = $this->model_catalog_product->getProductRelated($this->request->get['product_id']);
@@ -370,6 +369,7 @@ class ControllerProductProduct extends Controller {
 					$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				} else {
 					$special = false;
+                    $discount = false;
 				}
 
 				if ($this->config->get('config_tax')) {

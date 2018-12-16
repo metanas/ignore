@@ -18,7 +18,7 @@
 }
 
 body {
-    font-family: Helvetica Neue;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: normal;
     color: #000000;
     font-size: 13px;
@@ -124,25 +124,23 @@ div.required .control-label:before {
 /* top */
 #top {
     background-color: #ff1b5e;
-    padding-top: 5px;
+    padding-top: 2px;
     border-bottom: 1px solid RGB(229, 33, 92);
-    height: 30px;
     font-weight: bold;
-
+    margin-bottom: 20px;
 }
 
 #top p {
     color: white;
-    font-size: 14px;
     text-decoration: none;
     margin-bottom: 0;
+    font-size: 12px;
 }
 
 /* logo */
 #logo {
     margin: 0 0 10px 0;
-    max-width: 100px;
-    float: left;
+    max-width: 80px;
 }
 
 /* search */
@@ -204,14 +202,21 @@ div.required .control-label:before {
 
 }
 
-.ver-center {
-    display: inline-block;
-    vertical-align: middle;
-    float: none;
+@media (min-width: 780px) {
+    .ver-center {
+        margin-top: 15px;
+    }
+}
+
+@media (max-width: 780px) {
+    .ver-center {
+        margin-top: 0;
+    }
 }
 
 /* cart */
 #cart {
+    padding-top: 3px;
 }
 
 #cart > .btn {
@@ -643,6 +648,18 @@ footer h4 {
     margin: 0;
 }
 
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+    background-color: #ff1b5e;
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    border-color: #ff1b5e;
+}
+
+.pagination > li > a, .pagination > li > span {
+    color: #000000;
+}
+
 /* buttons */
 .buttons {
     margin: 1em 0;
@@ -880,7 +897,6 @@ footer h4 {
 .product-thumb .image img {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 25px;
     width: 100%;
 }
 
@@ -900,7 +916,6 @@ footer h4 {
 }
 
 .product-thumb .caption {
-    /*padding: 0 20px;*/
     min-height: 100px;
     position: absolute;
     width: 90%;
@@ -971,18 +986,19 @@ h2.price {
 }
 
 .price-new {
-    color: #cf3a3a;
+    color: #FF1B5E;
     font-weight: 600;
 }
 
 .pointer {
-    font-size: 12px;
-
+    font-size: 10px;
+    color: #999;
 }
 
 .pointer:hover {
     cursor: pointer;
-    color: #aaa;
+    color: #999;
+    text-decoration: underline;
 }
 
 .price-old {
@@ -1219,7 +1235,7 @@ h2.price {
     border: 2px solid black;
     font-weight: bold;
     color: black;
-    font-size: 16px;
+    font-size: 13px;
     padding: auto;
     width: 100%;
     height: 100%;
@@ -1367,6 +1383,8 @@ ul {
 }
 
 .prix-product-page {
+    margin-top: 35px;
+    font-size: 18px;;
 
 }
 
@@ -1696,6 +1714,7 @@ ul {
 .description {
     color: #a6a6a6;
     font-size: 12px;
+    margin-left: 5px;
 }
 
 .condition-general {
@@ -1753,6 +1772,7 @@ ul {
 .category-filter {
     cursor: pointer;
     font-size: 14px;
+    line-height: 38px;
 }
 
 @media (max-width: 750px) {
@@ -1817,17 +1837,45 @@ ul {
     margin-left: 50px;
 }
 
-.product-status {
-    padding: 5px;
+.product-stock {
     background-color: #ff1b5a;
     color: whitesmoke;
-    border-bottom-right-radius: 5px;
 }
-.hidden-md-down
-{
-    background-color: #f7f7f7;
-    width: 100%;
-    padding-top: 20px;
-    margin-bottom: 30px;
 
+.product-status {
+    position: absolute;
+    top: 5%;
+    border-bottom-right-radius: 5px;
+    padding: 5px;
+}
+
+@media (max-width: 720px) {
+    .product-status {
+        font-size: 8px;
+        padding: 2px;
+    }
+}
+
+.product-discount {
+    border: 1px solid #ff1b5a;
+    background-color: white;
+    color: #ff1b5a;
+}
+
+.hidden-md-down {
+    padding-top: 10px;
+    background-color: white;
+}
+
+.slide-show-image {
+    background-size: cover;
+    height: 100%;
+    background-position: center top;
+    background-repeat: no-repeat;
+    overflow: hidden
+}
+
+.ShoesName{
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

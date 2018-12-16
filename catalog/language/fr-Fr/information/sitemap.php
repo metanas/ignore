@@ -16,6 +16,6 @@ $_['text_history']     ='Historique des commandes';
 $_['text_download']    ='Téléchargements';
 $_['text_cart']        ='Mon panier';
 $_['text_checkout']    ='Check-out';
-$_['text_search']      ='Chercher';
+$_['text_search']      ='Rechercher';
 $_['text_information'] ='Information';
 $_['text_contact']     ='Contactez nous';

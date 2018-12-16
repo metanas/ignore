@@ -16,13 +16,18 @@
                                                  alt="{{ product.name }}"
                                                  title="{{ product.name }}"
                                                  class="img-responsive"
-                                                 style="width: 100%"
                                             />
                                         </div>
                                         {% if product.stock %}
-                                            <span class="product-status">
+                                            <span class="product-status product-stock">
                                                 Out of Stock
                                             </span>
+                                        {% else %}
+                                            {% if product.discount %}
+                                                <span class="product-status product-discount">
+                                                    - {{ product.discount }} %
+                                                </span>
+                                            {% endif %}
                                         {% endif %}
                                         <div class="caption">
                                             <div class="desctip col-sm-12 col-xs-12">

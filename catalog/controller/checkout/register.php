@@ -30,18 +30,6 @@ class ControllerCheckoutRegister extends Controller
             $data['postcode'] = '';
         }
 
-        if (isset($this->session->data['shipping_address']['country_id'])) {
-            $data['country_id'] = $this->session->data['shipping_address']['country_id'];
-        } else {
-            $data['country_id'] = $this->config->get('config_country_id');
-        }
-
-        if (isset($this->session->data['shipping_address']['zone_id'])) {
-            $data['zone_id'] = $this->session->data['shipping_address']['zone_id'];
-        } else {
-            $data['zone_id'] = '';
-        }
-
         $this->load->model('localisation/country');
 
         $data['countries'] = $this->model_localisation_country->getCountries();
@@ -125,12 +113,24 @@ class ControllerCheckoutRegister extends Controller
                 $json['error']['lastname'] = $this->language->get('error_lastname');
             }
 
+            if (intval($this->request->post['birthday'][1]) < 1 || intval($this->request->post['birthday'][1]) > 12 || !filter_var((int)$this->request->post['birthday'][1], FILTER_VALIDATE_INT)) {
+                $json['error']['birthday'] = $this->language->get('error_birthday');
+            }
+
+            if ($this->request->post['birthday'][2] < 1 || $this->request->post['birthday'][2] > 31 || !filter_var($this->request->post['birthday'][2], FILTER_VALIDATE_INT)) {
+                $json['error']['birthday'] = $this->language->get('error_birthday');
+            }
+
+            if ($this->request->post['birthday'][0] < 1 || $this->request->post['birthday'][0] > 31 || !filter_var($this->request->post['birthday'][0], FILTER_VALIDATE_INT)) {
+                $json['error']['birthday'] = $this->language->get('error_birthday');
+            }
+
             if ((utf8_strlen($this->request->post['email']) > 96) || !filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
                 $json['error']['email'] = $this->language->get('error_email');
             }
 
             if ($this->model_account_customer->getTotalCustomersByEmail($this->request->post['email'])) {
-                $json['error']['warning'] = $this->language->get('error_exists');
+                $json['warning'] = $this->language->get('error_exists');
             }
 
             $this->load->model('localisation/country');
@@ -139,10 +139,6 @@ class ControllerCheckoutRegister extends Controller
             if ((utf8_strlen(html_entity_decode($this->request->post['password'], ENT_QUOTES, 'UTF-8')) < 8) || (utf8_strlen(html_entity_decode($this->request->post['password'], ENT_QUOTES, 'UTF-8')) > 40)) {
                 $json['error']['password'] = $this->language->get('error_password');
             }
-
-//			if ($this->request->post['confirm'] != $this->request->post['password']) {
-//				$json['error']['confirm'] = $this->language->get('error_confirm');
-//			}
 
 //			if ($this->config->get('config_account_id')) {
 //				$this->load->model('catalog/information');
@@ -217,9 +213,7 @@ class ControllerCheckoutRegister extends Controller
             }
 
             unset($this->session->data['shipping_method']);
-            unset($this->session->data['shipping_methods']);
             unset($this->session->data['payment_method']);
-            unset($this->session->data['payment_methods']);
         }
 
         if (isset($customer_id)) {

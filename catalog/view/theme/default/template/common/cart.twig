@@ -3,7 +3,7 @@
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown cart" align="center">
             <a href="{{ account }}">
                 <img src="catalog/view/theme/default/image/user.png" width="25" height="25">
-                <p class="cart-para">{{ text_profile }}</p>
+                <p class="cart-para" >{{ text_profile }}</p>
             </a>
             <div class="dropdown-menu hidden-xs" style="width: 200px;">
                 <div style="font-size: 13px; line-height: 2">
@@ -20,14 +20,14 @@
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 dropdown cart" align="center">
             <a href="{{ action_login }}">
                 <img src="catalog/view/theme/default/image/user.png" width="25" height="25">
-                <p class="cart-para">{{ text_login }}</p>
+                <p   class="cart-para">{{ text_login }}</p>
             </a>
             <div class="dropdown-menu hidden-xs" style="padding: 10px; width: 200px;border-radius: 0;margin-left: -80px;">
                 <button class="zalark-button" id="myBtn2"
-                        style="font-size: 14px; font-weight: bold;margin-bottom: 0;margin-top: 0">SE
+                        style="font-size: 12px; font-weight: bold;margin-bottom: 0;margin-top: 0">SE
                     CONNECTER
                 </button>
-                <a href="{{ action_login }}"><p class="inscription" style="font-size: 11px">nouveau client? creez un
+                <a href="{{ action_login }}"><p class="inscription" style="font-size: 11px; margin-top: 5px;">nouveau client? creez un
                         compte</p></a>
                 <hr style="margin-top: 0;margin-bottom: 0">
                 <div style="font-size: 13px; line-height: 2">
@@ -98,7 +98,7 @@
         <span id="checkout"
               class="quantity" {% if count_products is same as(0) %} style="display: none" {% endif %}>{{ count_products }}</span>
         <div id="cart-dropdown" class="dropdown-menu pull-right hidden-xs">
-            <h4 class="text-center text-uppercase">{{ text_cart }}</h4>
+            <h4 class="text-center text-uppercase" style="margin-bottom: 30px; margin-top:20px; ">{{ text_cart }}</h4>
             {% if products or vouchers %}
                 <div class="col-md-12 scrollStyle" style="padding: 0;">
                     {% for product in products %}
@@ -113,7 +113,7 @@
                             <div class="col-md-9">
                                 <div class="col-md-6" style="padding: 0;">
                                     <div class="col-md-12" style="padding: 0;">
-                                        {{ product.model }}
+                                        {{ product.manufacturer }}
                                     </div>
                                     <div class="col-md-12" style="padding: 0">
                                         <a href="{{ product.href }}">{{ product.name }}</a>
@@ -131,17 +131,17 @@
                                 </div>
                                 {% if product.option %}
                                     {% for option in product.option %}
-                                        <div class="col-md-12"
-                                             style="padding: 0;">{{ option.name }} : {{ option.value }}</div>
+                                        <div class="col-md-12 text-capitalize"
+                                             style="padding: 0; font-size: 12px;" >{{ option.name }} : {{ option.value }}</div>
                                     {% endfor %}
                                 {% endif %}
                                 {% if product.recurring %} <br/>
                                     -
                                     <small>{{ text_recurring }} {{ product.recurring }}</small>
                                 {% endif %}
-                                <div class="col-md-12" style="padding: 0;">Quantite : {{ product.quantity }}</div>
-                                <div class="col-md-12 text-center" style="padding: 0;">
-                                    <span class="pointer" onclick="wishlist.add('{{ product.product_id }}');">Deplacer vers mes preferes</span>
+                                <div class="col-md-12 " style="padding: 0; font-size: 12px;">Quantité : {{ product.quantity }}</div>
+                                <div class="col-md-12" style="padding: 0; font-size: 10px;">
+                                    <span  class="pointer" onclick="wishlist.add('{{ product.product_id }}');">Déplacer vers mes préféréss</span>
                                     |
                                     <span class="pointer"
                                           onclick="cart.remove('{{ product.cart_id }}');">Supprimer</span>
@@ -169,14 +169,14 @@
                 <div class="col-md-12" style="margin-top: 10px;">
                     <hr style="box-shadow: 0 -5px 5px -5px #333;">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="margin-top: 10px;">
                             <div class="col-md-6 text-left" style="padding: 0">
-                            <strong>Livraison</strong></div>
+                            Livraison</div>
                             <div class="col-md-6 text-right" style="padding: 0">Gratuit</div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="col-md-6 text-left" style="padding: 0">
-                                <strong>Total(TVA Include)</strong></div>
+                        <div class="col-md-12" style="margin-top: 10px;">
+                            <div class="col-md-6 text-left" style="padding: 0;  font-weight: bold;" >
+                                Total <span style="font-size: 12px;color: #999">(TVA Incluse)</span></div>
                             <div class="col-md-6 text-right" style="padding: 0"><b>{{ totals }}</b></div>
                         </div>
                     </div>
@@ -191,12 +191,12 @@
                     {#{% endfor %}#}
                     <div style="margin-top: 10px">
                         <a href="{{ checkout }}">
-                            <button type="button" class="zalark-button text-uppercase">
-                                {{ text_checkout }}
+                            <button style="font-size: 12px; font-weight: bold; " type="button" class="zalark-button text-uppercase">
+                                <b>{{ text_checkout }}</b>
                             </button>
                         </a>
                     </div>
-                    <div class="text-center text-uppercase">
+                    <div class="text-center text-uppercase" style="margin-top: 10px;">
                         <a href="{{ cart }}"><b><u>{{ text_cart }}</u></b></a>
                     </div>
                 </div>

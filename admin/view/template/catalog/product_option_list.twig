@@ -61,11 +61,19 @@
                         {% else %}
                           <a href="{{ sort_product }}">{{ column_product }}</a>
                         {% endif %}</td>
-                      <td class="text-left">{% if sort == 'od.name' %}
-                          <a href="{{ sort_option }}" class="{{ order|lower }}">{{ column_option }}</a>
-                        {% else %}
-                          <a href="{{ sort_option }}">{{ column_option }}</a>
-                        {% endif %}</td>
+                        <td class="text-left">{% if sort == 'm.name' %}
+                                <a href="{{ sort_product }}" class="{{ order|lower }}">{{ column_manufacturer }}</a>
+                            {% else %}
+                                <a href="{{ sort_product }}">{{ column_manufacturer }}</a>
+                            {% endif %}</td>
+                        <td class="text-left">
+                            {{ column_ref }}
+                        </td>
+                        <td class="text-left">{% if sort == 'od.name' %}
+                                <a href="{{ sort_option }}" class="{{ order|lower }}">{{ column_option }}</a>
+                            {% else %}
+                                <a href="{{ sort_option }}">{{ column_option }}</a>
+                            {% endif %}</td>
                       <td class="text-left">{% if sort == 'o.type' %}
                           <a href="{{ sort_type }}" class="{{ order|lower }}">{{ column_type }}</a>
                         {% else %}
@@ -89,6 +97,8 @@
                               <input type="checkbox" name="selected[]" value="{{ product_option.product_option_id }}"/>
                             {% endif %}</td>
                           <td class="text-left">{{ product_option.product }}</td>
+                          <td class="text-left">{{ product_option.manufacturer }}</td>
+                          <td class="text-left">{{ product_option.ref }}</td>
                           <td class="text-left">{{ product_option.option }}</td>
                           <td class="text-left">{{ product_option.type }}</td>
                           <td class="text-right">{{ product_option.sort_order }}</td>

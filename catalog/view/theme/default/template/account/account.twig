@@ -4,11 +4,11 @@
         <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}</div>
     {% endif %}
     <div class="row">
-        <div class="col-lg-3 col-md-3 col-sm-3">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
             <div id="slidebar" class="slide-bar">
                 <a href="javascript:void(0)" class="closebtn visible-xs">&times;</a>
-                <h2>{{ text_my_account }}</h2>
-                <div style="line-height: 25px">
+                <h2 style="font-size: 18px;">{{ text_my_account }}</h2>
+                <div style="line-height: 38px; margin-left: 17px;">
                     <div><a href="{{ edit }}">{{ text_my_account }}</a></div>
                     <div><a href="{{ order }}">{{ text_my_orders }}</a></div>
                     <div><a href="{{ address }}">{{ text_address }}</a></div>
@@ -18,20 +18,20 @@
             </div>
         </div>
         <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-            <div id="slide-bar-button" class="fa fa-align-justify visible-xs" style="font-size: 20px"></div>
+            <div id="slide-bar-button" class="fa fa-align-justify visible-xs" style="font-size: 20px"> Mon Compte</div>
             {{ content }}
         </div>
     </div>
 
 </div>
 <script>
-    $('body').on('click', '#slide-bar-button', function () {
-        document.getElementById("slidebar").style.width = "100%";
+    $('#slide-bar-button').on('click', function () {
+        $("#slidebar").css({"width" : "100%"});
     });
 
     /* Close/hide the sidenav */
-    $('body').on('click', '.closebtn', function () {
-        document.getElementById("slidebar").style.width = "0";
+    $('.closebtn').on('click', function () {
+        $("#slidebar").css({"width" : "0"});
     });
 </script>
 {{ footer }}

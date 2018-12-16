@@ -2,7 +2,7 @@
 
 // Text
 
-$_['text_search']              ='Chercher';
+$_['text_search']              ='Rechercher';
 $_['text_brand']               ='Marque';
 $_['text_manufacturer']        ='Marque:';
 $_['text_model']               ='Code produit:';

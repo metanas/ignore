@@ -19,8 +19,8 @@ $(document).ready(function () {
 
     $("body").on('click', 'input:checkbox', function (event) {
         var param = '';
-        const filt = getURLVar(event.target.name.replace("[]", ''));
-        const newFilt = event.target.value.replace(" ", ".");
+        const filt = decodeURIComponent(getURLVar(event.target.name.replace("[]", '')));
+        const newFilt =  encodeURIComponent(event.target.value);
         if (event.target.checked) {
             if (filt !== '') {
                 param = filt + "_" + newFilt;
@@ -33,8 +33,7 @@ $(document).ready(function () {
             param = param.replace(/_$/, '');
             param = param.replace(/^_/, '');
         }
-        console.log(param);
-        updateQueryStringParam(event.target.name.replace("[]", ""), param);
+        updateQueryStringParam(event.target.name.replace("[]", ""),param);
         event.stopPropagation();
     });
 
@@ -65,12 +64,12 @@ $(document).ready(function () {
 });
 
 function removeFilter(e) {
-    removeFilterFormUrl(e.dataset.info, e.innerText.replace(" ", ".").replace("prix.min: ", "").replace("prix.max: ", ""));
+    removeFilterFormUrl(e.dataset.info, e.innerText.replace("prix.min: ", "").replace("prix.max: ", ""));
     filterGenerator();
 }
 
 function removeFilterFormUrl(name, value) {
-    var param = decodeURI(getURLVar(name)).replace(value, '');
+    var param = getURLVar(name).replace(encodeURIComponent(value), '');
     param = param.replace("__", '_');
     param = param.replace(/_$/, '');
     param = param.replace(/^_/, '');
@@ -86,30 +85,38 @@ $(document).on('click', '', function (e) {
 });
 
 function filterGenerator() {
-    var url = "index.php?route=product/category/filter&path=" + String(getURLVar("path"));
-    if (String(getURLVar("manufacture")) !== '') {
-        url += "&manufacture=" + String(getURLVar("manufacture")).replace(".", " ");
+    let url = "index.php?route=product/category/filter&path=" + getURLVar("path");
+
+    const manufacture = getURLVar("manufacture");
+    if (manufacture !== '') {
+        url += "&manufacture=" + manufacture;
     }
 
-    if (String(getURLVar("color")) !== '') {
-        url += "&color=" + String(getURLVar("color")).replace(".", " ");
+    const color = getURLVar('color');
+    if (color !== '') {
+        url += "&color=" + color;
     }
 
-    if (String(getURLVar("size")) !== '') {
-        url += "&size=" + String(getURLVar("size"));
+    const size = getURLVar('size');
+    if (size !== '') {
+        url += "&size=" + size;
     }
 
-    if (String(getURLVar("special")) !== '') {
-        url += "&special=" + String(getURLVar("special"));
+    const special = getURLVar('special');
+    if (special !== '') {
+        url += "&special=" + special;
     }
 
-    if (String(getURLVar("price-min")) !== '') {
-        url += "&price-min=" + String(getURLVar("price-min"));
+    const price_min = getURLVar("price-min");
+    if (price_min !== '') {
+        url += "&price-min=" + price_min;
     }
 
-    if (String(getURLVar("price-max")) !== '') {
-        url += "&price-max=" + String(getURLVar("price-max"));
+    const price_max = getURLVar("price-max");
+    if (price_max !== '') {
+        url += "&price-max=" + price_max;
     }
+console.log(url);
     $.ajax({
         url: url,
         type: "GET",
@@ -121,7 +128,7 @@ function filterGenerator() {
         },
         success: function (json) {
             $('footer').prev().remove();
-            $('header').after(json);
+            $('#top').after(json);
             setFilter();
         },
         error: function (result, status, s) {
@@ -133,13 +140,14 @@ function filterGenerator() {
 function setFilter() {
     $(".filter-content").empty();
     const filters = {
-        "manufacture": String(getURLVar("manufacture")),
-        "color": String(getURLVar("color")),
-        "size": String(getURLVar("size")),
-        "special": String(getURLVar("special")),
-        "price-max": String(getURLVar("price-max")),
-        "price-min": String(getURLVar("price-min"))
+        "manufacture": decodeURIComponent(getURLVar("manufacture")),
+        "color": decodeURIComponent(getURLVar("color")),
+        "size": decodeURIComponent(getURLVar("size")),
+        "special": decodeURIComponent(getURLVar("special")),
+        "price-max": decodeURIComponent(getURLVar("price-max")),
+        "price-min": decodeURIComponent(getURLVar("price-min"))
     };
+    console.log(filters);
     var filter_count = 0;
     Object.entries(filters).forEach(function ([key, value]) {
         if (value !== "") {
@@ -176,6 +184,7 @@ function removeAllFilters() {
 }
 
 function updateQueryStringParam(param, value) {
+    console.log(param, value);
     baseUrl = [location.protocol, '//', location.host, location.pathname].join('');
     urlQueryString = document.location.search;
     let newParam = param + '=' + value;

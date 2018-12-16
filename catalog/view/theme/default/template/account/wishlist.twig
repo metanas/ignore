@@ -27,11 +27,10 @@
                                              alt="{{ product.name }}"
                                              title="{{ product.name }}"
                                              class="img-responsive"
-                                             style="width: 100%"
                                         />
                                     </div>
                                     {% if product.stock %}
-                                        <span class="product-status">
+                                        <span class="product-status product-stock">
                                             Out of Stock
                                         </span>
                                     {% endif %}
@@ -70,7 +69,11 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <p>{{ text_no_results }}</p>
+                <div align="center">
+                    <img src="catalog/view/theme/default/image/owl.png" width="15"
+                         style="margin-bottom: 20px;margin-top: 20px">
+                </div>
+                <p align="center" style="font-size: 18px">{{ text_no_results }}</p>
             {% endif %}
             {{ content_bottom }}</div>
         {{ column_right }}</div>
