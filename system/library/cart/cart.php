@@ -42,7 +42,7 @@ class Cart
             foreach ($cart_query->rows as $cart) {
                 $stock = true;
 
-                $product_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_store p2s LEFT JOIN " . DB_PREFIX . "product p ON (p2s.product_id = p.product_id) WHERE p2s.store_id = '" . (int)$this->config->get('config_store_id') . "' AND p2s.product_id = '" . (int)$cart['product_id'] . "' AND p.date_available <= NOW() AND p.status = '1'");
+                $product_query = $this->db->query("SELECT *,p.name as name, m.name as manufacturer, m.image as manufacturer_image, p.image as image FROM " . DB_PREFIX . "product_to_store p2s LEFT JOIN " . DB_PREFIX . "product p ON (p2s.product_id = p.product_id) LEFT JOIN " . DB_PREFIX . "manufacturer m ON(m.manufacturer_id = p.manufacturer_id) WHERE p2s.store_id = '" . (int)$this->config->get('config_store_id') . "' AND p2s.product_id = '" . (int)$cart['product_id'] . "' AND p.date_available <= NOW() AND p.status = '1'");
 
                 if ($product_query->num_rows && ($cart['quantity'] > 0)) {
                     $option_price = 0;
@@ -132,7 +132,8 @@ class Cart
                         'cart_id' => $cart['cart_id'],
                         'product_id' => $product_query->row['product_id'],
                         'name' => $product_query->row['name'],
-                        'model' => $product_query->row['model'],
+                        'manufacturer' => $product_query->row['manufacturer'],
+                        'ref' => $product_query->row['ref'],
                         'color' => $product_query->row['color'],
                         'shipping' => $product_query->row['shipping'],
                         'image' => $product_query->row['image'],
